@@ -83,118 +83,81 @@
     <aside class="anatomy-sidebar" id="anatomySidebar">
       <div class="sidebar-scroll-content">
         
-        <!-- SECTION: BODY PART SELECTOR -->
+        <!-- SECTION: BODY PART SELECTOR (ICON-ONLY CLEAN PALETTE) -->
         <section class="panel-section">
           <div class="section-header-row">
             <h2 class="panel-section-title" data-i18n="sec_body_part">CZĘŚĆ CIAŁA</h2>
-            <span class="section-meta-badge" id="activeZoneScaleBadge">Skala 1:1</span>
+            <span class="section-meta-badge" id="activeZoneNameBadge" data-i18n="part_forearm">Przedramię</span>
           </div>
-          <p class="section-helper-text" data-i18n="sec_body_part_desc">Wybierz obszar anatomiczny, aby obejrzeć detale ułożenia tatuażu na mięśniach.</p>
 
           <div class="body-parts-grid" id="bodyPartsGrid">
             <!-- 1. Forearm -->
-            <button class="body-part-card active" data-part="forearm">
+            <button class="body-part-card active" data-part="forearm" data-i18n-title="part_forearm" title="Przedramię" aria-label="Przedramię">
               <div class="bp-icon">
-                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14 6 C13 14, 14 24, 16 31 L14 35 L24 35 L23 31 C26 24, 27 14, 25 6 Z"/>
-                  <path d="M16 31 L23 31" stroke-opacity="0.4"/>
-                  <path d="M18 12 C19 18, 19 23, 18 28" stroke-opacity="0.4"/>
+                <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 6 C13.5 14, 14.5 23, 17 31 L14.5 36.5 C14.5 38, 17 39, 21.5 39 C26 39, 28 38, 28 36 L25 31 C28.5 23, 29.5 14, 27.5 6 Z"/>
+                  <path d="M17 31 L25 31" stroke-opacity="0.45"/>
+                  <path d="M20 11 C21.5 17, 21 24, 19.5 28.5" stroke-opacity="0.45"/>
+                  <path d="M24 13 C25 18, 24.5 23, 23 27" stroke-opacity="0.3"/>
                 </svg>
-              </div>
-              <div class="bp-info">
-                <span class="bp-name" data-i18n="part_forearm">Przedramię</span>
-                <span class="bp-sub" data-i18n="part_forearm_sub">Nadgarstek i łokieć</span>
               </div>
             </button>
 
             <!-- 2. Upper Arm & Shoulder -->
-            <button class="body-part-card" data-part="arm">
+            <button class="body-part-card" data-part="arm" data-i18n-title="part_arm" title="Ramię i bark" aria-label="Ramię i bark">
               <div class="bp-icon">
-                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M13 5 C9 8, 9 15, 12 20 C11 26, 13 31, 15 36 L23 36 C25 31, 27 25, 26 20 C29 14, 28 7, 22 5 Z"/>
-                  <path d="M12 20 C16 21, 22 21, 26 20" stroke-opacity="0.45"/>
-                  <path d="M14 10 C17 13, 21 13, 24 10" stroke-opacity="0.45"/>
+                <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 5 C9.5 8, 9 15.5, 13 21.5 C12 27.5, 14 33, 16 39 L24.5 39 C26.5 33, 28.5 27, 27.5 21.5 C31 15, 30 7.5, 23.5 5 Z"/>
+                  <path d="M13 21.5 C17.5 23, 23 23, 27.5 21.5" stroke-opacity="0.45"/>
+                  <path d="M15 10 C18.5 14.5, 22.5 14.5, 25.5 10" stroke-opacity="0.5"/>
+                  <path d="M20 15 L20 21" stroke-opacity="0.35"/>
                 </svg>
-              </div>
-              <div class="bp-info">
-                <span class="bp-name" data-i18n="part_arm">Ramię i bark</span>
-                <span class="bp-sub" data-i18n="part_arm_sub">Biceps, bark, rękaw</span>
               </div>
             </button>
 
             <!-- 3. Chest & Collarbone -->
-            <button class="body-part-card" data-part="chest">
+            <button class="body-part-card" data-part="chest" data-i18n-title="part_chest" title="Klatka piersiowa" aria-label="Klatka piersiowa">
               <div class="bp-icon">
-                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M16 6 L24 6 L26 9 L34 12 L32 22 L28 34 L12 34 L8 22 L6 12 L14 9 Z"/>
-                  <path d="M10 13 Q16 15 20 13 Q24 15 30 13" stroke-opacity="0.5"/>
-                  <path d="M9 21 Q15 24 20 20 Q25 24 31 21" stroke-opacity="0.55"/>
-                  <line x1="20" y1="13" x2="20" y2="33" stroke-opacity="0.35"/>
+                <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.5 5.5 L26.5 5.5 L28.5 9.5 L37 13 L34.5 24 L30 38 L14 38 L9.5 24 L7 13 L15.5 9.5 Z"/>
+                  <path d="M11 13.5 Q17.5 16 22 13.5 Q26.5 16 33 13.5" stroke-opacity="0.55"/>
+                  <path d="M10.5 22.5 Q16.5 26 22 21.5 Q27.5 26 33.5 22.5" stroke-opacity="0.6"/>
+                  <line x1="22" y1="13.5" x2="22" y2="36.5" stroke-opacity="0.35"/>
                 </svg>
-              </div>
-              <div class="bp-info">
-                <span class="bp-name" data-i18n="part_chest">Klatka piersiowa</span>
-                <span class="bp-sub" data-i18n="part_chest_sub">Mostek i obojczyki</span>
               </div>
             </button>
 
             <!-- 4. Back & Shoulder Blades -->
-            <button class="body-part-card" data-part="back">
+            <button class="body-part-card" data-part="back" data-i18n-title="part_back" title="Plecy i łopatki" aria-label="Plecy i łopatki">
               <div class="bp-icon">
-                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M16 5 L24 5 L27 9 L34 13 L30 25 L27 35 L13 35 L10 25 L6 13 L13 9 Z"/>
-                  <line x1="20" y1="6" x2="20" y2="35" stroke-opacity="0.6"/>
-                  <path d="M12 14 C15 15, 17 19, 16 23" stroke-opacity="0.45"/>
-                  <path d="M28 14 C25 15, 23 19, 24 23" stroke-opacity="0.45"/>
+                <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.5 5.5 L26.5 5.5 L29 9.5 L37 13.5 L32.5 26.5 L29 38.5 L15 38.5 L11.5 26.5 L7 13.5 L15 9.5 Z"/>
+                  <line x1="22" y1="6" x2="22" y2="38" stroke-opacity="0.6"/>
+                  <path d="M13 15 C16.5 16, 19 20.5, 17.5 25" stroke-opacity="0.5"/>
+                  <path d="M31 15 C27.5 16, 25 20.5, 26.5 25" stroke-opacity="0.5"/>
                 </svg>
-              </div>
-              <div class="bp-info">
-                <span class="bp-name" data-i18n="part_back">Plecy i łopatki</span>
-                <span class="bp-sub" data-i18n="part_back_sub">Kręgosłup, łopatki</span>
               </div>
             </button>
 
-            <!-- 5. Thigh -->
-            <button class="body-part-card" data-part="thigh">
+            <!-- 5. Leg (Thigh & Calf) -->
+            <button class="body-part-card" data-part="calf" data-i18n-title="part_calf" title="Noga (łydka i udo)" aria-label="Noga (łydka i udo)">
               <div class="bp-icon">
-                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M11 6 L29 6 C30 15, 28 25, 25 35 L15 35 C12 25, 10 15, 11 6 Z"/>
-                  <path d="M16 10 C19 18, 20 24, 18 31" stroke-opacity="0.45"/>
-                  <ellipse cx="20" cy="31" rx="3.2" ry="2.2" stroke-opacity="0.4"/>
+                <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 5 L28 5 C30.5 13, 30 21.5, 25 30 L25 35 L29.5 38.5 L15.5 38.5 L17.5 34.5 L17.5 30 C13.5 21.5, 14 13, 16 5 Z"/>
+                  <path d="M17.5 15 C20.5 18.5, 23.5 18.5, 26.5 15" stroke-opacity="0.5"/>
+                  <path d="M21.5 16 L21.5 29" stroke-opacity="0.35"/>
                 </svg>
-              </div>
-              <div class="bp-info">
-                <span class="bp-name" data-i18n="part_thigh">Udo i biodro</span>
-                <span class="bp-sub" data-i18n="part_thigh_sub">Przód, bok uda, kolano</span>
               </div>
             </button>
 
-            <!-- 6. Calf & Shin -->
-            <button class="body-part-card" data-part="calf">
+            <!-- 6. Neck & Collarbone -->
+            <button class="body-part-card" data-part="neck" data-i18n-title="part_neck" title="Szyja i obojczyki" aria-label="Szyja i obojczyki">
               <div class="bp-icon">
-                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M15 5 L25 5 C28 12, 28 20, 23 28 L23 33 L27 36 L14 36 L16 32 L16 28 C12 20, 13 12, 15 5 Z"/>
-                  <path d="M16 14 C19 17, 21 17, 24 14" stroke-opacity="0.45"/>
+                <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14.5 7.5 C14.5 13, 17.5 16.5, 22 17.5 C26.5 16.5, 29.5 13, 29.5 7.5"/>
+                  <path d="M16.5 15.5 L15.5 27 L7 33.5 L7 38 L37 38 L37 33.5 L28.5 27 L27.5 15.5"/>
+                  <path d="M16.5 17.5 L22 30.5 L27.5 17.5" stroke-opacity="0.5"/>
                 </svg>
-              </div>
-              <div class="bp-info">
-                <span class="bp-name" data-i18n="part_calf">Łydka i goleń</span>
-                <span class="bp-sub" data-i18n="part_calf_sub">Mięsień łydki, kostka</span>
-              </div>
-            </button>
-
-            <!-- 7. Neck & Nape -->
-            <button class="body-part-card body-part-card-wide" data-part="neck">
-              <div class="bp-icon">
-                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M13 7 C13 12, 16 15, 20 16 C24 15, 27 12, 27 7"/>
-                  <path d="M15 14 L14 25 L6 31 L6 35 L34 35 L34 31 L26 25 L25 14"/>
-                  <path d="M15 16 L20 28 L25 16" stroke-opacity="0.45"/>
-                </svg>
-              </div>
-              <div class="bp-info">
-                <span class="bp-name" data-i18n="part_neck">Szyja, gardło i kark</span>
-                <span class="bp-sub" data-i18n="part_neck_sub">Bok szyi, kark, podżuchwie i obojczyk</span>
               </div>
             </button>
           </div>
@@ -202,7 +165,7 @@
 
         <!-- SECTION: PHYSIQUE / ANATOMICAL VOLUME -->
         <section class="panel-section">
-          <label class="control-label" data-i18n="label_physique">Budowa anatomiczna:</label>
+          <label class="control-label" data-i18n="label_physique">Budowa ciała:</label>
           <div class="tri-segment-group" id="physiqueGroup">
             <button class="tri-seg-btn" data-build="slim" data-i18n="build_slim">Smukła</button>
             <button class="tri-seg-btn active" data-build="standard" data-i18n="build_standard">Standard</button>
@@ -222,31 +185,21 @@
             <button class="skin-tone-btn" data-color="#c69676" data-name-key="skin_name_3" style="background-color: #c69676;" aria-label="Oliwkowa"></button>
             <button class="skin-tone-btn" data-color="#9b6b4c" data-name-key="skin_name_4" style="background-color: #9b6b4c;" aria-label="Opalona brązowa"></button>
             <button class="skin-tone-btn" data-color="#633f2b" data-name-key="skin_name_5" style="background-color: #633f2b;" aria-label="Ciemna czekoladowa"></button>
-            <button class="skin-tone-btn" data-color="#28282c" data-name-key="skin_name_6" style="background-color: #28282c; border-color: rgba(255,255,255,0.28);" aria-label="Gips studyjny"></button>
           </div>
         </section>
 
-        <!-- SECTION: STUDIO LIGHTING & INSPECTION -->
+        <!-- SECTION: STUDIO LIGHTING & GUIDES -->
         <section class="panel-section">
-          <div class="slider-header">
-            <label class="control-label" data-i18n="label_lighting">Oświetlenie w studiu:</label>
-          </div>
-          <div class="tri-segment-group" id="lightingGroup">
-            <button class="tri-seg-btn active" data-light="studio" data-i18n="light_studio">Studyjne</button>
-            <button class="tri-seg-btn" data-light="dramatic" data-i18n="light_dramatic">Kontrast</button>
-            <button class="tri-seg-btn" data-light="daylight" data-i18n="light_daylight">Dzienne</button>
-          </div>
-
-          <div class="slider-group" style="margin-top: 10px;">
+          <div class="slider-group">
             <div class="slider-header">
-              <label for="lightAngleSlider" class="sub-label" data-i18n="label_light_angle">Kierunek światła:</label>
+              <label for="lightAngleSlider" class="control-label" data-i18n="label_light_angle">Światło studyjne:</label>
               <span class="slider-value" id="lightAngleValue">35°</span>
             </div>
             <input type="range" id="lightAngleSlider" min="-180" max="180" value="35" class="fitter-range">
           </div>
 
-          <div class="toggle-row" style="margin-top: 8px;">
-            <span class="sub-label" data-i18n="label_anatomy_grid">Linie symetrii i celownik:</span>
+          <div class="toggle-row" style="margin-top: 4px;">
+            <span class="sub-label" data-i18n="label_anatomy_grid">Celownik i linie:</span>
             <button class="switch-pill active" id="toggleGuideBtn" role="switch" aria-checked="true">
               <span class="switch-thumb"></span>
             </button>

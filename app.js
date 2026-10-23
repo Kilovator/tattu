@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
       nav_price: "CENNIK",
       nav_team: "ARTYŚCI",
       nav_works: "PORTFOLIO",
-      nav_fitter: "PRZYMIERZALNIA",
+      nav_fitter: "EDYTOR 3D",
       nav_contacts: "KONTAKT",
       hero_subtitle: "STUDIO TATUAŻU",
       hero_btn: "ZAPISZ SIĘ",
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
       nav_price: "PRICING",
       nav_team: "ARTISTS",
       nav_works: "PORTFOLIO",
-      nav_fitter: "PRZYMIERZALNIA",
+      nav_fitter: "3D EDITOR",
       nav_contacts: "CONTACT",
       hero_subtitle: "TATTOO STUDIO",
       hero_btn: "BOOK A SESSION",
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
       nav_price: "ПРАЙС",
       nav_team: "МАСТЕРА",
       nav_works: "РАБОТЫ",
-      nav_fitter: "ПРИМЕРОЧНАЯ",
+      nav_fitter: "3D РЕДАКТОР",
       nav_contacts: "КОНТАКТЫ",
       hero_subtitle: "ТАТУ САЛОН",
       hero_btn: "ЗАПИСАТЬСЯ",
@@ -699,16 +699,66 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==========================================================================
-     7. PARALLAX EFFECT
+     7. PARALLAX EFFECT (ENHANCED SCROLL-LINKED MOTION FOR GOTHIC ILLUSTRATIONS)
      ========================================================================== */
   const watermarks = document.querySelectorAll('.watermark');
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
+  let targetScrollY = window.scrollY;
+  let currentScrollY = window.scrollY;
+  let parallaxRafId = null;
+
+  function renderWatermarksParallax() {
+    currentScrollY += (targetScrollY - currentScrollY) * 0.14;
+    if (Math.abs(targetScrollY - currentScrollY) < 0.25) {
+      currentScrollY = targetScrollY;
+    }
+
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+
     watermarks.forEach((wm, i) => {
-      const speed = 0.05 + (i * 0.02);
-      wm.style.transform = `translateY(${scrollY * speed * (i % 2 === 0 ? 1 : -0.7)}px)`;
+      const speedY = parseFloat(wm.dataset.speedY ?? (0.38 * (i % 2 === 0 ? 1 : -1)));
+      const speedX = parseFloat(wm.dataset.speedX ?? (0.06 * (i % 2 === 0 ? 1 : -1)));
+      const speedRot = parseFloat(wm.dataset.speedRot ?? (0.02 * (i % 2 === 0 ? 1 : -1)));
+      const baseRot = parseFloat(wm.dataset.baseRot ?? 0);
+
+      let anchor = 0;
+      if (wm.dataset.anchor === 'bottom') {
+        anchor = maxScroll;
+      } else if (wm.dataset.anchor) {
+        anchor = parseFloat(wm.dataset.anchor);
+      }
+
+      const delta = currentScrollY - anchor;
+      const translateY = delta * speedY;
+      const translateX = Math.sin(currentScrollY * 0.0035 + i * 1.4) * 28 + (delta * speedX * 0.35);
+      const rotate = baseRot + (delta * speedRot);
+      const scale = 1 + Math.sin(currentScrollY * 0.0025 + i) * 0.05;
+
+      wm.style.transform = `translate3d(${translateX.toFixed(1)}px, ${translateY.toFixed(1)}px, 0) rotate(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
     });
+
+    if (Math.abs(targetScrollY - currentScrollY) >= 0.25) {
+      parallaxRafId = requestAnimationFrame(renderWatermarksParallax);
+    } else {
+      parallaxRafId = null;
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    targetScrollY = window.scrollY;
+    if (!parallaxRafId) {
+      parallaxRafId = requestAnimationFrame(renderWatermarksParallax);
+    }
   }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    targetScrollY = window.scrollY;
+    if (!parallaxRafId) {
+      parallaxRafId = requestAnimationFrame(renderWatermarksParallax);
+    }
+  });
+
+  // Initial render of parallax positions
+  renderWatermarksParallax();
 
   // Initial language application
   applyLanguage(currentLang);

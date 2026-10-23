@@ -25,33 +25,21 @@
 <body>
   <!-- Watermark Illustrations in Background -->
   <div class="watermarks-container" aria-hidden="true">
-    <img src="assets/illustrations/girl-tattoo.svg" alt="" class="watermark watermark-girl">
-    <img src="assets/illustrations/tattoo-machine.svg" alt="" class="watermark watermark-machine">
-    <img src="assets/illustrations/spider.svg" alt="" class="watermark watermark-spider">
-    <img src="assets/illustrations/skull-demon.svg" alt="" class="watermark watermark-skull">
-    <img src="assets/illustrations/angel.svg" alt="" class="watermark watermark-angel">
+    <img src="assets/illustrations/girl-tattoo.svg" alt="" class="watermark watermark-girl" data-speed-y="0.46" data-speed-x="0.06" data-speed-rot="0.018" data-base-rot="-4" data-anchor="0">
+    <img src="assets/illustrations/tattoo-machine.svg" alt="" class="watermark watermark-machine" data-speed-y="-0.38" data-speed-x="-0.07" data-speed-rot="-0.026" data-base-rot="15" data-anchor="220">
+    <img src="assets/illustrations/spider.svg" alt="" class="watermark watermark-spider" data-speed-y="0.48" data-speed-x="0.07" data-speed-rot="-0.024" data-base-rot="-10" data-anchor="1100">
+    <img src="assets/illustrations/skull-demon.svg" alt="" class="watermark watermark-skull" data-speed-y="-0.42" data-speed-x="-0.06" data-speed-rot="0.025" data-base-rot="8" data-anchor="1250">
+    <img src="assets/illustrations/angel.svg" alt="" class="watermark watermark-angel" data-speed-y="-0.40" data-speed-x="-0.05" data-speed-rot="-0.020" data-base-rot="-5" data-anchor="bottom">
   </div>
 
   <!-- Header / Navigation -->
   <header class="site-header" id="header">
     <div class="container header-container">
-      <nav class="nav-menu" id="navMenu">
-        <ul class="nav-list">
-          <li class="nav-item"><a href="#about" class="nav-link" data-i18n="nav_about">O NAS</a></li>
-          <li class="nav-item"><a href="#price" class="nav-link" data-i18n="nav_price">CENNIK</a></li>
-          <li class="nav-logo-item">
-            <a href="#" class="nav-logo-link" aria-label="Forever Strona Główna">
-              <img src="assets/illustrations/logo.svg" alt="Forever Logo" class="nav-logo-icon">
-            </a>
-          </li>
-          <li class="nav-item"><a href="#team" class="nav-link" data-i18n="nav_team">ARTYŚCI</a></li>
-          <li class="nav-item"><a href="#works" class="nav-link" data-i18n="nav_works">PORTFOLIO</a></li>
-        </ul>
-      </nav>
-
-      <!-- Desktop Header Actions (Fitter button + Language Switcher) -->
-      <div class="header-actions">
-        <a href="fitter.html" target="_blank" rel="noopener noreferrer" class="nav-fitter-link" data-i18n="nav_fitter">PRZYMIERZALNIA</a>
+      <!-- Left Column: Language Switcher (Desktop) & Brand Logo (Mobile) -->
+      <div class="header-left">
+        <a href="#" class="mobile-brand-logo" aria-label="Forever Strona Główna">
+          <img src="assets/illustrations/logo.svg" alt="Forever Logo" class="nav-logo-icon">
+        </a>
         <div class="lang-switcher header-lang-switcher" aria-label="Wybór języka / Language selection">
           <button class="lang-btn active" data-lang="pl">PL</button>
           <span class="lang-divider">/</span>
@@ -61,12 +49,43 @@
         </div>
       </div>
 
-      <!-- Mobile Hamburger Button -->
-      <button class="mobile-menu-toggle" id="menuToggle" aria-label="Otwórz menu" aria-expanded="false">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </button>
+      <!-- Center Column: Symmetric Navigation with Centered Brand Logo -->
+      <nav class="nav-menu" id="navMenu" aria-label="Nawigacja główna">
+        <ul class="nav-list nav-list-left">
+          <li class="nav-item"><a href="#about" class="nav-link" data-i18n="nav_about">O NAS</a></li>
+          <li class="nav-item"><a href="#price" class="nav-link" data-i18n="nav_price">CENNIK</a></li>
+        </ul>
+
+        <div class="nav-logo-item">
+          <a href="#" class="nav-logo-link" aria-label="Forever Strona Główna">
+            <img src="assets/illustrations/logo.svg" alt="Forever Logo" class="nav-logo-icon">
+          </a>
+        </div>
+
+        <ul class="nav-list nav-list-right">
+          <li class="nav-item"><a href="#team" class="nav-link" data-i18n="nav_team">ARTYŚCI</a></li>
+          <li class="nav-item"><a href="#works" class="nav-link" data-i18n="nav_works">PORTFOLIO</a></li>
+        </ul>
+      </nav>
+
+      <!-- Right Column: Main CTA Button to 3D Editor + Mobile Hamburger -->
+      <div class="header-actions">
+        <a href="fitter.html" class="btn-header-editor" id="headerEditorBtn">
+          <svg class="editor-btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+            <path d="M2 17l10 5 10-5"></path>
+            <path d="M2 12l10 5 10-5"></path>
+          </svg>
+          <span data-i18n="nav_fitter">PRZYMIERZALNIA 3D</span>
+        </a>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="mobile-menu-toggle" id="menuToggle" aria-label="Otwórz menu" aria-expanded="false">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -86,9 +105,9 @@
       <a href="#price" class="mobile-link" data-i18n="nav_price">CENNIK</a>
       <a href="#team" class="mobile-link" data-i18n="nav_team">ARTYŚCI</a>
       <a href="#works" class="mobile-link" data-i18n="nav_works">PORTFOLIO</a>
-      <a href="fitter.html" target="_blank" rel="noopener noreferrer" class="mobile-link mobile-fitter-link" data-i18n="nav_fitter">PRZYMIERZALNIA</a>
       <a href="#contacts" class="mobile-link" data-i18n="nav_contacts">KONTAKT</a>
-      <button class="btn btn-primary open-booking-btn" data-i18n="hero_btn" style="margin-top: 1.5rem;">ZAPISZ SIĘ</button>
+      <a href="fitter.html" class="btn-header-editor mobile-editor-cta" data-i18n="nav_fitter">PRZYMIERZALNIA 3D</a>
+      <button class="btn btn-primary open-booking-btn" data-i18n="hero_btn" style="margin-top: 0.5rem;">ZAPISZ SIĘ</button>
     </div>
   </div>
 

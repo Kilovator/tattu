@@ -238,7 +238,7 @@ body {
 .fitter-workspace {
   flex: 1;
   display: grid;
-  grid-template-columns: 300px 1fr 340px;
+  grid-template-columns: 248px 1fr 330px;
   height: calc(100vh - 60px);
   overflow: hidden;
   position: relative;
@@ -265,17 +265,18 @@ body {
 .sidebar-scroll-content {
   padding: 18px 16px 24px;
   overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
   height: 100%;
 }
 
 .panel-section {
   display: flex;
   flex-direction: column;
-  gap: 11px;
-  padding-bottom: 18px;
+  gap: 10px;
+  padding-bottom: 16px;
   border-bottom: 1px solid var(--border-hairline);
 }
 
@@ -293,7 +294,7 @@ body {
 
 .panel-section-title {
   font-family: var(--font-heading);
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   letter-spacing: 0.09em;
   color: var(--text-primary);
   text-transform: uppercase;
@@ -303,12 +304,16 @@ body {
 .real-cm-badge {
   font-size: 0.68rem;
   font-weight: 600;
-  color: var(--text-secondary);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-hairline);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 5px;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
 }
 
 .real-cm-badge {
@@ -318,13 +323,13 @@ body {
 }
 
 .section-helper-text {
-  font-size: 0.73rem;
+  font-size: 0.72rem;
   line-height: 1.45;
   color: var(--text-muted);
 }
 
 .control-label {
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   font-weight: 600;
   color: var(--text-secondary);
 }
@@ -336,98 +341,66 @@ body {
 }
 
 .meta-value-label {
-  font-size: 0.72rem;
+  font-size: 0.71rem;
   font-weight: 600;
   color: var(--text-primary);
 }
 
 /* ==========================================================================
-   BODY PARTS ANATOMY GRID (LEFT PANEL)
+   BODY PARTS ANATOMY GRID (LEFT PANEL — ICON-ONLY CLEAN PALETTE)
    ========================================================================== */
 .body-parts-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 7px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
 }
 
 .body-part-card {
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 9px 10px;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  padding: 8px;
   background: var(--bg-card);
   border: 1px solid var(--border-hairline);
-  border-radius: var(--radius-md);
+  border-radius: 10px;
   color: var(--text-secondary);
   cursor: pointer;
-  text-align: left;
-  transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
-}
-
-.body-part-card-wide {
-  grid-column: span 2;
+  position: relative;
+  transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
 }
 
 .body-part-card:hover {
   background: var(--bg-card-hover);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.24);
   color: var(--text-primary);
+  transform: translateY(-1px);
 }
 
 .body-part-card.active {
-  background: var(--bg-card-active);
+  background: #23232c;
   border-color: var(--accent-white);
-  color: var(--text-primary);
+  color: var(--accent-white);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
 .bp-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  color: var(--text-secondary);
-  transition: color 0.16s ease, background 0.16s ease;
+  color: inherit;
+  transition: transform 0.16s ease, color 0.16s ease;
 }
 
-.body-part-card.active .bp-icon {
-  background: var(--accent-white);
-  color: #09090b;
-  border-color: var(--accent-white);
+.body-part-card:hover .bp-icon {
+  transform: scale(1.06);
 }
 
 .bp-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.bp-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.bp-name {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: inherit;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.bp-sub {
-  font-size: 0.64rem;
-  color: var(--text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  width: 34px;
+  height: 34px;
 }
 
 /* ==========================================================================
@@ -1346,7 +1319,7 @@ body {
   }
 
   .fitter-workspace {
-    grid-template-columns: 260px 1fr 310px;
+    grid-template-columns: 232px 1fr 300px;
   }
 }
 

@@ -32,11 +32,11 @@ const fitterTranslations = {
     part_back_sub: "Kręgosłup, łopatki",
     part_thigh: "Udo i biodro",
     part_thigh_sub: "Przód, bok uda, kolano",
-    part_calf: "Łydka i goleń",
-    part_calf_sub: "Mięsień łydki, kostka",
-    part_neck: "Szyja, gardło i kark",
-    part_neck_sub: "Bok szyi, kark, podżuchwie i obojczyk",
-    label_physique: "Budowa anatomiczna:",
+    part_calf: "Noga (łydka i udo)",
+    part_calf_sub: "Łydka, goleń, kolano",
+    part_neck: "Szyja i obojczyki",
+    part_neck_sub: "Bok szyi, kark, obojczyk",
+    label_physique: "Budowa ciała:",
     build_slim: "Smukła",
     build_standard: "Standard",
     build_athletic: "Atletyczna",
@@ -51,8 +51,8 @@ const fitterTranslations = {
     light_studio: "Studyjne",
     light_dramatic: "Kontrast",
     light_daylight: "Dzienne",
-    label_light_angle: "Kierunek światła:",
-    label_anatomy_grid: "Linie symetrii i celownik:",
+    label_light_angle: "Światło studyjne:",
+    label_anatomy_grid: "Celownik i linie:",
     loading_3d_model: "Generowanie siatki anatomicznej...",
     canvas_hint_empty: "Wgraj swój szkic po prawej stronie lub kliknij na ciało, aby wyznaczyć miejsce tatuażu.",
     canvas_hint_active: "Kliknij lub przeciągnij tatuaż po skórze, aby zmienić pozycję. Obracaj model 360° myszą.",
@@ -136,11 +136,11 @@ const fitterTranslations = {
     part_back_sub: "Spine & shoulder blades",
     part_thigh: "Thigh & Hip",
     part_thigh_sub: "Front, outer thigh, knee",
-    part_calf: "Calf & Shin",
-    part_calf_sub: "Calf muscle & ankle",
-    part_neck: "Neck, Throat & Nape",
-    part_neck_sub: "Side neck, nape, jawline & collarbone",
-    label_physique: "Anatomical build:",
+    part_calf: "Leg (Calf & Shin)",
+    part_calf_sub: "Calf muscle, shin & ankle",
+    part_neck: "Neck & Collarbone",
+    part_neck_sub: "Side neck, nape & collarbone",
+    label_physique: "Body build:",
     build_slim: "Slim",
     build_standard: "Standard",
     build_athletic: "Athletic",
@@ -155,8 +155,8 @@ const fitterTranslations = {
     light_studio: "Studio",
     light_dramatic: "Contrast",
     light_daylight: "Daylight",
-    label_light_angle: "Light direction:",
-    label_anatomy_grid: "Symmetry lines & reticle:",
+    label_light_angle: "Studio light:",
+    label_anatomy_grid: "Reticle & guides:",
     loading_3d_model: "Building anatomical mesh...",
     canvas_hint_empty: "Upload your sketch on the right or click the body to set target placement.",
     canvas_hint_active: "Click or drag the tattoo directly on the skin to reposition. Drag outside to orbit 360°.",
@@ -240,11 +240,11 @@ const fitterTranslations = {
     part_back_sub: "Позвоночник, лопатки",
     part_thigh: "Бедро",
     part_thigh_sub: "Передняя и боковая часть",
-    part_calf: "Икра и голень",
-    part_calf_sub: "Икроножная мышца, щиколотка",
-    part_neck: "Шея, горло и затылок",
-    part_neck_sub: "Бок шеи, затылок, челюсть и ключицы",
-    label_physique: "Телосложение и рельеф:",
+    part_calf: "Нога (икра и голень)",
+    part_calf_sub: "Икроножная мышца, голень",
+    part_neck: "Шея и ключицы",
+    part_neck_sub: "Бок шеи, затылок, ключицы",
+    label_physique: "Телосложение:",
     build_slim: "Изящное",
     build_standard: "Стандарт",
     build_athletic: "Атлетичное",
@@ -259,8 +259,8 @@ const fitterTranslations = {
     light_studio: "Мягкий",
     light_dramatic: "Контраст",
     light_daylight: "Дневной",
-    label_light_angle: "Угол падения света:",
-    label_anatomy_grid: "Линии симметрии и прицел:",
+    label_light_angle: "Студийный свет:",
+    label_anatomy_grid: "Прицел и линии:",
     loading_3d_model: "Построение анатомической модели...",
     canvas_hint_empty: "Загрузите свой эскиз справа или кликните по части тела, чтобы выбрать точку нанесения.",
     canvas_hint_active: "Кликайте или перетаскивайте тату прямо по коже. Вращайте камеру на 360° за пределами тату.",
@@ -429,7 +429,7 @@ const BODY_PARTS_META = {
 };
 
 // ============================================================================
-// 3. PROCEDURAL ANATOMICAL SCULPTING ENGINE
+// 3. PROCEDURAL ANATOMICAL SCULPTING ENGINE (REALISTIC EBASE MUSCULATURE)
 // ============================================================================
 
 /**
@@ -452,6 +452,19 @@ function lobe(theta, t, theta0, sigmaTheta, t0, sigmaT, amp) {
 }
 
 /**
+ * Diagonal / sweeping anatomical muscle or tendon ridge (rotates coordinates by `tilt`)
+ */
+function tiltedLobe(theta, t, theta0, sigmaTheta, t0, sigmaT, tilt, amp) {
+  const da = angDiff(theta, theta0);
+  const dt = t - t0;
+  const c = Math.cos(tilt);
+  const s = Math.sin(tilt);
+  const u = da * c - dt * s * 2.2;
+  const v = (da * s + dt * c * 2.2) / 2.2;
+  return amp * Math.exp(-(u * u) / (2 * sigmaTheta * sigmaTheta) - (v * v) / (2 * sigmaT * sigmaT));
+}
+
+/**
  * Smoothstep helper
  */
 function smoothstep(edge0, edge1, x) {
@@ -465,300 +478,370 @@ function smoothstep(edge0, edge1, x) {
  * and longitudinal height parameter t in [0, 1] (0 = bottom cut, 1 = top cut).
  */
 function evaluateAnatomySurface(partId, theta, t, buildType = 'standard') {
-  const girthMul = buildType === 'slim' ? 0.88 : (buildType === 'athletic' ? 1.11 : 1.0);
-  const muscleMul = buildType === 'slim' ? 0.72 : (buildType === 'athletic' ? 1.38 : 1.0);
+  const girthMul = buildType === 'slim' ? 0.88 : (buildType === 'athletic' ? 1.10 : 1.0);
+  const muscleMul = buildType === 'slim' ? 0.76 : (buildType === 'athletic' ? 1.36 : 1.0);
 
   const sinT = Math.sin(theta);
   const cosT = Math.cos(theta);
-  let y = (t - 0.5) * 1.48;
+  let y = (t - 0.5) * 1.50;
   let w = 0.25;
   let d = 0.22;
   let cx = 0;
   let cz = 0;
+  let dy = 0;
+  let rxAdd = 0;
+  let rzAdd = 0;
   let relief = 0;
 
   if (partId === 'forearm') {
-    // 0.0 -> Palm/Metacarpal base, 0.16 -> Wrist, 0.58 -> Mid-Upper Forearm, 0.90 -> Elbow, 1.0 -> Distal Bicep cut
-    y = (t - 0.5) * 1.46;
-    const wristDip = Math.exp(-Math.pow((t - 0.17) / 0.06, 2));
-    const handFlare = smoothstep(0.16, 0.03, t) * (1 - smoothstep(0.03, 0.0, t) * 0.25);
-    const forearmBelly = smoothstep(0.16, 0.58, t) * (1 - smoothstep(0.75, 1.0, t) * 0.12);
+    // Realistic Forearm, Wrist, Palm & Distal Elbow:
+    // t=0.0 -> Palm & thumb metacarpal base
+    // t=0.18 -> Narrow flat wrist with ulnar/radial styloid bones & flexor tendons
+    // t=0.62 -> Muscular upper forearm (brachioradialis, pronator teres, flexors, extensors)
+    // t=0.88 -> Elbow joint (antecubital fossa hollow in front, sharp olecranon in back)
+    // t=1.0 -> Distal bicep & brachialis cut
+    y = (t - 0.5) * 1.52;
 
-    w = 0.155 + 0.115 * forearmBelly - 0.018 * wristDip + 0.038 * handFlare;
-    d = 0.112 + 0.122 * forearmBelly - 0.015 * wristDip - 0.022 * handFlare;
+    const palmEnv = smoothstep(0.20, 0.04, t) * (1 - smoothstep(0.03, 0.0, t) * 0.18);
+    const wristPinch = Math.exp(-Math.pow((t - 0.20) / 0.065, 2));
+    const muscleBelly = smoothstep(0.19, 0.60, t) * (1 - 0.22 * smoothstep(0.68, 0.90, t));
+    const upperArmStart = smoothstep(0.86, 1.0, t);
 
-    // Slight natural anatomical curve of forearm & hand
-    cx = 0.018 * Math.sin(t * Math.PI) - 0.015 * handFlare;
-    cz = 0.024 * smoothstep(0.65, 1.0, t) + 0.012 * handFlare;
+    // Forearm is noticeably wider than deep at the wrist & palm, rounder at mid-belly
+    w = 0.132 + 0.118 * muscleBelly - 0.018 * wristPinch + 0.068 * palmEnv + 0.025 * upperArmStart;
+    d = 0.092 + 0.116 * muscleBelly - 0.022 * wristPinch - 0.024 * palmEnv + 0.032 * upperArmStart;
 
-    // Brachioradialis sweeping from lateral upper forearm toward radial wrist
-    const brachAngle = 0.42 * Math.PI - 0.18 * Math.PI * (1 - t);
-    relief += lobe(theta, t, brachAngle, 0.48, 0.64, 0.22, 0.042 * muscleMul);
-    // Pronator teres & Flexor carpi radialis (inner-medial forearm belly)
-    relief += lobe(theta, t, -0.28 * Math.PI, 0.52, 0.58, 0.20, 0.034 * muscleMul);
-    // Extensor digitorum ridge (posterior-lateral)
-    relief += lobe(theta, t, 0.72 * Math.PI, 0.42, 0.60, 0.22, 0.028 * muscleMul);
-    // Flat anterior wrist tendon plane & slight tendon ridges
-    relief -= lobe(theta, t, 0, 0.48, 0.22, 0.10, 0.014);
-    // Ulnar styloid bone bump at wrist
-    relief += lobe(theta, t, -0.62 * Math.PI, 0.25, 0.17, 0.035, 0.016);
-    // Thumb base (thenar eminence) on radial palm
-    relief += lobe(theta, t, 0.40 * Math.PI, 0.42, 0.08, 0.055, 0.036);
-    // Antecubital fossa (inner elbow crease hollow) & Olecranon (elbow point)
-    relief -= lobe(theta, t, 0, 0.45, 0.88, 0.055, 0.026);
-    relief += lobe(theta, t, Math.PI, 0.35, 0.87, 0.055, 0.032);
+    // Anatomical S-sweep of forearm bone axis + slight natural flexion at elbow & wrist
+    cx = 0.024 * Math.sin(t * Math.PI * 1.1) - 0.024 * palmEnv;
+    cz = -0.018 * Math.sin(t * Math.PI) + 0.042 * upperArmStart + 0.018 * palmEnv;
+
+    // Squircle/flattened anatomical cross-section at wrist and anterior forearm plane
+    const flatPlane = (0.45 * wristPinch + 0.65 * palmEnv + 0.22 * muscleBelly) * 0.018 * Math.cos(2 * theta);
+    relief -= flatPlane;
+
+    // 1. Brachioradialis (major sweeping ridge from outer upper elbow to radial wrist)
+    relief += tiltedLobe(theta, t, 0.36 * Math.PI, 0.36, 0.62, 0.22, -0.38, 0.056 * muscleMul);
+    // Extensor carpi radialis longus (adjacent outer ridge)
+    relief += tiltedLobe(theta, t, 0.56 * Math.PI, 0.32, 0.66, 0.20, -0.32, 0.042 * muscleMul);
+
+    // 2. Pronator teres & Flexor carpi radialis (warm medial-anterior belly)
+    relief += tiltedLobe(theta, t, -0.26 * Math.PI, 0.42, 0.60, 0.19, 0.35, 0.048 * muscleMul);
+    // Flexor carpi ulnaris (medial-posterior edge)
+    relief += lobe(theta, t, -0.64 * Math.PI, 0.36, 0.56, 0.22, 0.038 * muscleMul);
+
+    // 3. Longitudinal intermuscular grooves (define real forearm anatomy in lighting)
+    relief -= tiltedLobe(theta, t, 0.08 * Math.PI, 0.12, 0.55, 0.22, -0.25, 0.018 * muscleMul);
+    relief -= lobe(theta, t, 0.82 * Math.PI, 0.14, 0.54, 0.24, 0.016 * muscleMul);
+
+    // 4. Anterior wrist tendons (Palmaris longus & Flexor carpi radialis cords) + flat wrist depression
+    relief -= lobe(theta, t, 0.0, 0.45, 0.22, 0.08, 0.018);
+    relief += lobe(theta, t, -0.05 * Math.PI, 0.055, 0.24, 0.09, 0.009);
+    relief += lobe(theta, t, 0.09 * Math.PI, 0.055, 0.24, 0.09, 0.008);
+
+    // 5. Ulnar styloid process (distinct bony bump on outer-back wrist) & Radial styloid
+    relief += lobe(theta, t, -0.62 * Math.PI, 0.20, 0.19, 0.028, 0.022);
+    relief += lobe(theta, t, 0.48 * Math.PI, 0.22, 0.18, 0.030, 0.015);
+
+    // 6. Palm anatomy at bottom (Thenar thumb mound on radial side, Hypothenar on ulnar, hollow central palm)
+    relief += lobe(theta, t, 0.35 * Math.PI, 0.38, 0.08, 0.055, 0.052);
+    relief += lobe(theta, t, -0.38 * Math.PI, 0.32, 0.07, 0.050, 0.028);
+    relief -= lobe(theta, t, 0.0, 0.34, 0.07, 0.050, 0.026);
+    relief -= lobe(theta, t, Math.PI, 0.45, 0.08, 0.055, 0.018);
+
+    // 7. Elbow joint (t = 0.88): Deep cubital fossa in front, prominent Olecranon bone in back, epicondyles on sides
+    relief -= lobe(theta, t, 0.0, 0.38, 0.87, 0.048, 0.036);
+    relief += lobe(theta, t, Math.PI, 0.26, 0.87, 0.045, 0.044);
+    relief += lobe(theta, t, -0.52 * Math.PI, 0.22, 0.88, 0.038, 0.024);
+    relief += lobe(theta, t, 0.52 * Math.PI, 0.22, 0.88, 0.038, 0.020);
+    // Distal biceps tendon diving into cubital fossa
+    relief += lobe(theta, t, 0.0, 0.12, 0.93, 0.06, 0.022 * muscleMul);
   }
   else if (partId === 'arm') {
-    // Full Arm & Shoulder Sleeve: 0.0 -> Wrist, 0.44 -> Elbow, 0.68 -> Bicep/Tricep, 0.90 -> Deltoid Shoulder Cap
-    y = (t - 0.5) * 1.56;
-    const isUpper = smoothstep(0.38, 0.56, t);
-    const deltoidCap = smoothstep(0.70, 0.90, t) * (1 - smoothstep(0.92, 1.0, t) * 0.35);
-    const wristTaper = smoothstep(0.0, 0.38, t);
+    // Full Arm & Shoulder Sleeve:
+    // t=0.0 -> Wrist, t=0.42 -> Elbow Joint, t=0.66 -> Biceps & Triceps, t=0.86 -> Deltoid Shoulder Cap, t=0.97 -> Acromion/Trapezius neck slope
+    y = (t - 0.5) * 1.58;
+    const lowerArm = smoothstep(0.0, 0.36, t) * (1 - smoothstep(0.36, 0.45, t) * 0.22);
+    const upperArm = smoothstep(0.42, 0.58, t);
+    const deltoidCap = smoothstep(0.68, 0.86, t) * (1 - smoothstep(0.90, 1.0, t) * 0.42);
+    const wristPinch = Math.exp(-Math.pow((t - 0.06) / 0.05, 2));
 
-    w = 0.135 + 0.075 * wristTaper + 0.065 * isUpper + 0.045 * deltoidCap;
-    d = 0.115 + 0.075 * wristTaper + 0.075 * isUpper + 0.035 * deltoidCap;
+    w = 0.125 - 0.012 * wristPinch + 0.075 * lowerArm + 0.065 * upperArm + 0.052 * deltoidCap;
+    d = 0.105 - 0.014 * wristPinch + 0.072 * lowerArm + 0.082 * upperArm + 0.042 * deltoidCap;
 
-    // Slight natural flexion at elbow (t = 0.44)
-    const bend = smoothstep(0.46, 0.0, t);
-    cz = bend * 0.09;
-    cx = -0.02 * Math.sin(t * Math.PI);
+    // Natural anatomical elbow bend & shoulder posture
+    const forearmFlex = smoothstep(0.44, 0.0, t);
+    cz = forearmFlex * 0.11 - 0.02 * Math.sin(t * Math.PI);
+    cx = -0.022 * Math.sin(t * Math.PI) + 0.035 * smoothstep(0.78, 1.0, t);
 
-    // Deltoid shoulder muscle cap (Lateral, Anterior, Posterior delts)
-    relief += lobe(theta, t, 0.50 * Math.PI, 0.58, 0.84, 0.12, 0.068 * muscleMul);
-    relief += lobe(theta, t, 0.18 * Math.PI, 0.48, 0.82, 0.11, 0.038 * muscleMul);
-    relief += lobe(theta, t, 0.82 * Math.PI, 0.48, 0.82, 0.11, 0.038 * muscleMul);
-    // Deltoid V-insertion furrow
-    relief -= lobe(theta, t, 0.50 * Math.PI, 0.35, 0.68, 0.04, 0.015 * muscleMul);
+    // 1. Deltoid 3-head shoulder cap (Lateral +X, Anterior +Z, Posterior -Z)
+    relief += lobe(theta, t, 0.48 * Math.PI, 0.48, 0.83, 0.11, 0.078 * muscleMul);
+    relief += tiltedLobe(theta, t, 0.18 * Math.PI, 0.38, 0.81, 0.10, 0.35, 0.046 * muscleMul);
+    relief += tiltedLobe(theta, t, 0.80 * Math.PI, 0.38, 0.81, 0.10, -0.35, 0.046 * muscleMul);
+    // Deltoid V-insertion groove into humerus (classic anatomical landmark at t=0.67, lateral)
+    relief -= lobe(theta, t, 0.48 * Math.PI, 0.28, 0.67, 0.038, 0.022 * muscleMul);
+    // Medial armpit / axillary hollow on inner upper arm (-X)
+    relief -= lobe(theta, t, -0.50 * Math.PI, 0.42, 0.82, 0.12, 0.052);
 
-    // Biceps brachii belly (anterior upper arm)
-    relief += lobe(theta, t, 0.0, 0.48, 0.64, 0.12, 0.052 * muscleMul);
-    // Medial & lateral bicipital grooves
-    relief -= lobe(theta, t, 0.32 * Math.PI, 0.22, 0.62, 0.12, 0.016 * muscleMul);
-    relief -= lobe(theta, t, -0.32 * Math.PI, 0.22, 0.62, 0.12, 0.016 * muscleMul);
+    // 2. Biceps brachii prominent oval belly + Brachialis outer cushion
+    relief += lobe(theta, t, 0.02 * Math.PI, 0.42, 0.63, 0.11, 0.064 * muscleMul);
+    relief += lobe(theta, t, 0.32 * Math.PI, 0.26, 0.56, 0.08, 0.028 * muscleMul);
+    // Medial & lateral bicipital sulci (grooves separating bicep from tricep)
+    relief -= lobe(theta, t, 0.28 * Math.PI, 0.16, 0.63, 0.12, 0.022 * muscleMul);
+    relief -= lobe(theta, t, -0.28 * Math.PI, 0.16, 0.63, 0.12, 0.024 * muscleMul);
 
-    // Triceps brachii horseshoe (lateral & long head on back)
-    relief += lobe(theta, t, 0.74 * Math.PI, 0.38, 0.68, 0.11, 0.048 * muscleMul);
-    relief += lobe(theta, t, -0.76 * Math.PI, 0.40, 0.66, 0.12, 0.044 * muscleMul);
-    // Triceps flat tendon above elbow
-    relief -= lobe(theta, t, Math.PI, 0.35, 0.53, 0.06, 0.016);
+    // 3. Triceps brachii horseshoe (Lateral head high & outer, Long head inner-back, flat tendon sheet below)
+    relief += tiltedLobe(theta, t, 0.72 * Math.PI, 0.32, 0.68, 0.10, -0.25, 0.058 * muscleMul);
+    relief += tiltedLobe(theta, t, -0.74 * Math.PI, 0.34, 0.66, 0.11, 0.20, 0.052 * muscleMul);
+    relief -= lobe(theta, t, Math.PI, 0.32, 0.53, 0.055, 0.024);
 
-    // Elbow joint (olecranon & inner elbow crease)
-    relief += lobe(theta, t, Math.PI, 0.32, 0.44, 0.04, 0.032);
-    relief -= lobe(theta, t, 0.0, 0.42, 0.44, 0.045, 0.025);
+    // 4. Elbow joint (t = 0.42): Olecranon tip & Antecubital crease
+    relief += lobe(theta, t, Math.PI, 0.26, 0.42, 0.035, 0.038);
+    relief -= lobe(theta, t, 0.0, 0.38, 0.42, 0.040, 0.032);
 
-    // Forearm brachioradialis & flexor sweep in lower half
-    relief += lobe(theta, t, 0.36 * Math.PI, 0.48, 0.30, 0.11, 0.035 * muscleMul);
-    relief += lobe(theta, t, -0.26 * Math.PI, 0.48, 0.28, 0.10, 0.026 * muscleMul);
+    // 5. Forearm musculature in lower half (t = 0.08..0.40)
+    relief += tiltedLobe(theta, t, 0.36 * Math.PI, 0.40, 0.28, 0.10, -0.35, 0.044 * muscleMul);
+    relief += tiltedLobe(theta, t, -0.26 * Math.PI, 0.40, 0.26, 0.09, 0.30, 0.034 * muscleMul);
+    relief -= lobe(theta, t, 0.0, 0.40, 0.07, 0.05, 0.015);
   }
   else if (partId === 'chest') {
-    // Upper Torso Bust: 0.0 -> Ribcage/Waist, 0.56 -> Pectorals, 0.78 -> Clavicles/Shoulders, 0.95 -> Neck column
-    y = (t - 0.5) * 1.48;
-    const shoulderSpread = smoothstep(0.25, 0.76, t) * (1 - smoothstep(0.78, 0.90, t));
-    const neckTransition = smoothstep(0.80, 0.92, t);
+    // Sculpted Male/Unisex Classical Torso Bust (Chest, Clavicles, Deltoids, Ribcage & Upper Abs):
+    // t=0.0 -> Waist / Mid-Abdomen, t=0.30 -> Ribcage & Serratus, t=0.58 -> Pectorals, t=0.79 -> Clavicles & Deltoid Shoulders, t=0.94 -> Neck Column
+    y = (t - 0.5) * 1.50;
+    const vTaper = smoothstep(0.05, 0.74, t);
+    const shoulderCap = smoothstep(0.55, 0.76, t) * (1 - smoothstep(0.79, 0.90, t));
+    const neckCol = smoothstep(0.80, 0.91, t);
 
-    const torsoW = 0.42 + 0.22 * shoulderSpread;
-    const torsoD = 0.25 + 0.05 * smoothstep(0.15, 0.65, t) * (1 - smoothstep(0.72, 0.88, t));
+    // Realistic broad shoulder-to-waist ratio + anatomical ribcage depth
+    const baseW = 0.36 + 0.14 * vTaper + 0.15 * shoulderCap;
+    const baseD = 0.22 + 0.055 * smoothstep(0.15, 0.62, t) * (1 - smoothstep(0.72, 0.88, t));
 
-    w = torsoW * (1 - 0.58 * neckTransition);
-    d = torsoD * (1 - 0.38 * neckTransition);
+    w = baseW * (1 - 0.62 * neckCol);
+    d = baseD * (1 - 0.38 * neckCol);
 
-    // Natural thoracic posture
-    cz = 0.025 * Math.sin(t * Math.PI) - 0.03 * neckTransition;
+    // Natural lordosis/thoracic posture
+    cz = 0.028 * Math.sin(t * Math.PI) - 0.025 * neckCol;
 
-    // Flatten front & back of torso slightly (squircle / anatomical ribcage)
-    const ribFlat = (1 - neckTransition) * 0.022 * Math.cos(2 * theta);
-    relief -= ribFlat;
+    // Anatomical squircle torso cross-section (flattens front chest & back plane instead of looking like a round barrel)
+    const torsoSquircle = (1 - neckCol) * (0.034 * Math.cos(2 * theta) - 0.008 * Math.cos(4 * theta));
+    relief -= torsoSquircle;
 
-    // Left & Right Pectoralis Major plates
-    relief += lobe(theta, t, 0.22 * Math.PI, 0.36, 0.57, 0.12, 0.056 * muscleMul);
-    relief += lobe(theta, t, -0.22 * Math.PI, 0.36, 0.57, 0.12, 0.056 * muscleMul);
-    // Sharp lower pectoral fold accent
-    relief -= lobe(theta, t, 0.22 * Math.PI, 0.34, 0.42, 0.035, 0.015 * muscleMul);
-    relief -= lobe(theta, t, -0.22 * Math.PI, 0.34, 0.42, 0.035, 0.015 * muscleMul);
+    // Slope shoulders naturally from neck down to deltoids
+    dy -= 0.045 * smoothstep(0.72, 0.86, t) * Math.pow(Math.sin(theta), 2) * (1 - neckCol);
 
-    // Central Sternal Furrow (between pecs)
-    relief -= lobe(theta, t, 0.0, 0.11, 0.58, 0.16, 0.034 * muscleMul);
+    // 1. Pectoralis Major armor plates (squared inner border, sweeping outer insertion toward deltoid)
+    relief += tiltedLobe(theta, t, 0.20 * Math.PI, 0.32, 0.58, 0.11, -0.18, 0.068 * muscleMul);
+    relief += tiltedLobe(theta, t, -0.20 * Math.PI, 0.32, 0.58, 0.11, 0.18, 0.068 * muscleMul);
+    // Crisp inframammary / lower pectoral crease
+    relief -= tiltedLobe(theta, t, 0.20 * Math.PI, 0.30, 0.43, 0.026, -0.14, 0.024 * muscleMul);
+    relief -= tiltedLobe(theta, t, -0.20 * Math.PI, 0.30, 0.43, 0.026, 0.14, 0.024 * muscleMul);
 
-    // Suprasternal notch (jugular pit at base of throat)
-    relief -= lobe(theta, t, 0.0, 0.14, 0.79, 0.04, 0.028);
+    // 2. Deep Sternal Cleavage (center line between pecs)
+    relief -= lobe(theta, t, 0.0, 0.075, 0.57, 0.15, 0.048 * muscleMul);
 
-    // Clavicles (collarbone ridges sweeping left & right)
-    relief += lobe(theta, t, 0.20 * Math.PI, 0.32, 0.78, 0.028, 0.024);
-    relief += lobe(theta, t, -0.20 * Math.PI, 0.32, 0.78, 0.028, 0.024);
+    // 3. Clavicles (pronounced collarbones sweeping from jugular notch to acromion) & Suprasternal Notch
+    relief -= lobe(theta, t, 0.0, 0.11, 0.79, 0.032, 0.038);
+    relief += tiltedLobe(theta, t, 0.21 * Math.PI, 0.28, 0.79, 0.022, 0.12, 0.032);
+    relief += tiltedLobe(theta, t, -0.21 * Math.PI, 0.28, 0.79, 0.022, -0.12, 0.032);
+    // Infraclavicular fossa (subtle hollow under outer collarbone / Mohrenheim fossa)
+    relief -= lobe(theta, t, 0.31 * Math.PI, 0.14, 0.72, 0.035, 0.018);
+    relief -= lobe(theta, t, -0.31 * Math.PI, 0.14, 0.72, 0.035, 0.018);
 
-    // Anterior Deltoid shoulder caps
-    relief += lobe(theta, t, 0.44 * Math.PI, 0.32, 0.72, 0.10, 0.048 * muscleMul);
-    relief += lobe(theta, t, -0.44 * Math.PI, 0.32, 0.72, 0.10, 0.048 * muscleMul);
+    // 4. Anterior & Lateral Deltoid Shoulder Caps + Axillary Armpit Cutouts
+    relief += lobe(theta, t, 0.44 * Math.PI, 0.28, 0.70, 0.10, 0.058 * muscleMul);
+    relief += lobe(theta, t, -0.44 * Math.PI, 0.28, 0.70, 0.10, 0.058 * muscleMul);
+    relief -= lobe(theta, t, 0.38 * Math.PI, 0.18, 0.50, 0.06, 0.028);
+    relief -= lobe(theta, t, -0.38 * Math.PI, 0.18, 0.50, 0.06, 0.028);
 
-    // Upper Rectus Abdominis & Costal Arch (ribcage below pecs)
-    relief += lobe(theta, t, 0.08 * Math.PI, 0.12, 0.26, 0.12, 0.018 * muscleMul);
-    relief += lobe(theta, t, -0.08 * Math.PI, 0.12, 0.26, 0.12, 0.018 * muscleMul);
-    relief -= lobe(theta, t, 0.0, 0.05, 0.24, 0.15, 0.014 * muscleMul);
+    // 5. Costal Arch (Ribcage) & Rectus Abdominis (Upper & Mid Abs with Linea Alba & Semilunaris)
+    relief -= lobe(theta, t, 0.0, 0.04, 0.22, 0.18, 0.022 * muscleMul); // Linea alba
+    relief -= lobe(theta, t, 0.22 * Math.PI, 0.08, 0.22, 0.16, 0.016 * muscleMul); // Linea semilunaris
+    relief -= lobe(theta, t, -0.22 * Math.PI, 0.08, 0.22, 0.16, 0.016 * muscleMul);
+    // Upper & middle abdominal pairs
+    [0.32, 0.17].forEach((abT) => {
+      relief += lobe(theta, t, 0.09 * Math.PI, 0.10, abT, 0.052, 0.024 * muscleMul);
+      relief += lobe(theta, t, -0.09 * Math.PI, 0.10, abT, 0.052, 0.024 * muscleMul);
+    });
+    // Ribcage / Serratus anterior subtle side ribs
+    relief += tiltedLobe(theta, t, 0.34 * Math.PI, 0.22, 0.34, 0.08, -0.3, 0.020 * muscleMul);
+    relief += tiltedLobe(theta, t, -0.34 * Math.PI, 0.22, 0.34, 0.08, 0.3, 0.020 * muscleMul);
+
+    // 6. Sternocleidomastoid cords on neck column (t > 0.82)
+    relief += lobe(theta, t, 0.14 * Math.PI, 0.18, 0.89, 0.07, 0.018);
+    relief += lobe(theta, t, -0.14 * Math.PI, 0.18, 0.89, 0.07, 0.018);
   }
   else if (partId === 'back') {
-    // Dorsal Torso Bust (Note: +Z / theta=0 is the BACK surface so Front Camera faces the Back directly!)
-    y = (t - 0.5) * 1.52;
-    const latV = smoothstep(0.10, 0.76, t) * (1 - smoothstep(0.78, 0.91, t));
-    const neckTransition = smoothstep(0.82, 0.93, t);
+    // Dorsal Anatomical Torso Bust (Note: theta=0 / +Z is the BACK surface so Front Camera faces the Back directly):
+    // t=0.0 -> Lower Lumbar/Waist, t=0.45 -> Lats & Mid-Back, t=0.68 -> Scapulae & Deltoids, t=0.80 -> Trapezius & Shoulders, t=0.94 -> Nape of Neck
+    y = (t - 0.5) * 1.54;
+    const latV = smoothstep(0.06, 0.75, t);
+    const shoulderCap = smoothstep(0.56, 0.77, t) * (1 - smoothstep(0.80, 0.91, t));
+    const neckCol = smoothstep(0.82, 0.92, t);
 
-    const torsoW = 0.38 + 0.26 * latV;
-    const torsoD = 0.24 + 0.05 * smoothstep(0.20, 0.70, t) * (1 - smoothstep(0.75, 0.90, t));
+    const baseW = 0.34 + 0.18 * latV + 0.14 * shoulderCap;
+    const baseD = 0.21 + 0.055 * smoothstep(0.20, 0.68, t) * (1 - smoothstep(0.74, 0.90, t));
 
-    w = torsoW * (1 - 0.58 * neckTransition);
-    d = torsoD * (1 - 0.38 * neckTransition);
+    w = baseW * (1 - 0.62 * neckCol);
+    d = baseD * (1 - 0.38 * neckCol);
 
-    // Natural S-curve of the spine (lordosis at lumbar, kyphosis at upper back)
-    cz = -0.028 * Math.cos(t * Math.PI * 1.35);
+    // Realistic S-curve of vertebral column (lumbar lordosis hollow at lower back, thoracic kyphosis rounding at upper back)
+    cz = -0.036 * Math.cos(t * Math.PI * 1.30);
 
-    // Ribcage squircle flattening
-    relief -= (1 - neckTransition) * 0.022 * Math.cos(2 * theta);
+    // Flatten dorsal and ventral ribcage planes
+    relief -= (1 - neckCol) * (0.034 * Math.cos(2 * theta) - 0.008 * Math.cos(4 * theta));
 
-    // Deep Median Spinal Furrow (from lumbar t=0.10 up to upper thoracic t=0.80)
-    relief -= lobe(theta, t, 0.0, 0.09, 0.45, 0.32, 0.036 * muscleMul);
-    // C7 Vertebra prominens bump at base of neck
-    relief += lobe(theta, t, 0.0, 0.12, 0.86, 0.035, 0.014);
+    // 1. Deep Median Spinal Furrow (from lumbar t=0.08 up to thoracic t=0.78)
+    relief -= lobe(theta, t, 0.0, 0.068, 0.44, 0.32, 0.048 * muscleMul);
+    // C7 Vertebra prominens bone bump at base of neck (t=0.84)
+    relief += lobe(theta, t, 0.0, 0.10, 0.84, 0.028, 0.018);
 
-    // Left & Right Scapulae (Shoulder Blades)
-    relief += lobe(theta, t, 0.21 * Math.PI, 0.28, 0.65, 0.12, 0.044 * muscleMul);
-    relief += lobe(theta, t, -0.21 * Math.PI, 0.28, 0.65, 0.12, 0.044 * muscleMul);
-    // Spine of Scapula ridge
-    relief += lobe(theta, t, 0.24 * Math.PI, 0.26, 0.73, 0.032, 0.020 * muscleMul);
-    relief += lobe(theta, t, -0.24 * Math.PI, 0.26, 0.73, 0.032, 0.020 * muscleMul);
+    // 2. Erector Spinae (two thick vertical lumbar muscle columns flanking the lower spine)
+    relief += lobe(theta, t, 0.09 * Math.PI, 0.11, 0.24, 0.15, 0.038 * muscleMul);
+    relief += lobe(theta, t, -0.09 * Math.PI, 0.11, 0.24, 0.15, 0.038 * muscleMul);
 
-    // Trapezius diamond (upper-mid back up to neck)
-    relief += lobe(theta, t, 0.11 * Math.PI, 0.22, 0.76, 0.13, 0.028 * muscleMul);
-    relief += lobe(theta, t, -0.11 * Math.PI, 0.22, 0.76, 0.13, 0.028 * muscleMul);
+    // 3. Scapulae (Shoulder Blades: winged triangular plates + sharp diagonal Spine of Scapula + Infraspinatus/Teres major)
+    relief += tiltedLobe(theta, t, 0.21 * Math.PI, 0.24, 0.64, 0.11, 0.22, 0.052 * muscleMul);
+    relief += tiltedLobe(theta, t, -0.21 * Math.PI, 0.24, 0.64, 0.11, -0.22, 0.052 * muscleMul);
+    // Spine of Scapula ridge sweeping out toward acromion
+    relief += tiltedLobe(theta, t, 0.25 * Math.PI, 0.25, 0.73, 0.025, 0.18, 0.028 * muscleMul);
+    relief += tiltedLobe(theta, t, -0.25 * Math.PI, 0.25, 0.73, 0.025, -0.18, 0.028 * muscleMul);
+    // Medial border shadow of scapula
+    relief -= lobe(theta, t, 0.11 * Math.PI, 0.05, 0.62, 0.09, 0.015 * muscleMul);
+    relief -= lobe(theta, t, -0.11 * Math.PI, 0.05, 0.62, 0.09, 0.015 * muscleMul);
 
-    // Posterior Deltoid caps
-    relief += lobe(theta, t, 0.44 * Math.PI, 0.30, 0.74, 0.09, 0.046 * muscleMul);
-    relief += lobe(theta, t, -0.44 * Math.PI, 0.30, 0.74, 0.09, 0.046 * muscleMul);
+    // 4. Trapezius (Kite/diamond hood from occipital nape down between shoulder blades)
+    relief += tiltedLobe(theta, t, 0.10 * Math.PI, 0.20, 0.76, 0.13, -0.25, 0.036 * muscleMul);
+    relief += tiltedLobe(theta, t, -0.10 * Math.PI, 0.20, 0.76, 0.13, 0.25, 0.036 * muscleMul);
 
-    // Latissimus dorsi sweep & Erector spinae lumbar columns
-    relief += lobe(theta, t, 0.36 * Math.PI, 0.32, 0.48, 0.16, 0.034 * muscleMul);
-    relief += lobe(theta, t, -0.36 * Math.PI, 0.32, 0.48, 0.16, 0.034 * muscleMul);
-    relief += lobe(theta, t, 0.10 * Math.PI, 0.14, 0.24, 0.14, 0.026 * muscleMul);
-    relief += lobe(theta, t, -0.10 * Math.PI, 0.14, 0.24, 0.14, 0.026 * muscleMul);
+    // 5. Latissimus Dorsi & Teres Major ("wings" flaring out on sides)
+    relief += tiltedLobe(theta, t, 0.35 * Math.PI, 0.28, 0.50, 0.16, 0.28, 0.046 * muscleMul);
+    relief += tiltedLobe(theta, t, -0.35 * Math.PI, 0.28, 0.50, 0.16, -0.28, 0.046 * muscleMul);
+
+    // 6. Posterior Deltoid Shoulder Caps
+    relief += lobe(theta, t, 0.44 * Math.PI, 0.28, 0.72, 0.09, 0.056 * muscleMul);
+    relief += lobe(theta, t, -0.44 * Math.PI, 0.28, 0.72, 0.09, 0.056 * muscleMul);
   }
-  else if (partId === 'thigh') {
-    // Upper Leg / Thigh & Knee: 0.0 -> Upper Shin, 0.15 -> Knee Patella, 0.58 -> Mid Quadriceps, 0.95 -> Hip/Glute
-    y = (t - 0.5) * 1.48;
-    const thighConical = smoothstep(0.12, 0.92, t);
-    const kneeNarrow = Math.exp(-Math.pow((t - 0.16) / 0.08, 2));
+  else if (partId === 'calf' || partId === 'thigh') {
+    // Sculpted Athletic Leg (Knee, Shin, Gastrocnemius Calf Diamond, Achilles Tendon, Malleoli Ankles & Foot Arch):
+    // t=0.0 -> Foot arch & calcaneus heel base
+    // t=0.14 -> Narrow ankle with sharp Achilles tendon & inner/outer ankle bones (malleoli)
+    // t=0.60 -> High-contrast Gastrocnemius medial & lateral calf heads + Anterior Tibialis shin
+    // t=0.86 -> Knee joint (Patella, patellar ligament, tibial tuberosity, popliteal hollow)
+    // t=1.0 -> Distal Thigh (Vastus medialis teardrop & Vastus lateralis sweep)
+    y = (t - 0.5) * 1.54;
 
-    w = 0.21 + 0.16 * thighConical - 0.015 * kneeNarrow;
-    d = 0.21 + 0.17 * thighConical - 0.018 * kneeNarrow;
+    const calfBell = Math.exp(-Math.pow((t - 0.60) / 0.21, 2));
+    const anklePinch = Math.exp(-Math.pow((t - 0.17) / 0.085, 2));
+    const kneeAndThigh = smoothstep(0.75, 0.98, t);
+    const footFlare = smoothstep(0.14, 0.02, t) * (1 - smoothstep(0.02, 0.0, t) * 0.2);
 
-    // Slight anatomical femoral axis tilt
-    cx = 0.022 * (t - 0.5);
-    cz = 0.020 * Math.sin(t * Math.PI);
+    w = 0.128 + 0.112 * calfBell - 0.028 * anklePinch + 0.068 * kneeAndThigh + 0.022 * footFlare;
+    d = 0.138 + 0.125 * calfBell - 0.026 * anklePinch + 0.065 * kneeAndThigh + 0.075 * footFlare;
 
-    // Rectus femoris (anterior quadriceps sweep)
-    relief += lobe(theta, t, 0.0, 0.42, 0.58, 0.22, 0.048 * muscleMul);
-    // Vastus lateralis (sweeping outer thigh canvas)
-    relief += lobe(theta, t, 0.38 * Math.PI, 0.48, 0.58, 0.24, 0.054 * muscleMul);
-    // Iliotibial (IT) band subtle flat groove on outer thigh
-    relief -= lobe(theta, t, 0.52 * Math.PI, 0.18, 0.52, 0.22, 0.014 * muscleMul);
-    // Vastus medialis ("teardrop" muscle above inner knee)
-    relief += lobe(theta, t, -0.26 * Math.PI, 0.35, 0.31, 0.10, 0.044 * muscleMul);
+    // Natural leg axis: calf projects backward (-Z), shin curves slightly, foot dorsum projects forward (+Z)
+    cz = -0.028 * calfBell + 0.065 * footFlare + 0.015 * kneeAndThigh;
+    cx = -0.015 * Math.sin(t * Math.PI);
 
-    // Patella (kneecap) & popliteal hollow behind knee
-    relief += lobe(theta, t, 0.0, 0.28, 0.15, 0.045, 0.028);
-    relief -= lobe(theta, t, Math.PI, 0.38, 0.15, 0.055, 0.032);
+    // 1. Gastrocnemius Calf Diamond (Back of leg, theta near PI):
+    // Medial head (-0.84*PI) sits slightly lower and fuller; Lateral head (+0.84*PI) sits slightly higher
+    relief += lobe(theta, t, -0.83 * Math.PI, 0.34, 0.58, 0.13, 0.078 * muscleMul);
+    relief += lobe(theta, t, 0.83 * Math.PI, 0.32, 0.63, 0.12, 0.068 * muscleMul);
+    // Inter-gastrocnemius vertical cleft & sharp lower diamond V-step where gastroc meets soleus
+    relief -= lobe(theta, t, Math.PI, 0.10, 0.61, 0.11, 0.026 * muscleMul);
+    relief -= lobe(theta, t, -0.84 * Math.PI, 0.28, 0.42, 0.032, 0.018 * muscleMul);
+    relief -= lobe(theta, t, 0.84 * Math.PI, 0.28, 0.46, 0.032, 0.018 * muscleMul);
 
-    // Hamstrings & lower gluteal contour at upper back
-    relief += lobe(theta, t, Math.PI, 0.52, 0.56, 0.22, 0.042 * muscleMul);
-    relief += lobe(theta, t, Math.PI, 0.58, 0.88, 0.09, 0.048 * muscleMul);
-  }
-  else if (partId === 'calf') {
-    // Lower Leg (Calf, Shin, Ankle & Foot Instep Base):
-    // 0.0 -> Foot arch/heel base, 0.13 -> Ankle malleoli, 0.62 -> Gastrocnemius peak, 0.94 -> Knee
-    y = (t - 0.5) * 1.48;
-    const calfVolume = Math.exp(-Math.pow((t - 0.62) / 0.24, 2));
-    const ankleNarrow = Math.exp(-Math.pow((t - 0.16) / 0.09, 2));
-    const kneeTop = smoothstep(0.78, 0.96, t);
-    const footBase = smoothstep(0.14, 0.02, t);
+    // 2. Soleus muscle (flanking the lower calf below the gastrocnemius heads)
+    relief += lobe(theta, t, -0.74 * Math.PI, 0.30, 0.38, 0.11, 0.032 * muscleMul);
+    relief += lobe(theta, t, 0.72 * Math.PI, 0.30, 0.40, 0.11, 0.032 * muscleMul);
 
-    w = 0.145 + 0.105 * calfVolume + 0.045 * kneeTop - 0.022 * ankleNarrow + 0.025 * footBase;
-    d = 0.150 + 0.115 * calfVolume + 0.045 * kneeTop - 0.020 * ankleNarrow + 0.065 * footBase;
+    // 3. Sharp Achilles Tendon cord at back of ankle + deep retro-malleolar hollows on both sides
+    relief += lobe(theta, t, Math.PI, 0.13, 0.20, 0.11, 0.036);
+    relief -= lobe(theta, t, 0.78 * Math.PI, 0.18, 0.18, 0.085, 0.032);
+    relief -= lobe(theta, t, -0.78 * Math.PI, 0.18, 0.18, 0.085, 0.032);
+    // Calcaneus heel bone at bottom back
+    relief += lobe(theta, t, Math.PI, 0.26, 0.05, 0.045, 0.038);
 
-    // Foot instep projects forward (+Z) and heel projects slightly backward (-Z) at bottom
-    cz = -0.022 * calfVolume + 0.055 * footBase;
+    // 4. Medial Malleolus (inner ankle bone — higher & more anterior) & Lateral Malleolus (outer ankle bone — lower & more posterior)
+    relief += lobe(theta, t, -0.46 * Math.PI, 0.18, 0.15, 0.026, 0.032);
+    relief += lobe(theta, t, 0.54 * Math.PI, 0.18, 0.12, 0.026, 0.030);
 
-    // Gastrocnemius medial head (inner back calf — slightly lower and fuller)
-    relief += lobe(theta, t, -0.84 * Math.PI, 0.36, 0.60, 0.14, 0.064 * muscleMul);
-    // Gastrocnemius lateral head (outer back calf — slightly higher)
-    relief += lobe(theta, t, 0.84 * Math.PI, 0.36, 0.64, 0.13, 0.056 * muscleMul);
-    // Subtle vertical cleft between the two calf heads
-    relief -= lobe(theta, t, Math.PI, 0.12, 0.62, 0.12, 0.016 * muscleMul);
+    // 5. Anterior Shin: Sharp Tibial Crest bone edge + Tibialis Anterior & Peroneus Longus outer sweep
+    relief += lobe(theta, t, -0.03 * Math.PI, 0.11, 0.50, 0.26, 0.024);
+    relief += lobe(theta, t, 0.20 * Math.PI, 0.26, 0.58, 0.18, 0.038 * muscleMul);
+    relief += lobe(theta, t, 0.48 * Math.PI, 0.24, 0.56, 0.19, 0.032 * muscleMul);
 
-    // Soleus lower calf taper
-    relief += lobe(theta, t, Math.PI, 0.55, 0.40, 0.12, 0.028 * muscleMul);
-
-    // Sharp Achilles tendon ridge at back of ankle + hollows on both sides
-    relief += lobe(theta, t, Math.PI, 0.18, 0.20, 0.10, 0.024);
-    relief -= lobe(theta, t, 0.76 * Math.PI, 0.20, 0.18, 0.08, 0.020);
-    relief -= lobe(theta, t, -0.76 * Math.PI, 0.20, 0.18, 0.08, 0.020);
-
-    // Medial & Lateral Malleolus (ankle bones)
-    relief += lobe(theta, t, -0.50 * Math.PI, 0.22, 0.14, 0.032, 0.022);
-    relief += lobe(theta, t, 0.50 * Math.PI, 0.22, 0.12, 0.032, 0.020);
-
-    // Anterior tibial crest (shin bone ridge) & tibialis anterior muscle
-    relief += lobe(theta, t, -0.04 * Math.PI, 0.18, 0.52, 0.26, 0.018);
-    relief += lobe(theta, t, 0.20 * Math.PI, 0.30, 0.60, 0.18, 0.026 * muscleMul);
-
-    // Patella at top front
-    relief += lobe(theta, t, 0.0, 0.28, 0.90, 0.05, 0.024);
+    // 6. Knee Joint & Distal Thigh (t = 0.80..0.98): Patella, Tibial Tuberosity, Vastus Medialis ("Teardrop"), Popliteal Fossa
+    relief += lobe(theta, t, 0.0, 0.22, 0.86, 0.038, 0.034); // Kneecap (Patella)
+    relief += lobe(theta, t, 0.0, 0.14, 0.76, 0.028, 0.018); // Tibial tuberosity
+    relief -= lobe(theta, t, Math.PI, 0.34, 0.85, 0.048, 0.038); // Back of knee hollow
+    relief += lobe(theta, t, -0.26 * Math.PI, 0.28, 0.94, 0.06, 0.045 * muscleMul); // Vastus medialis teardrop
+    relief += lobe(theta, t, 0.34 * Math.PI, 0.32, 0.95, 0.07, 0.042 * muscleMul); // Vastus lateralis
   }
   else if (partId === 'neck') {
-    // Neck, Throat, Nape, Collarbone & Jawline Bust:
-    // 0.0 -> Upper Chest & Clavicles, 0.25–0.68 -> Neck Column, 0.72–1.0 -> Jawline, Chin & Occiput
-    y = (t - 0.5) * 1.36;
-    const chestBase = smoothstep(0.36, 0.04, t);
-    const headBase = smoothstep(0.66, 0.90, t);
+    // Classical Sculpted Neck, Throat, Jawline, Chin, Nape & Collarbone Bust:
+    // t=0.0 -> Upper Chest & Deltoid Shoulders
+    // t=0.20 -> Clavicles & Suprasternal Jugular Notch
+    // t=0.30..0.72 -> Cylindrical/Slender Neck Column with SCM V-muscles & Trapezius slope
+    // t=0.76..1.0 -> Sculpted Mandible Jawline, Chin, Submental under-chin shadow & Occiput
+    y = (t - 0.5) * 1.40;
+    const shoulderBase = Math.pow(smoothstep(0.42, 0.02, t), 1.35);
+    const neckPinch = Math.exp(-Math.pow((t - 0.52) / 0.20, 2));
+    const headBase = smoothstep(0.68, 0.92, t);
 
-    w = 0.215 + 0.28 * chestBase + 0.055 * headBase;
-    d = 0.210 + 0.09 * chestBase + 0.095 * headBase;
+    w = 0.185 - 0.018 * neckPinch + 0.31 * shoulderBase + 0.045 * headBase;
+    d = 0.185 - 0.012 * neckPinch + 0.095 * shoulderBase + 0.105 * headBase;
 
-    // Natural forward inclination of the neck + chin projection at top front
-    cz = 0.03 * (t - 0.3) + 0.055 * headBase;
+    // Natural forward inclination of the human neck + strong anterior chin/jaw projection
+    cz = 0.038 * (t - 0.32) + 0.075 * headBase * smoothstep(0.3, 1.0, cosT);
 
-    // Sculpted Mandible / Chin jutting forward at top front (theta = 0, t > 0.72)
-    relief += lobe(theta, t, 0.0, 0.42, 0.82, 0.09, 0.075);
-    // Submental hollow (under-chin shadow between throat and chin)
-    relief -= lobe(theta, t, 0.0, 0.45, 0.68, 0.045, 0.032);
+    // Flatten the upper chest/shoulder base front & back
+    relief -= shoulderBase * 0.028 * Math.cos(2 * theta);
+    // Natural downward slope of the shoulders at the sides
+    dy -= 0.065 * shoulderBase * Math.pow(Math.sin(theta), 2);
 
-    // Sternocleidomastoid (SCM) diagonal V-muscles from behind ears to pit of neck
-    const scmAngle = 0.08 * Math.PI + 0.38 * Math.PI * smoothstep(0.16, 0.72, t);
-    relief += lobe(theta, t, scmAngle, 0.22, 0.45, 0.22, 0.024 * muscleMul);
-    relief += lobe(theta, t, -scmAngle, 0.22, 0.45, 0.22, 0.024 * muscleMul);
+    // 1. Sculpted Mandible / Jawline & Chin (theta near 0, t = 0.76..0.95)
+    relief += lobe(theta, t, 0.0, 0.28, 0.85, 0.075, 0.082); // Chin point (mentum)
+    relief += tiltedLobe(theta, t, 0.26 * Math.PI, 0.28, 0.84, 0.055, 0.20, 0.048); // Right mandibular angle (gonion)
+    relief += tiltedLobe(theta, t, -0.26 * Math.PI, 0.28, 0.84, 0.055, -0.20, 0.048); // Left mandibular angle
+    // Deep Submental Hollow (realistic shadow under the chin and jawline)
+    relief -= lobe(theta, t, 0.0, 0.42, 0.70, 0.042, 0.048);
 
-    // Suprasternal notch (pit of the neck at t = 0.18, theta = 0)
-    relief -= lobe(theta, t, 0.0, 0.18, 0.18, 0.045, 0.028);
+    // 2. Thyroid Cartilage (subtle Adam's apple / laryngeal prominence on anterior throat)
+    relief += lobe(theta, t, 0.0, 0.12, 0.56, 0.045, 0.016 * muscleMul);
 
-    // Clavicles sweeping out at bottom front
-    relief += lobe(theta, t, 0.22 * Math.PI, 0.32, 0.15, 0.035, 0.024);
-    relief += lobe(theta, t, -0.22 * Math.PI, 0.32, 0.15, 0.035, 0.024);
+    // 3. Sternocleidomastoid (SCM) diagonal V-muscles sweeping from mastoid behind ear to pit of throat
+    const scmAngle = 0.06 * Math.PI + 0.40 * Math.PI * smoothstep(0.18, 0.76, t);
+    relief += lobe(theta, t, scmAngle, 0.18, 0.48, 0.22, 0.034 * muscleMul);
+    relief += lobe(theta, t, -scmAngle, 0.18, 0.48, 0.22, 0.034 * muscleMul);
+    // Lesser supraclavicular fossa (hollow behind SCM above collarbone)
+    relief -= lobe(theta, t, 0.34 * Math.PI, 0.16, 0.26, 0.06, 0.020);
+    relief -= lobe(theta, t, -0.34 * Math.PI, 0.16, 0.26, 0.06, 0.020);
 
-    // Trapezius slope on back-sides of neck (nape to shoulders)
-    relief += lobe(theta, t, 0.68 * Math.PI, 0.36, 0.30, 0.16, 0.036 * muscleMul);
-    relief += lobe(theta, t, -0.68 * Math.PI, 0.36, 0.30, 0.16, 0.036 * muscleMul);
+    // 4. Suprasternal Jugular Notch (deep pit at base of throat, t=0.19, theta=0)
+    relief -= lobe(theta, t, 0.0, 0.13, 0.19, 0.038, 0.042);
 
-    // Nuchal furrow subtle depression along center of nape
-    relief -= lobe(theta, t, Math.PI, 0.14, 0.54, 0.18, 0.012);
+    // 5. Prominent Clavicles (collarbone ridges sweeping left & right at t=0.17)
+    relief += tiltedLobe(theta, t, 0.22 * Math.PI, 0.30, 0.17, 0.026, 0.12, 0.034);
+    relief += tiltedLobe(theta, t, -0.22 * Math.PI, 0.30, 0.17, 0.026, -0.12, 0.034);
+
+    // 6. Trapezius & Nape of Neck (back of neck): Nuchal furrow & C7 vertebra bump
+    relief += lobe(theta, t, 0.68 * Math.PI, 0.34, 0.32, 0.16, 0.044 * muscleMul);
+    relief += lobe(theta, t, -0.68 * Math.PI, 0.34, 0.32, 0.16, 0.044 * muscleMul);
+    relief -= lobe(theta, t, Math.PI, 0.11, 0.56, 0.18, 0.018); // Nuchal groove
+    relief += lobe(theta, t, Math.PI, 0.12, 0.20, 0.035, 0.018); // C7 vertebra prominens
   }
 
-  // Apply physique girth multiplier & subtle bevel at top/bottom section cuts
-  const cutBevel = smoothstep(0.0, 0.018, t) * smoothstep(1.0, 0.982, t);
-  const scaleFactor = girthMul * (0.94 + 0.06 * cutBevel);
+  // Apply physique girth multiplier & smooth studio sculpture bevel at top/bottom section cuts
+  const cutBevel = smoothstep(0.0, 0.024, t) * smoothstep(1.0, 0.976, t);
+  const scaleFactor = girthMul * (0.92 + 0.08 * cutBevel);
 
-  const rx = (w + relief) * scaleFactor;
-  const rz = (d + relief) * scaleFactor;
+  const rx = (w + rxAdd + relief) * scaleFactor;
+  const rz = (d + rzAdd + relief) * scaleFactor;
 
   const x = cx + rx * sinT;
   const z = cz + rz * cosT;
 
-  return new THREE.Vector3(x, y, z);
+  return new THREE.Vector3(x, y + dy, z);
 }
 
 /**
@@ -769,16 +852,20 @@ function evaluateAnatomySurface(partId, theta, t, buildType = 'standard') {
  */
 function buildAnatomicalBodyPart(partId, buildType, skinMat, showGuides = true) {
   const group = new THREE.Group();
-  const radialSegs = 128;
-  const heightSegs = 160;
+  const radialSegs = 160;
+  const heightSegs = 192;
 
   const numCols = radialSegs + 1;
   const numRows = heightSegs + 1;
   const positions = new Float32Array(numCols * numRows * 3);
+  const colors = new Float32Array(numCols * numRows * 3);
   const uvs = new Float32Array(numCols * numRows * 2);
 
   for (let j = 0; j <= heightSegs; j++) {
     const t = j / heightSegs;
+    const rowIndices = [];
+    let sumR = 0;
+
     for (let i = 0; i <= radialSegs; i++) {
       // Ensure exact closure at seam i === radialSegs
       const theta = (i === radialSegs ? 0 : i / radialSegs) * Math.PI * 2;
@@ -789,9 +876,30 @@ function buildAnatomicalBodyPart(partId, buildType, skinMat, showGuides = true) 
       positions[idx + 1] = pt.y;
       positions[idx + 2] = pt.z;
 
+      const r = Math.hypot(pt.x, pt.z);
+      sumR += r;
+      rowIndices.push({ idx, r, y: pt.y });
+
       const uvIdx = (j * numCols + i) * 2;
       uvs[uvIdx] = i / radialSegs;
       uvs[uvIdx + 1] = t;
+    }
+
+    // Compute subtle anatomical crease ambient occlusion & warm vascular undertones per vertex
+    const avgR = sumR / (radialSegs + 1) || 0.25;
+    for (let i = 0; i <= radialSegs; i++) {
+      const { idx, r } = rowIndices[i];
+      // Negative delta = anatomical sulcus/hollow (darker warm shadow), Positive = muscle/bone ridge (brighter)
+      const delta = (r - avgR) / avgR;
+      const ao = Math.max(0.82, Math.min(1.05, 1.0 + delta * 0.42));
+      // Subtle warm subcutaneous scatter in hollows (slightly richer red/warmth in creases)
+      const rWarm = Math.min(1.06, ao * 1.01 + (delta < 0 ? -delta * 0.06 : 0));
+      const gWarm = ao * 0.99;
+      const bWarm = ao * 0.975;
+
+      colors[idx] = rWarm;
+      colors[idx + 1] = gWarm;
+      colors[idx + 2] = bWarm;
     }
   }
 
@@ -810,6 +918,7 @@ function buildAnatomicalBodyPart(partId, buildType, skinMat, showGuides = true) 
 
   const skinGeo = new THREE.BufferGeometry();
   skinGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  skinGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
   skinGeo.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
   skinGeo.setIndex(indices);
   skinGeo.computeVertexNormals();
@@ -1061,15 +1170,16 @@ function initThree() {
   skinBumpTexture = createSkinMicroTexture();
   skinMaterial = new THREE.MeshPhysicalMaterial({
     color: new THREE.Color(currentSkinColorHex),
-    roughness: 0.64,
-    metalness: 0.02,
-    clearcoat: 0.05,
-    clearcoatRoughness: 0.65,
-    sheen: 0.28,
-    sheenRoughness: 0.65,
+    vertexColors: true,
+    roughness: 0.56,
+    metalness: 0.01,
+    clearcoat: 0.08,
+    clearcoatRoughness: 0.52,
+    sheen: 0.35,
+    sheenRoughness: 0.58,
     sheenColor: new THREE.Color(0xffbfa3),
     bumpMap: skinBumpTexture,
-    bumpScale: 0.0016
+    bumpScale: 0.0022
   });
 
   // Build initial body part (Forearm)
@@ -1085,20 +1195,20 @@ function initThree() {
 }
 
 function setupStudioLighting() {
-  ambientLight = new THREE.AmbientLight(0xffffff, 0.62);
+  ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
   scene.add(ambientLight);
 
-  keyLight = new THREE.DirectionalLight(0xfff4ea, 1.55);
+  keyLight = new THREE.DirectionalLight(0xfff4ea, 1.85);
   keyLight.castShadow = true;
   keyLight.shadow.mapSize.width = 1024;
   keyLight.shadow.mapSize.height = 1024;
   keyLight.shadow.bias = -0.0005;
   scene.add(keyLight);
 
-  fillLight = new THREE.DirectionalLight(0xdbe8ff, 0.72);
+  fillLight = new THREE.DirectionalLight(0xdbe8ff, 0.55);
   scene.add(fillLight);
 
-  rimLight = new THREE.DirectionalLight(0xffffff, 1.35);
+  rimLight = new THREE.DirectionalLight(0xffffff, 1.55);
   scene.add(rimLight);
 
   updateStudioLighting();
@@ -1108,28 +1218,28 @@ function updateStudioLighting() {
   const rad = THREE.MathUtils.degToRad(currentLightAngleDeg);
   const r = 3.6;
 
-  keyLight.position.set(Math.sin(rad) * r, 2.4, Math.cos(rad) * r);
-  fillLight.position.set(-Math.sin(rad + 0.8) * r, 1.2, Math.cos(rad + 0.8) * r);
-  rimLight.position.set(-Math.sin(rad) * r, 2.6, -Math.cos(rad) * r);
+  keyLight.position.set(Math.sin(rad) * r, 2.2, Math.cos(rad) * r);
+  fillLight.position.set(-Math.sin(rad + 0.85) * r, 1.0, Math.cos(rad + 0.85) * r);
+  rimLight.position.set(-Math.sin(rad) * r, 2.5, -Math.cos(rad) * r);
 
   if (currentLightPreset === 'studio') {
-    ambientLight.intensity = 0.62;
+    ambientLight.intensity = 0.45;
     keyLight.color.setHex(0xfff4ea);
-    keyLight.intensity = 1.55;
-    fillLight.intensity = 0.72;
-    rimLight.intensity = 1.35;
+    keyLight.intensity = 1.85;
+    fillLight.intensity = 0.55;
+    rimLight.intensity = 1.55;
   } else if (currentLightPreset === 'dramatic') {
-    ambientLight.intensity = 0.30;
+    ambientLight.intensity = 0.26;
     keyLight.color.setHex(0xffeedd);
-    keyLight.intensity = 2.15;
-    fillLight.intensity = 0.28;
-    rimLight.intensity = 2.10;
+    keyLight.intensity = 2.25;
+    fillLight.intensity = 0.25;
+    rimLight.intensity = 2.15;
   } else if (currentLightPreset === 'daylight') {
-    ambientLight.intensity = 0.88;
+    ambientLight.intensity = 0.78;
     keyLight.color.setHex(0xffffff);
-    keyLight.intensity = 1.35;
-    fillLight.intensity = 0.95;
-    rimLight.intensity = 0.85;
+    keyLight.intensity = 1.45;
+    fillLight.intensity = 0.85;
+    rimLight.intensity = 0.95;
   }
 }
 
@@ -1251,13 +1361,21 @@ function getSurfaceHitFromCoords(theta, tRatio) {
   return null;
 }
 
+function getPartSpan3D(partId) {
+  if (partId === 'arm') return 1.58;
+  if (partId === 'back' || partId === 'calf' || partId === 'thigh') return 1.54;
+  if (partId === 'forearm') return 1.52;
+  if (partId === 'neck') return 1.40;
+  return 1.50;
+}
+
 /**
  * Converts a 3D intersection on the body mesh into cylindrical (theta, tRatio) coordinates
  */
 function intersectionToCoords(intersection) {
   const pt = intersection.point;
   let theta = Math.atan2(pt.x, pt.z);
-  const span = currentPartId === 'arm' ? 1.56 : (currentPartId === 'back' ? 1.52 : (currentPartId === 'neck' ? 1.36 : 1.48));
+  const span = getPartSpan3D(currentPartId);
   let tRatio = (pt.y / span) + 0.5;
   tRatio = Math.max(0.05, Math.min(0.95, tRatio));
   return { theta, tRatio };
@@ -1818,7 +1936,7 @@ function focusCameraOnActiveTattoo() {
 // ============================================================================
 function computeCurrentTattooCm() {
   const meta = BODY_PARTS_META[currentPartId] || BODY_PARTS_META.forearm;
-  const span3D = currentPartId === 'arm' ? 1.56 : (currentPartId === 'back' ? 1.52 : (currentPartId === 'neck' ? 1.36 : 1.48));
+  const span3D = getPartSpan3D(currentPartId);
   const cmPerUnit = meta.realHeightCm / span3D;
   const boxCm = meta.baseDecalSize * tattooScale * cmPerUnit * 0.84;
 
@@ -1856,11 +1974,14 @@ function estimatePriceString(maxCm) {
 function updateHudAndDimensions() {
   const dict = fitterTranslations[currentLang] || fitterTranslations.pl;
   const meta = BODY_PARTS_META[currentPartId] || BODY_PARTS_META.forearm;
+  const partLabel = dict[meta.i18nKey] || 'Przedramię';
 
   const hudName = document.getElementById('hudPartName');
   const hudDims = document.getElementById('hudPartDims');
-  if (hudName) hudName.textContent = dict[meta.i18nKey] || 'Przedramię';
+  const activeZoneBadge = document.getElementById('activeZoneNameBadge');
+  if (hudName) hudName.textContent = partLabel;
   if (hudDims) hudDims.textContent = meta.dimsText[currentLang] || meta.dimsText.pl;
+  if (activeZoneBadge) activeZoneBadge.textContent = partLabel;
 
   const cm = computeCurrentTattooCm();
   const realCmEl = document.getElementById('realCmDisplay');
@@ -1915,6 +2036,14 @@ function applyFitterLanguage(lang) {
     const key = el.getAttribute('data-i18n');
     if (dict[key]) {
       el.textContent = dict[key];
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+    const key = el.getAttribute('data-i18n-title');
+    if (dict[key]) {
+      el.setAttribute('title', dict[key]);
+      el.setAttribute('aria-label', dict[key]);
     }
   });
 
