@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" fill="none">
+  <!-- Stem & Thorns -->
+  <path d="M200 240 Q190 330 210 420 Q220 460 210 490" stroke="#1a1a1a" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M195 320 L170 310 L193 335 Z" fill="#1a1a1a"/>
+  <path d="M205 380 L230 370 L207 395 Z" fill="#1a1a1a"/>
+  <!-- Leaves -->
+  <path d="M190 340 Q130 330 110 300 Q150 290 190 320 Z" fill="#111111" stroke="#222222" stroke-width="3"/>
+  <path d="M205 400 Q260 390 280 360 Q245 350 205 380 Z" fill="#111111" stroke="#222222" stroke-width="3"/>
+  <!-- Rose Blossom Petals -->
+  <path d="M200 80 Q240 60 270 100 Q290 140 260 180 Q230 220 200 240 Q170 220 140 180 Q110 140 130 100 Q160 60 200 80 Z" fill="#151515" stroke="#252525" stroke-width="4"/>
+  <path d="M200 100 Q230 90 250 120 Q260 160 230 190 Q200 210 170 190 Q140 160 150 120 Q170 90 200 100 Z" fill="#0d0d0d" stroke="#333333" stroke-width="3"/>
+  <path d="M200 120 Q220 110 235 135 Q240 160 220 175 Q200 185 180 175 Q160 160 165 135 Q180 110 200 120 Z" fill="#1f1f1f" stroke="#3a3a3a" stroke-width="3"/>
+  <!-- Rose Center Swirl -->
+  <path d="M195 140 C190 130 210 130 210 140 C210 150 190 155 190 145" stroke="#ffffff" stroke-width="3" fill="none"/>
+</svg>

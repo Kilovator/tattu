@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" fill="none">
+  <path d="M250 40 Q220 80 200 130 Q170 180 190 220 Q210 260 250 280 Q300 300 320 350 Q340 400 300 450 Q260 480 220 450 Q200 420 230 390 Q260 370 240 330 Q210 300 170 270 Q130 230 140 170 Q150 110 200 70 Z" fill="#111111" stroke="#222222" stroke-width="4"/>
+  <!-- Dragon head -->
+  <path d="M250 40 Q280 20 310 30 Q330 45 320 70 Q300 85 280 75 Q260 90 240 80 Z" fill="#1a1a1a" stroke="#333333" stroke-width="3"/>
+  <!-- Horns -->
+  <path d="M290 30 Q340 10 380 25 Q350 40 320 45" fill="#0d0d0d" stroke="#333333" stroke-width="2"/>
+  <path d="M270 25 Q300 5 330 10" stroke="#333333" stroke-width="3"/>
+  <!-- Whiskers & Claws -->
+  <path d="M310 65 Q360 80 390 120" stroke="#222222" stroke-width="3" fill="none"/>
+  <path d="M300 75 Q340 100 370 140" stroke="#222222" stroke-width="3" fill="none"/>
+  <!-- Front Claw -->
+  <path d="M170 190 L120 180 L130 160 M120 180 L115 195 M120 180 L135 200" stroke="#222222" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <!-- Back Claw -->
+  <path d="M300 340 L350 350 L340 370 M350 350 L360 335 M350 350 L345 330" stroke="#222222" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <!-- Scales / Spines -->
+  <path d="M200 120 L180 115 L195 135 L175 135 L190 155 L170 160 L188 180" stroke="#333333" stroke-width="3" fill="#111"/>
+  <path d="M260 280 L280 270 L265 295 L285 290 L275 315 L295 315 L285 340" stroke="#333333" stroke-width="3" fill="#111"/>
+  <!-- Shading patterns -->
+  <circle cx="305" cy="48" r="4" fill="#ffffff"/>
+</svg>

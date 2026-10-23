@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="page_title">Forever — Studio Tatuażu Artystycznego | Warszawa</title>
+  <meta name="description" content="Ekskluzywne studio tatuażu Forever w Polsce. Autorskie tatuaże, cover-up, sterylny sprzęt najwyższej klasy, doświadczeni artyści. Zapisz się na sesję.">
+  <meta name="keywords" content="studio tatuażu, salon tatuażu, tatuaż warszawa, tatuażysta, tatuaże polska, cover up, cennik tatuażu">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Forever — Studio Tatuażu">
+  <meta property="og:description" content="Kreatywna przestrzeń, w której rodzi się sztuka pozostająca z Tobą na zawsze.">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/illustrations/logo.svg">
+
+  <!-- Google Fonts: Gothic + Russo One + Montserrat with Latin-Ext support for Polish -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@600;700;800;900&family=Montserrat:wght@300;400;500;600;700&family=Pirata+One&family=Russo+One&family=UnifrakturMaguntia&display=swap&subset=latin-ext" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Watermark Illustrations in Background -->
+  <div class="watermarks-container" aria-hidden="true">
+    <img src="assets/illustrations/girl-tattoo.svg" alt="" class="watermark watermark-girl">
+    <img src="assets/illustrations/tattoo-machine.svg" alt="" class="watermark watermark-machine">
+    <img src="assets/illustrations/spider.svg" alt="" class="watermark watermark-spider">
+    <img src="assets/illustrations/skull-demon.svg" alt="" class="watermark watermark-skull">
+    <img src="assets/illustrations/angel.svg" alt="" class="watermark watermark-angel">
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="site-header" id="header">
+    <div class="container header-container">
+      <nav class="nav-menu" id="navMenu">
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#about" class="nav-link" data-i18n="nav_about">O NAS</a></li>
+          <li class="nav-item"><a href="#price" class="nav-link" data-i18n="nav_price">CENNIK</a></li>
+          <li class="nav-logo-item">
+            <a href="#" class="nav-logo-link" aria-label="Forever Strona Główna">
+              <img src="assets/illustrations/logo.svg" alt="Forever Logo" class="nav-logo-icon">
+            </a>
+          </li>
+          <li class="nav-item"><a href="#team" class="nav-link" data-i18n="nav_team">ARTYŚCI</a></li>
+          <li class="nav-item"><a href="#works" class="nav-link" data-i18n="nav_works">PORTFOLIO</a></li>
+        </ul>
+      </nav>
+
+      <!-- Desktop Header Actions (Fitter button + Language Switcher) -->
+      <div class="header-actions">
+        <a href="fitter.html" target="_blank" rel="noopener noreferrer" class="nav-fitter-link" data-i18n="nav_fitter">PRZYMIERZALNIA</a>
+        <div class="lang-switcher header-lang-switcher" aria-label="Wybór języka / Language selection">
+          <button class="lang-btn active" data-lang="pl">PL</button>
+          <span class="lang-divider">/</span>
+          <button class="lang-btn" data-lang="en">EN</button>
+          <span class="lang-divider">/</span>
+          <button class="lang-btn" data-lang="ru">RU</button>
+        </div>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="mobile-menu-toggle" id="menuToggle" aria-label="Otwórz menu" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div class="mobile-drawer-content">
+      <!-- Mobile Language Switcher -->
+      <div class="lang-switcher mobile-lang-switcher" aria-label="Wybór języka / Language selection">
+        <button class="lang-btn active" data-lang="pl">PL</button>
+        <span class="lang-divider">/</span>
+        <button class="lang-btn" data-lang="en">EN</button>
+        <span class="lang-divider">/</span>
+        <button class="lang-btn" data-lang="ru">RU</button>
+      </div>
+
+      <a href="#about" class="mobile-link" data-i18n="nav_about">O NAS</a>
+      <a href="#price" class="mobile-link" data-i18n="nav_price">CENNIK</a>
+      <a href="#team" class="mobile-link" data-i18n="nav_team">ARTYŚCI</a>
+      <a href="#works" class="mobile-link" data-i18n="nav_works">PORTFOLIO</a>
+      <a href="fitter.html" target="_blank" rel="noopener noreferrer" class="mobile-link mobile-fitter-link" data-i18n="nav_fitter">PRZYMIERZALNIA</a>
+      <a href="#contacts" class="mobile-link" data-i18n="nav_contacts">KONTAKT</a>
+      <button class="btn btn-primary open-booking-btn" data-i18n="hero_btn" style="margin-top: 1.5rem;">ZAPISZ SIĘ</button>
+    </div>
+  </div>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="hero">
+      <div class="container hero-container">
+        <h1 class="hero-title">Forever</h1>
+        <p class="hero-subtitle" data-i18n="hero_subtitle">STUDIO TATUAŻU</p>
+        <div class="hero-buttons-row">
+          <button class="btn btn-primary hero-btn open-booking-btn" id="heroBookBtn" data-i18n="hero_btn">ZAPISZ SIĘ</button>
+          <a href="fitter.html" target="_blank" rel="noopener noreferrer" class="btn btn-outline-glow hero-fitter-btn" id="heroFitterBtn" data-i18n="hero_fitter_btn">PRZYMIERZ TATUAŻ</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: O NAS -->
+    <section class="section section-about" id="about">
+      <div class="container">
+        <h2 class="section-badge" data-i18n="about_badge">1/ O NAS</h2>
+        
+        <div class="about-grid">
+          <div class="about-text">
+            <p data-i18n="about_p1">
+              Forever to przestrzeń twórcza, w której rodzi się sztuka pozostająca z Tobą na zawsze. Nasz zespół profesjonalnych artystów i mistrzów tatuażu stawia sobie za misję pomóc Ci zyskać wyjątkową ozdobę, wyrazić Twoją indywidualność i urzeczywistnić najśmielsze pomysły.
+            </p>
+            <p data-i18n="about_p2">
+              Pracujemy wyłącznie na nowoczesnym, certyfikowanym sprzęcie, używając w 100% sterylnych materiałów jednorazowych oraz pigmentów klasy premium. Twoje bezpieczeństwo, zdrowie i komfort są dla nas absolutnym priorytetem.
+            </p>
+          </div>
+
+          <div class="about-visual">
+            <div class="studio-image-frame">
+              <img src="assets/images/studio.jpg" alt="Wnętrze studia tatuażu Forever" class="studio-img" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: NASZ ZESPÓŁ -->
+    <section class="section section-team" id="team">
+      <div class="container">
+        <h2 class="section-badge" data-i18n="team_badge">2/ NASZ ZESPÓŁ</h2>
+
+        <div class="team-grid">
+          <!-- Master 1 -->
+          <article class="master-card" data-master="Andriej Wołkow">
+            <div class="master-photo-box">
+              <img src="assets/images/master1.jpg" alt="Andriej Wołkow" class="master-photo" loading="lazy">
+            </div>
+            <div class="master-info">
+              <span class="master-rank" data-i18n="master1_rank">PRO - TATUAŻYSTA</span>
+              <h3 class="master-name" data-i18n="master1_name">Andriej Wołkow</h3>
+              <p class="master-exp" data-i18n="master1_exp">5 lat doświadczenia</p>
+            </div>
+            <button class="master-book-btn open-booking-btn" data-preset-master="Andriej Wołkow" data-i18n="choose_master">Wybierz artystę</button>
+          </article>
+
+          <!-- Master 2 -->
+          <article class="master-card" data-master="Sergiusz Tajlin">
+            <div class="master-photo-box">
+              <img src="assets/images/master2.jpg" alt="Sergiusz Tajlin" class="master-photo" loading="lazy">
+            </div>
+            <div class="master-info">
+              <span class="master-rank" data-i18n="master2_rank">GOLD - TATUAŻYSTA</span>
+              <h3 class="master-name" data-i18n="master2_name">Sergiusz Tajlin</h3>
+              <p class="master-exp" data-i18n="master2_exp">9 lat doświadczenia</p>
+            </div>
+            <button class="master-book-btn open-booking-btn" data-preset-master="Sergiusz Tajlin" data-i18n="choose_master">Wybierz artystę</button>
+          </article>
+
+          <!-- Master 3 -->
+          <article class="master-card" data-master="Ilia Szelkow">
+            <div class="master-photo-box">
+              <img src="assets/images/master3.jpg" alt="Ilia Szelkow" class="master-photo" loading="lazy">
+            </div>
+            <div class="master-info">
+              <span class="master-rank" data-i18n="master3_rank">TOP - TATUAŻYSTA</span>
+              <h3 class="master-name" data-i18n="master3_name">Ilia Szelkow</h3>
+              <p class="master-exp" data-i18n="master3_exp">3 lata doświadczenia</p>
+            </div>
+            <button class="master-book-btn open-booking-btn" data-preset-master="Ilia Szelkow" data-i18n="choose_master">Wybierz artystę</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: CENNIK -->
+    <section class="section section-price" id="price">
+      <div class="container">
+        <h2 class="section-badge" data-i18n="price_badge">3/ CENNIK</h2>
+
+        <div class="price-table-wrapper">
+          <div class="price-header-row">
+            <span class="price-header-title" data-i18n="price_header_service">Usługi tatuażu</span>
+            <span class="price-header-cost" data-i18n="price_header_cost">Cena w zł</span>
+          </div>
+
+          <div class="price-rows-list">
+            <div class="price-item">
+              <span class="price-service-name" data-i18n="price_item_1_name">Tatuaż artystyczny / autorski</span>
+              <span class="price-service-val" data-i18n="price_item_1_val">od 350 zł</span>
+            </div>
+
+            <div class="price-item">
+              <span class="price-service-name" data-i18n="price_item_2_name">Tatuaż-napis / minimalistyczny</span>
+              <span class="price-service-val" data-i18n="price_item_2_val">od 150 zł</span>
+            </div>
+
+            <div class="price-item">
+              <span class="price-service-name" data-i18n="price_item_3_name">Tatuaż na bliznach / maskowanie</span>
+              <span class="price-service-val" data-i18n="price_item_3_val">od 250 zł</span>
+            </div>
+
+            <div class="price-item">
+              <span class="price-service-name" data-i18n="price_item_4_name">Korekta i odświeżenie tatuażu</span>
+              <span class="price-service-val" data-i18n="price_item_4_val">od 200 zł</span>
+            </div>
+
+            <div class="price-item">
+              <span class="price-service-name" data-i18n="price_item_5_name">Cover-up (przykrycie starego tatuażu)</span>
+              <span class="price-service-val" data-i18n="price_item_5_val">od 250 zł</span>
+            </div>
+
+            <div class="price-item">
+              <span class="price-service-name" data-i18n="price_item_6_name">Sesja tatuażu (2-3 godziny)</span>
+              <span class="price-service-val" data-i18n="price_item_6_val">od 450 zł</span>
+            </div>
+
+            <div class="price-item">
+              <span class="price-service-name" data-i18n="price_item_7_name">Laserowe usuwanie tatuażu</span>
+              <span class="price-service-val" data-i18n="price_item_7_val">od 150 zł, 5-10 zł / cm²</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: NASZE PRACE (PORTFOLIO) -->
+    <section class="section section-works" id="works">
+      <div class="container">
+        <h2 class="section-badge" data-i18n="works_badge">4/ NASZE PRACE</h2>
+
+        <div class="works-slider-container">
+          <button class="slider-btn prev-btn" id="sliderPrev" aria-label="Poprzednia praca">
+            <svg width="24" height="40" viewBox="0 0 24 40" fill="none">
+              <path d="M20 4 L4 20 L20 36" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div class="works-track-wrapper" id="worksTrackWrapper">
+            <div class="works-track" id="worksTrack">
+              <div class="work-card" data-index="0" data-caption-key="work_caption_0">
+                <img src="assets/images/work1.jpg" alt="Tatuaż rękaw" class="work-img" loading="lazy">
+                <div class="work-overlay">
+                  <span class="work-zoom-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="7"></circle>
+                      <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+                      <line x1="11" y1="8" x2="11" y2="14"></line>
+                      <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+
+              <div class="work-card" data-index="1" data-caption-key="work_caption_1">
+                <img src="assets/images/work2.jpg" alt="Tatuaż plecy" class="work-img" loading="lazy">
+                <div class="work-overlay">
+                  <span class="work-zoom-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="7"></circle>
+                      <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+                      <line x1="11" y1="8" x2="11" y2="14"></line>
+                      <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+
+              <div class="work-card" data-index="2" data-caption-key="work_caption_2">
+                <img src="assets/images/work3.jpg" alt="Tatuaż ornament" class="work-img" loading="lazy">
+                <div class="work-overlay">
+                  <span class="work-zoom-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="7"></circle>
+                      <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+                      <line x1="11" y1="8" x2="11" y2="14"></line>
+                      <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+
+              <div class="work-card" data-index="3" data-caption-key="work_caption_3">
+                <img src="assets/images/work4.jpg" alt="Tatuaż grafika" class="work-img" loading="lazy">
+                <div class="work-overlay">
+                  <span class="work-zoom-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="7"></circle>
+                      <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+                      <line x1="11" y1="8" x2="11" y2="14"></line>
+                      <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+
+              <div class="work-card" data-index="4" data-caption-key="work_caption_4">
+                <img src="assets/images/work5.jpg" alt="Tatuaż blackwork" class="work-img" loading="lazy">
+                <div class="work-overlay">
+                  <span class="work-zoom-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="7"></circle>
+                      <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+                      <line x1="11" y1="8" x2="11" y2="14"></line>
+                      <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+
+              <div class="work-card" data-index="5" data-caption-key="work_caption_5">
+                <img src="assets/images/work6.jpg" alt="Tatuaż artystyczny" class="work-img" loading="lazy">
+                <div class="work-overlay">
+                  <span class="work-zoom-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="7"></circle>
+                      <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+                      <line x1="11" y1="8" x2="11" y2="14"></line>
+                      <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="slider-btn next-btn" id="sliderNext" aria-label="Następna praca">
+            <svg width="24" height="40" viewBox="0 0 24 40" fill="none">
+              <path d="M4 4 L20 20 L4 36" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="slider-dots" id="sliderDots"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: KONTAKT -->
+    <section class="section section-contacts" id="contacts">
+      <div class="container">
+        <div class="contacts-grid">
+          <!-- Left: Contacts info -->
+          <div class="contacts-info-col">
+            <h2 class="section-badge" data-i18n="contacts_badge">5/ KONTAKT</h2>
+            <div class="contacts-details">
+              <a href="tel:+48570999888" class="contact-link contact-phone">+48 570 999 888</a>
+              <a href="mailto:kontakt@forevertattoo.pl" class="contact-link contact-email">kontakt@forevertattoo.pl</a>
+
+              <div class="social-links-row">
+                <!-- Telegram -->
+                <a href="https://t.me/" target="_blank" rel="noopener noreferrer" class="social-circle-btn" aria-label="Telegram">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.99 1.27-5.62 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.88.03-.24.37-.49 1.02-.75 3.98-1.73 6.64-2.87 7.97-3.44 3.79-1.63 4.58-1.91 5.1-1.92.11 0 .37.03.54.17.14.12.18.28.2.45-.02.07-.02.21-.04.37z"/>
+                  </svg>
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" class="social-circle-btn" aria-label="Instagram">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
+
+                <!-- Facebook -->
+                <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" class="social-circle-btn" aria-label="Facebook">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+                    <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+                  </svg>
+                </a>
+
+                <!-- WhatsApp -->
+                <a href="https://wa.me/48570999888" target="_blank" rel="noopener noreferrer" class="social-circle-btn" aria-label="WhatsApp">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+                    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.41a8.173 8.173 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.188 8.188 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.44 1.03 2.61c.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.17-.48-.3z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Big slogan & Call to action -->
+          <div class="contacts-action-col">
+            <h3 class="contacts-big-slogan" data-i18n="contacts_slogan">CZEKAMY NA CIEBIE<br>Z NIECIERPLIWOŚCIĄ!</h3>
+            <button class="btn btn-primary contacts-book-btn open-booking-btn" id="contactsBookBtn" data-i18n="hero_btn">ZAPISZ SIĘ</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <span class="footer-copy" data-i18n="footer_copy">2025 Forever Tattoo Sp. z o.o.</span>
+      <button class="footer-privacy-btn" id="privacyBtn" data-i18n="footer_privacy">Polityka prywatności</button>
+    </div>
+  </footer>
+
+  <!-- BOOKING MODAL -->
+  <div class="modal-overlay" id="bookingModal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal-window">
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Zamknij okno">&times;</button>
+      
+      <div class="modal-content" id="modalFormContainer">
+        <h3 class="modal-title" id="modalTitle" data-i18n="modal_booking_title">ZAPISZ SIĘ NA SESJĘ</h3>
+        <p class="modal-desc" data-i18n="modal_booking_desc">Zostaw swoje dane kontaktowe. Oddzwonimy w ciągu 15 minut, aby omówić projekt i dobrać dogodny termin.</p>
+        
+        <form class="booking-form" id="bookingForm">
+          <div class="form-group">
+            <label for="clientName" data-i18n="form_label_name">Twoje imię *</label>
+            <input type="text" id="clientName" name="name" required placeholder="np. Jan" data-i18n-placeholder="form_placeholder_name">
+          </div>
+
+          <div class="form-group">
+            <label for="clientPhone" data-i18n="form_label_phone">Numer telefonu *</label>
+            <input type="tel" id="clientPhone" name="phone" required placeholder="+48 ___ ___ ___" data-i18n-placeholder="form_placeholder_phone">
+          </div>
+
+          <div class="form-group">
+            <label for="selectMaster" data-i18n="form_label_master">Wybierz artystę</label>
+            <select id="selectMaster" name="master">
+              <option value="Dowolny artysta" data-i18n="opt_master_any">Dowolny artysta (dobierzemy do stylu tatuażu)</option>
+              <option value="Sergiusz Tajlin" data-i18n="opt_master_1">Sergiusz Tajlin (GOLD artysta, 9 lat doświadczenia)</option>
+              <option value="Andriej Wołkow" data-i18n="opt_master_2">Andriej Wołkow (PRO artysta, 5 lat doświadczenia)</option>
+              <option value="Ilia Szelkow" data-i18n="opt_master_3">Ilia Szelkow (TOP artysta, 3 lata doświadczenia)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="selectService" data-i18n="form_label_service">Interesująca usługa</label>
+            <select id="selectService" name="service">
+              <option value="Tatuaż artystyczny" data-i18n="opt_service_1">Tatuaż artystyczny / autorski</option>
+              <option value="Tatuaż-napis" data-i18n="opt_service_2">Tatuaż-napis / minimalistyczny</option>
+              <option value="Tatuaż na bliznach" data-i18n="opt_service_3">Tatuaż na bliznach / maskowanie</option>
+              <option value="Korekta tatuażu" data-i18n="opt_service_4">Korekta i odświeżenie tatuażu</option>
+              <option value="Cover-up" data-i18n="opt_service_5">Cover-up (przykrycie starego tatuażu)</option>
+              <option value="Sesja tatuażu" data-i18n="opt_service_6">Sesja tatuażu (2-3 godziny)</option>
+              <option value="Darmowa konsultacja" data-i18n="opt_service_7">Darmowa konsultacja i projekt</option>
+              <option value="Usuwanie tatuażu" data-i18n="opt_service_8">Laserowe usuwanie tatuażu</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="clientComment" data-i18n="form_label_comment">Komentarz lub link do inspiracji</label>
+            <textarea id="clientComment" name="comment" rows="2" placeholder="Opisz swój pomysł, przybliżony rozmiar i miejsce na ciele..." data-i18n-placeholder="form_placeholder_comment"></textarea>
+          </div>
+
+          <div class="form-agreement">
+            <input type="checkbox" id="agreementCheckbox" checked required>
+            <label for="agreementCheckbox" data-i18n="form_agreement">Wyrażam zgodę na przetwarzanie danych osobowych (RODO)</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary modal-submit-btn" data-i18n="form_submit">WYŚLIJ ZGŁOSZENIE</button>
+        </form>
+      </div>
+
+      <!-- Success Message Screen -->
+      <div class="modal-success" id="modalSuccess" style="display: none;">
+        <div class="success-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h3 class="success-title" data-i18n="success_title">DZIĘKUJEMY ZA ZGŁOSZENIE!</h3>
+        <p class="success-text" data-i18n="success_desc">Otrzymaliśmy Twoje zgłoszenie. Skontaktujemy się z Tobą w ciągu 15 minut w celu potwierdzenia terminu sesji.</p>
+        <button class="btn btn-primary" id="successOkBtn" data-i18n="success_btn">WSPANIALE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX MODAL FOR PORTFOLIO -->
+  <div class="lightbox-overlay" id="lightboxModal" aria-hidden="true" role="dialog">
+    <button class="lightbox-close-btn" id="lightboxClose" aria-label="Zamknij">&times;</button>
+    <button class="lightbox-arrow lightbox-prev" id="lightboxPrev" aria-label="Poprzednia praca">&#10094;</button>
+    <div class="lightbox-content">
+      <img src="" alt="" class="lightbox-image" id="lightboxImg">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+    <button class="lightbox-arrow lightbox-next" id="lightboxNext" aria-label="Następna praca">&#10095;</button>
+  </div>
+
+  <!-- PRIVACY POLICY MODAL -->
+  <div class="modal-overlay" id="privacyModal" aria-hidden="true" role="dialog">
+    <div class="modal-window privacy-window">
+      <button class="modal-close-btn" id="privacyCloseBtn" aria-label="Zamknij">&times;</button>
+      <div class="modal-content">
+        <h3 class="modal-title" data-i18n="privacy_title">Polityka Prywatności</h3>
+        <div class="privacy-text" id="privacyTextContainer">
+          <!-- Injected dynamically by i18n -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

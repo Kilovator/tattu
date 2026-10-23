@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" fill="none" stroke="#888888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Web background strands -->
+  <path d="M150 0 L150 300 M0 150 L300 150 M40 40 L260 260 M40 260 L260 40" stroke="#333333" stroke-width="1" opacity="0.4"/>
+  <path d="M150 80 Q180 100 200 120 Q220 150 200 180 Q180 200 150 220 Q120 200 100 180 Q80 150 100 120 Q120 100 150 80" stroke="#333333" stroke-width="1" opacity="0.4" fill="none"/>
+
+  <!-- Spider Body -->
+  <!-- Abdomen with skull marking -->
+  <ellipse cx="150" cy="180" rx="26" ry="36" fill="#111111" stroke="#aaaaaa" stroke-width="2.5"/>
+  <!-- Skull on abdomen -->
+  <path d="M142 165 C142 160 158 160 158 165 C158 172 154 175 154 180 L146 180 C146 175 142 172 142 165 Z" fill="#e0e0e0" stroke="none"/>
+  <circle cx="146" cy="166" r="2" fill="#000"/>
+  <circle cx="154" cy="166" r="2" fill="#000"/>
+  <line x1="147" y1="178" x2="153" y2="178" stroke="#000" stroke-width="1"/>
+
+  <!-- Cephalothorax -->
+  <circle cx="150" cy="136" r="16" fill="#1a1a1a" stroke="#aaaaaa" stroke-width="2.5"/>
+  <!-- Chelicerae / fangs -->
+  <path d="M144 122 L141 114" stroke="#cccccc" stroke-width="2.5"/>
+  <path d="M156 122 L159 114" stroke="#cccccc" stroke-width="2.5"/>
+
+  <!-- Left Legs -->
+  <path d="M140 134 Q90 100 60 70 Q40 50 30 20" stroke="#cccccc" stroke-width="2.5" fill="none"/>
+  <path d="M138 138 Q80 120 50 130 Q30 140 15 170" stroke="#cccccc" stroke-width="2.5" fill="none"/>
+  <path d="M138 144 Q85 170 65 210 Q50 240 40 270" stroke="#cccccc" stroke-width="2.5" fill="none"/>
+  <path d="M142 150 Q105 210 95 250 Q85 280 75 295" stroke="#cccccc" stroke-width="2.5" fill="none"/>
+
+  <!-- Right Legs -->
+  <path d="M160 134 Q210 100 240 70 Q260 50 270 20" stroke="#cccccc" stroke-width="2.5" fill="none"/>
+  <path d="M162 138 Q220 120 250 130 Q270 140 285 170" stroke="#cccccc" stroke-width="2.5" fill="none"/>
+  <path d="M162 144 Q215 170 235 210 Q250 240 260 270" stroke="#cccccc" stroke-width="2.5" fill="none"/>
+  <path d="M158 150 Q195 210 205 250 Q215 280 225 295" stroke="#cccccc" stroke-width="2.5" fill="none"/>
+</svg>

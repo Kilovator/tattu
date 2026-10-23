@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" fill="none">
+  <!-- Crescent Moon Background -->
+  <path d="M200 40 C280 40 340 100 340 180 C340 260 280 320 200 320 C240 280 260 230 260 180 C260 130 240 80 200 40 Z" fill="#181818" stroke="#333333" stroke-width="3"/>
+  <!-- Snake Body -->
+  <path d="M190 70 Q140 100 150 160 Q160 220 220 240 Q290 260 270 330 Q250 400 180 420 Q120 440 130 480" stroke="#111111" stroke-width="32" stroke-linecap="round" fill="none"/>
+  <path d="M190 70 Q140 100 150 160 Q160 220 220 240 Q290 260 270 330 Q250 400 180 420 Q120 440 130 480" stroke="#333333" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <!-- Snake Head -->
+  <path d="M190 70 L210 50 Q230 55 240 70 Q230 85 210 90 Z" fill="#0d0d0d" stroke="#444444" stroke-width="3"/>
+  <!-- Eye & Tongue -->
+  <circle cx="218" cy="65" r="3" fill="#ffffff"/>
+  <path d="M240 70 L265 70 L275 62 M265 70 L275 78" stroke="#aa2222" stroke-width="2" stroke-linecap="round"/>
+</svg>

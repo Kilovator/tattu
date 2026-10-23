@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="fitter_page_title">Forever — Studio Przymierzalni Tatuażu 3D</title>
+  <meta name="description" content="Przymierz swój szkic tatuażu na szczegółowych modelach anatomicznych części ciała w 3D. Sprawdź rzeczywisty rozmiar w centymetrach i dopasowanie do mięśni.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/illustrations/logo.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@600;700;800&family=Montserrat:wght@400;500;600;700&family=Russo+One&display=swap&subset=latin-ext" rel="stylesheet">
+
+  <link rel="stylesheet" href="fitter.css">
+</head>
+<body>
+  <!-- TOP STUDIO HEADER -->
+  <header class="fitter-header">
+    <div class="fitter-header-left">
+      <a href="index.html" class="back-home-btn" title="Powrót do strony głównej">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span data-i18n="back_to_site">POWRÓT DO SALONU</span>
+      </a>
+
+      <div class="header-brand-divider"></div>
+
+      <div class="fitter-brand">
+        <img src="assets/illustrations/logo.svg" alt="Forever" class="fitter-logo">
+        <div class="fitter-brand-text">
+          <h1 class="fitter-title" data-i18n="fitter_heading">STUDIO PRZYMIERZALNI 3D</h1>
+          <span class="fitter-subtitle" data-i18n="fitter_subheading">Wizualizacja anatomiczna 1:1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Tab Switcher (visible on < 1080px) -->
+    <div class="mobile-panel-tabs" id="mobilePanelTabs">
+      <button class="mobile-tab-btn active" data-panel="canvas" data-i18n="mob_tab_3d">Widok 3D</button>
+      <button class="mobile-tab-btn" data-panel="anatomy" data-i18n="mob_tab_anatomy">Część ciała</button>
+      <button class="mobile-tab-btn" data-panel="tattoo" data-i18n="mob_tab_tattoo">Twój tatuaż</button>
+    </div>
+
+    <div class="fitter-header-right">
+      <!-- Language Switcher -->
+      <div class="lang-switcher" aria-label="Wybór języka">
+        <button class="lang-btn active" data-lang="pl">PL</button>
+        <span class="lang-divider">/</span>
+        <button class="lang-btn" data-lang="en">EN</button>
+        <span class="lang-divider">/</span>
+        <button class="lang-btn" data-lang="ru">RU</button>
+      </div>
+
+      <button class="action-btn-header snap-btn" id="takePhotoBtn">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+          <circle cx="12" cy="13" r="4"></circle>
+        </svg>
+        <span data-i18n="btn_snapshot">ZAPISZ KADR</span>
+      </button>
+
+      <button class="action-btn-header book-btn" id="bookWithTattooBtn">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span data-i18n="btn_book_this">ZAPISZ SIĘ Z PROJEKTEM</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN 3D STUDIO WORKSPACE -->
+  <div class="fitter-workspace" id="fitterWorkspace">
+
+    <!-- LEFT PANEL: ANATOMICAL BODY PART & STUDIO ENVIRONMENT -->
+    <aside class="anatomy-sidebar" id="anatomySidebar">
+      <div class="sidebar-scroll-content">
+        
+        <!-- SECTION: BODY PART SELECTOR -->
+        <section class="panel-section">
+          <div class="section-header-row">
+            <h2 class="panel-section-title" data-i18n="sec_body_part">CZĘŚĆ CIAŁA</h2>
+            <span class="section-meta-badge" id="activeZoneScaleBadge">Skala 1:1</span>
+          </div>
+          <p class="section-helper-text" data-i18n="sec_body_part_desc">Wybierz obszar anatomiczny, aby obejrzeć detale ułożenia tatuażu na mięśniach.</p>
+
+          <div class="body-parts-grid" id="bodyPartsGrid">
+            <!-- 1. Forearm -->
+            <button class="body-part-card active" data-part="forearm">
+              <div class="bp-icon">
+                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 6 C13 14, 14 24, 16 31 L14 35 L24 35 L23 31 C26 24, 27 14, 25 6 Z"/>
+                  <path d="M16 31 L23 31" stroke-opacity="0.4"/>
+                  <path d="M18 12 C19 18, 19 23, 18 28" stroke-opacity="0.4"/>
+                </svg>
+              </div>
+              <div class="bp-info">
+                <span class="bp-name" data-i18n="part_forearm">Przedramię</span>
+                <span class="bp-sub" data-i18n="part_forearm_sub">Nadgarstek i łokieć</span>
+              </div>
+            </button>
+
+            <!-- 2. Upper Arm & Shoulder -->
+            <button class="body-part-card" data-part="arm">
+              <div class="bp-icon">
+                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M13 5 C9 8, 9 15, 12 20 C11 26, 13 31, 15 36 L23 36 C25 31, 27 25, 26 20 C29 14, 28 7, 22 5 Z"/>
+                  <path d="M12 20 C16 21, 22 21, 26 20" stroke-opacity="0.45"/>
+                  <path d="M14 10 C17 13, 21 13, 24 10" stroke-opacity="0.45"/>
+                </svg>
+              </div>
+              <div class="bp-info">
+                <span class="bp-name" data-i18n="part_arm">Ramię i bark</span>
+                <span class="bp-sub" data-i18n="part_arm_sub">Biceps, bark, rękaw</span>
+              </div>
+            </button>
+
+            <!-- 3. Chest & Collarbone -->
+            <button class="body-part-card" data-part="chest">
+              <div class="bp-icon">
+                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 6 L24 6 L26 9 L34 12 L32 22 L28 34 L12 34 L8 22 L6 12 L14 9 Z"/>
+                  <path d="M10 13 Q16 15 20 13 Q24 15 30 13" stroke-opacity="0.5"/>
+                  <path d="M9 21 Q15 24 20 20 Q25 24 31 21" stroke-opacity="0.55"/>
+                  <line x1="20" y1="13" x2="20" y2="33" stroke-opacity="0.35"/>
+                </svg>
+              </div>
+              <div class="bp-info">
+                <span class="bp-name" data-i18n="part_chest">Klatka piersiowa</span>
+                <span class="bp-sub" data-i18n="part_chest_sub">Mostek i obojczyki</span>
+              </div>
+            </button>
+
+            <!-- 4. Back & Shoulder Blades -->
+            <button class="body-part-card" data-part="back">
+              <div class="bp-icon">
+                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 5 L24 5 L27 9 L34 13 L30 25 L27 35 L13 35 L10 25 L6 13 L13 9 Z"/>
+                  <line x1="20" y1="6" x2="20" y2="35" stroke-opacity="0.6"/>
+                  <path d="M12 14 C15 15, 17 19, 16 23" stroke-opacity="0.45"/>
+                  <path d="M28 14 C25 15, 23 19, 24 23" stroke-opacity="0.45"/>
+                </svg>
+              </div>
+              <div class="bp-info">
+                <span class="bp-name" data-i18n="part_back">Plecy i łopatki</span>
+                <span class="bp-sub" data-i18n="part_back_sub">Kręgosłup, łopatki</span>
+              </div>
+            </button>
+
+            <!-- 5. Thigh -->
+            <button class="body-part-card" data-part="thigh">
+              <div class="bp-icon">
+                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 6 L29 6 C30 15, 28 25, 25 35 L15 35 C12 25, 10 15, 11 6 Z"/>
+                  <path d="M16 10 C19 18, 20 24, 18 31" stroke-opacity="0.45"/>
+                  <ellipse cx="20" cy="31" rx="3.2" ry="2.2" stroke-opacity="0.4"/>
+                </svg>
+              </div>
+              <div class="bp-info">
+                <span class="bp-name" data-i18n="part_thigh">Udo i biodro</span>
+                <span class="bp-sub" data-i18n="part_thigh_sub">Przód, bok uda, kolano</span>
+              </div>
+            </button>
+
+            <!-- 6. Calf & Shin -->
+            <button class="body-part-card" data-part="calf">
+              <div class="bp-icon">
+                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 5 L25 5 C28 12, 28 20, 23 28 L23 33 L27 36 L14 36 L16 32 L16 28 C12 20, 13 12, 15 5 Z"/>
+                  <path d="M16 14 C19 17, 21 17, 24 14" stroke-opacity="0.45"/>
+                </svg>
+              </div>
+              <div class="bp-info">
+                <span class="bp-name" data-i18n="part_calf">Łydka i goleń</span>
+                <span class="bp-sub" data-i18n="part_calf_sub">Mięsień łydki, kostka</span>
+              </div>
+            </button>
+
+            <!-- 7. Neck & Nape -->
+            <button class="body-part-card body-part-card-wide" data-part="neck">
+              <div class="bp-icon">
+                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M13 7 C13 12, 16 15, 20 16 C24 15, 27 12, 27 7"/>
+                  <path d="M15 14 L14 25 L6 31 L6 35 L34 35 L34 31 L26 25 L25 14"/>
+                  <path d="M15 16 L20 28 L25 16" stroke-opacity="0.45"/>
+                </svg>
+              </div>
+              <div class="bp-info">
+                <span class="bp-name" data-i18n="part_neck">Szyja, gardło i kark</span>
+                <span class="bp-sub" data-i18n="part_neck_sub">Bok szyi, kark, podżuchwie i obojczyk</span>
+              </div>
+            </button>
+          </div>
+        </section>
+
+        <!-- SECTION: PHYSIQUE / ANATOMICAL VOLUME -->
+        <section class="panel-section">
+          <label class="control-label" data-i18n="label_physique">Budowa anatomiczna:</label>
+          <div class="tri-segment-group" id="physiqueGroup">
+            <button class="tri-seg-btn" data-build="slim" data-i18n="build_slim">Smukła</button>
+            <button class="tri-seg-btn active" data-build="standard" data-i18n="build_standard">Standard</button>
+            <button class="tri-seg-btn" data-build="athletic" data-i18n="build_athletic">Atletyczna</button>
+          </div>
+        </section>
+
+        <!-- SECTION: SKIN TONE -->
+        <section class="panel-section">
+          <div class="slider-header">
+            <label class="control-label" data-i18n="label_skin_tone">Odcień skóry:</label>
+            <span class="meta-value-label" id="skinToneNameDisplay" data-i18n="skin_name_1">Jasna ciepła</span>
+          </div>
+          <div class="skin-tones-row" id="skinTonesRow">
+            <button class="skin-tone-btn active" data-color="#ead0be" data-name-key="skin_name_1" style="background-color: #ead0be;" aria-label="Jasna ciepła"></button>
+            <button class="skin-tone-btn" data-color="#dfb89d" data-name-key="skin_name_2" style="background-color: #dfb89d;" aria-label="Naturalna beżowa"></button>
+            <button class="skin-tone-btn" data-color="#c69676" data-name-key="skin_name_3" style="background-color: #c69676;" aria-label="Oliwkowa"></button>
+            <button class="skin-tone-btn" data-color="#9b6b4c" data-name-key="skin_name_4" style="background-color: #9b6b4c;" aria-label="Opalona brązowa"></button>
+            <button class="skin-tone-btn" data-color="#633f2b" data-name-key="skin_name_5" style="background-color: #633f2b;" aria-label="Ciemna czekoladowa"></button>
+            <button class="skin-tone-btn" data-color="#28282c" data-name-key="skin_name_6" style="background-color: #28282c; border-color: rgba(255,255,255,0.28);" aria-label="Gips studyjny"></button>
+          </div>
+        </section>
+
+        <!-- SECTION: STUDIO LIGHTING & INSPECTION -->
+        <section class="panel-section">
+          <div class="slider-header">
+            <label class="control-label" data-i18n="label_lighting">Oświetlenie w studiu:</label>
+          </div>
+          <div class="tri-segment-group" id="lightingGroup">
+            <button class="tri-seg-btn active" data-light="studio" data-i18n="light_studio">Studyjne</button>
+            <button class="tri-seg-btn" data-light="dramatic" data-i18n="light_dramatic">Kontrast</button>
+            <button class="tri-seg-btn" data-light="daylight" data-i18n="light_daylight">Dzienne</button>
+          </div>
+
+          <div class="slider-group" style="margin-top: 10px;">
+            <div class="slider-header">
+              <label for="lightAngleSlider" class="sub-label" data-i18n="label_light_angle">Kierunek światła:</label>
+              <span class="slider-value" id="lightAngleValue">35°</span>
+            </div>
+            <input type="range" id="lightAngleSlider" min="-180" max="180" value="35" class="fitter-range">
+          </div>
+
+          <div class="toggle-row" style="margin-top: 8px;">
+            <span class="sub-label" data-i18n="label_anatomy_grid">Linie symetrii i celownik:</span>
+            <button class="switch-pill active" id="toggleGuideBtn" role="switch" aria-checked="true">
+              <span class="switch-thumb"></span>
+            </button>
+          </div>
+        </section>
+
+      </div>
+    </aside>
+
+    <!-- CENTER: 3D WEBGL VIEWPORT -->
+    <main class="webgl-container" id="webglContainer">
+      <!-- Loading Overlay -->
+      <div class="fitter-loader" id="fitterLoader" style="display: none;">
+        <div class="loader-spinner"></div>
+        <p data-i18n="loading_3d_model">Generowanie siatki anatomicznej...</p>
+      </div>
+
+      <!-- Top Viewport HUD Info & Hint -->
+      <div class="viewport-top-hud">
+        <div class="hud-zone-pill">
+          <span class="hud-dot"></span>
+          <strong id="hudPartName" data-i18n="part_forearm">Przedramię</strong>
+          <span class="hud-sep">•</span>
+          <span id="hudPartDims">Ø ~25 cm / dł. 30 cm</span>
+        </div>
+
+        <div class="canvas-hint" id="canvasHint">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span id="canvasHintText" data-i18n="canvas_hint_empty">Wgraj swój szkic po prawej stronie lub kliknij na ciało, aby wyznaczyć miejsce tatuażu.</span>
+        </div>
+      </div>
+
+      <!-- Floating Toast Notification -->
+      <div class="studio-toast" id="studioToast" aria-live="polite"></div>
+
+      <!-- Bottom Quick Camera & Zoom Bar -->
+      <div class="camera-quick-bar">
+        <div class="cam-views-group">
+          <button class="cam-btn active" data-view="front" data-i18n="view_front">PRZÓD</button>
+          <button class="cam-btn" data-view="back" data-i18n="view_back">TYŁ</button>
+          <button class="cam-btn" data-view="left" data-i18n="view_left">LEWY BOK</button>
+          <button class="cam-btn" data-view="right" data-i18n="view_right">PRAWY BOK</button>
+        </div>
+        <div class="cam-bar-divider"></div>
+        <div class="cam-tools-group">
+          <button class="cam-btn cam-focus-btn" id="focusTattooBtn" title="Przybliż kamerę do nałożonego tatuażu">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="11" y1="8" x2="11" y2="14"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+            <span data-i18n="view_focus_tattoo">ZBLIŻENIE</span>
+          </button>
+          <button class="cam-icon-btn" id="zoomInBtn" title="Przybliż (+)">+</button>
+          <button class="cam-icon-btn" id="zoomOutBtn" title="Oddal (−)">−</button>
+          <button class="cam-btn" data-view="reset" data-i18n="view_reset">RESET</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- RIGHT PANEL: TATTOO UPLOAD, SMART PREP & TRANSFORMATION -->
+    <aside class="control-sidebar" id="controlSidebar">
+      <div class="sidebar-scroll-content">
+
+        <!-- SECTION 1: UPLOAD & SMART SKETCH PROCESSING -->
+        <section class="panel-section">
+          <div class="section-header-row">
+            <h2 class="panel-section-title" data-i18n="step_2_title">TWÓJ SZKIC TATUAŻU</h2>
+          </div>
+
+          <input type="file" id="tattooFileInput" accept="image/png, image/jpeg, image/webp, image/svg+xml" style="display: none;">
+
+          <!-- Dropzone (shown when no sketch or for uploading a new one) -->
+          <div class="upload-dropzone" id="uploadDropzone">
+            <div class="dropzone-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+            </div>
+            <span class="dropzone-title" data-i18n="btn_upload_sketch">Wgraj własny szkic (PNG / JPG / SVG)</span>
+            <span class="dropzone-sub" data-i18n="upload_hint">Przeciągnij plik tutaj, kliknij lub wklej ze schowka (Ctrl+V)</span>
+            <button type="button" class="test-sketch-link" id="loadSampleSketchBtn" data-i18n="btn_sample_sketch">Lub załaduj szkic kalibracyjny do testu</button>
+          </div>
+
+          <!-- Active Sketch Card & Smart Background Removal (shown when image is loaded) -->
+          <div class="loaded-sketch-panel" id="loadedSketchPanel" style="display: none;">
+            <div class="sketch-preview-row">
+              <div class="sketch-thumb-box" id="sketchThumbBox">
+                <img id="sketchThumbImg" src="" alt="Podgląd szkicu">
+              </div>
+              <div class="sketch-meta-col">
+                <span class="sketch-filename" id="sketchFileName">szkic.png</span>
+                <span class="sketch-status" data-i18n="sketch_ready_status">Nałożono na model 3D</span>
+                <div class="sketch-mini-actions">
+                  <button type="button" class="mini-text-btn" id="changeSketchBtn" data-i18n="btn_change_file">Zmień plik</button>
+                  <span class="mini-sep">•</span>
+                  <button type="button" class="mini-text-btn" id="addNewLayerBtn" data-i18n="btn_add_layer">+ Dodaj kolejny tatuaż</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Smart Sketch Filters (Background knockout, Invert, Color Mode) -->
+            <div class="smart-prep-box">
+              <div class="toggle-row">
+                <span class="sub-label" data-i18n="label_remove_bg">Usuń białe tło (ze zdjęcia/kartki):</span>
+                <button class="switch-pill active" id="removeBgToggle" role="switch" aria-checked="true">
+                  <span class="switch-thumb"></span>
+                </button>
+              </div>
+
+              <div class="slider-group" id="bgThresholdGroup">
+                <div class="slider-header">
+                  <label for="bgThresholdSlider" class="sub-label" data-i18n="label_bg_threshold">Czystość wycięcia tła:</label>
+                  <span class="slider-value" id="bgThresholdValue">85%</span>
+                </div>
+                <input type="range" id="bgThresholdSlider" min="30" max="98" value="85" class="fitter-range">
+              </div>
+
+              <div class="toggle-row">
+                <span class="sub-label" data-i18n="label_invert_sketch">Odwróć kolory (biały szkic na czarnym):</span>
+                <button class="switch-pill" id="invertSketchToggle" role="switch" aria-checked="false">
+                  <span class="switch-thumb"></span>
+                </button>
+              </div>
+
+              <div class="segment-buttons" style="margin-top: 4px;">
+                <button class="seg-btn active" id="modeMonoBtn" data-i18n="mode_mono_ink">Tusz jednokolorowy</button>
+                <button class="seg-btn" id="modeColorBtn" data-i18n="mode_orig_color">Oryginalne kolory</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Multi-layer selector (shown when 1+ tattoos are placed) -->
+          <div class="placed-layers-bar" id="placedLayersBar" style="display: none;">
+            <div class="slider-header">
+              <span class="sub-label" data-i18n="label_active_layers">Warstwy na tej części ciała:</span>
+              <button type="button" class="mini-text-btn" id="centerOnViewBtn" data-i18n="btn_center_here">Przenieś na środek widoku</button>
+            </div>
+            <div class="layers-chips-row" id="layersChipsRow"></div>
+          </div>
+        </section>
+
+        <!-- SECTION 2: SCALE, ROTATION & ORIENTATION -->
+        <section class="panel-section">
+          <div class="section-header-row">
+            <h2 class="panel-section-title" data-i18n="step_3_title">ROZMIAR I POŁOŻENIE</h2>
+            <span class="real-cm-badge" id="realCmDisplay">~11.5 × 11.5 cm</span>
+          </div>
+
+          <!-- Scale slider -->
+          <div class="slider-group">
+            <div class="slider-header">
+              <label for="scaleSlider" class="control-label" data-i18n="label_scale">Rozmiar tatuażu:</label>
+              <span class="slider-value" id="scaleValueDisplay">100%</span>
+            </div>
+            <input type="range" id="scaleSlider" min="20" max="260" value="100" class="fitter-range">
+            <div class="quick-pills-row">
+              <button type="button" class="quick-pill" data-scale="45" data-i18n="size_mini">Mały (~5 cm)</button>
+              <button type="button" class="quick-pill active" data-scale="100" data-i18n="size_med">Średni (~12 cm)</button>
+              <button type="button" class="quick-pill" data-scale="160" data-i18n="size_large">Duży (~19 cm)</button>
+              <button type="button" class="quick-pill" data-scale="220">Max (~26 cm)</button>
+            </div>
+          </div>
+
+          <!-- Rotation slider -->
+          <div class="slider-group" style="margin-top: 8px;">
+            <div class="slider-header">
+              <label for="rotateSlider" class="control-label" data-i18n="label_rotation">Kąt obrotu:</label>
+              <span class="slider-value" id="rotateValueDisplay">0°</span>
+            </div>
+            <input type="range" id="rotateSlider" min="-180" max="180" value="0" class="fitter-range">
+            <div class="quick-pills-row">
+              <button type="button" class="quick-pill" data-rot="-90">-90°</button>
+              <button type="button" class="quick-pill" data-rot="0">0°</button>
+              <button type="button" class="quick-pill" data-rot="90">+90°</button>
+              <button type="button" class="quick-pill" id="flipHBtn" title="Odbij lustrzanie w poziomie" data-i18n="btn_flip_h">Odbij ↔</button>
+              <button type="button" class="quick-pill" id="flipVBtn" title="Odbij lustrzanie w pionie" data-i18n="btn_flip_v">Odbij ↕</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 3: INK REALISM & SKIN BLENDING -->
+        <section class="panel-section">
+          <div class="section-header-row">
+            <h2 class="panel-section-title" data-i18n="sec_ink_realism">REALIZM TUSZU W SKÓRZE</h2>
+          </div>
+
+          <div class="tri-segment-group" id="inkFinishGroup">
+            <button type="button" class="tri-seg-btn active" data-finish="fresh" data-i18n="finish_fresh">Świeży tusz</button>
+            <button type="button" class="tri-seg-btn" data-finish="healed" data-i18n="finish_healed">Wygojony</button>
+            <button type="button" class="tri-seg-btn" data-finish="stencil" data-i18n="finish_stencil">Kalka (Stencil)</button>
+          </div>
+
+          <!-- Ink Opacity slider -->
+          <div class="slider-group" style="margin-top: 8px;">
+            <div class="slider-header">
+              <label for="opacitySlider" class="control-label" data-i18n="label_opacity">Głębokość / Krycie tuszu:</label>
+              <span class="slider-value" id="opacityValueDisplay">92%</span>
+            </div>
+            <input type="range" id="opacitySlider" min="25" max="100" value="92" class="fitter-range">
+          </div>
+
+          <!-- Ink Tint Color -->
+          <div class="panel-group" id="inkColorGroup" style="margin-top: 6px;">
+            <label class="control-label" data-i18n="label_ink_color">Odcień pigmentu:</label>
+            <div class="ink-colors-row">
+              <button class="ink-color-btn active" data-tint="#141416" title="Klasyczny czarny (Carbon Black)" style="background-color: #141416;"></button>
+              <button class="ink-color-btn" data-tint="#263038" title="Wygojony grafit (Healed Slate)" style="background-color: #263038;"></button>
+              <button class="ink-color-btn" data-tint="#6e1520" title="Krwista czerwień (Crimson Ink)" style="background-color: #6e1520;"></button>
+              <button class="ink-color-btn" data-tint="#163829" title="Zieleń butelkowa (Vintage Green)" style="background-color: #163829;"></button>
+              <button class="ink-color-btn" data-tint="#1a2c4e" title="Głęboki indygo (Navy Ink)" style="background-color: #1a2c4e;"></button>
+              <button class="ink-color-btn" data-tint="#52267a" title="Fiolet kalki (Stencil Violet)" style="background-color: #52267a;"></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 4: BOTTOM ACTIONS -->
+        <section class="panel-section actions-section">
+          <div class="actions-grid">
+            <button class="outline-action-btn" id="undoBtn" title="Usuń ostatnio nałożoną warstwę">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="1 4 1 10 7 10"></polyline>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+              </svg>
+              <span data-i18n="btn_undo">Cofnij</span>
+            </button>
+
+            <button class="outline-action-btn" id="clearAllBtn" title="Wyczyść wszystkie tatuaże z modelu">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              <span data-i18n="btn_clear">Wyczyść</span>
+            </button>
+          </div>
+        </section>
+
+      </div>
+    </aside>
+  </div>
+
+  <!-- INTEGRATED BOOKING MODAL WITH 3D PROJECT SUMMARY -->
+  <div class="fitter-modal-overlay" id="fitterBookingModal" aria-hidden="true" role="dialog">
+    <div class="fitter-modal-window">
+      <button class="fitter-modal-close" id="closeBookingModalBtn" aria-label="Zamknij">&times;</button>
+
+      <div id="bookingFormView">
+        <div class="modal-header-block">
+          <span class="modal-eyebrow" data-i18n="modal_eyebrow">REZERWACJA SESJI Z PROJEKTEM 3D</span>
+          <h3 class="modal-heading" data-i18n="modal_title">ZAPISZ SIĘ NA TATUAŻ</h3>
+          <p class="modal-sub" data-i18n="modal_desc">Twój projekt z przymierzalni 3D został automatycznie dołączony do zgłoszenia. Oddzwonimy w ciągu 15 minut.</p>
+        </div>
+
+        <!-- Attached 3D Project Summary Card -->
+        <div class="project-summary-card">
+          <div class="project-snap-box">
+            <img id="modalProjectSnap" src="" alt="Podgląd projektu 3D">
+          </div>
+          <div class="project-specs-list">
+            <div class="spec-row">
+              <span class="spec-label" data-i18n="spec_body_part">Część ciała:</span>
+              <strong class="spec-val" id="modalSpecPart">Przedramię</strong>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label" data-i18n="spec_dimensions">Szacowany wymiar:</span>
+              <strong class="spec-val" id="modalSpecSize">~12 × 12 cm</strong>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label" data-i18n="spec_estimate">Orientacyjna wycena:</span>
+              <strong class="spec-val spec-price" id="modalSpecPrice">od 350 zł</strong>
+            </div>
+          </div>
+        </div>
+
+        <form class="fitter-booking-form" id="fitterBookingForm">
+          <div class="form-row-2col">
+            <div class="f-group">
+              <label for="bookClientName" data-i18n="form_name">Twoje imię *</label>
+              <input type="text" id="bookClientName" required placeholder="np. Kamil">
+            </div>
+            <div class="f-group">
+              <label for="bookClientPhone" data-i18n="form_phone">Telefon kontaktowy *</label>
+              <input type="tel" id="bookClientPhone" required placeholder="+48 ___ ___ ___">
+            </div>
+          </div>
+
+          <div class="f-group">
+            <label for="bookSelectMaster" data-i18n="form_master">Preferowany artysta</label>
+            <select id="bookSelectMaster">
+              <option value="Dowolny artysta" data-i18n="master_any">Dowolny artysta (dobierzemy do stylu projektu)</option>
+              <option value="Sergiusz Tajlin">Sergiusz Tajlin — GOLD Artysta (9 lat doświadczenia)</option>
+              <option value="Andriej Wołkow">Andriej Wołkow — PRO Artysta (5 lat doświadczenia)</option>
+              <option value="Ilia Szelkow">Ilia Szelkow — TOP Artysta (3 lata doświadczenia)</option>
+            </select>
+          </div>
+
+          <div class="f-group">
+            <label for="bookClientNotes" data-i18n="form_notes">Dodatkowe uwagi do projektu</label>
+            <textarea id="bookClientNotes" rows="2"></textarea>
+          </div>
+
+          <div class="modal-actions-row">
+            <button type="button" class="secondary-modal-btn" id="downloadCardBtn" data-i18n="btn_download_snap">Pobierz zrzut 3D</button>
+            <button type="submit" class="primary-modal-btn" data-i18n="btn_submit_booking">WYŚLIJ ZGŁOSZENIE DO STUDIA</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Success State -->
+      <div class="booking-success-view" id="bookingSuccessView" style="display: none;">
+        <div class="success-check-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h3 class="modal-heading" data-i18n="success_heading">PROJEKT WYSŁANY DO STUDIA!</h3>
+        <p class="modal-sub" data-i18n="success_text">Otrzymaliśmy wizualizację 3D Twojego tatuażu wraz z wymiarami. Nasz menedżer skontaktuje się z Tobą w ciągu 15 minut.</p>
+        <button type="button" class="primary-modal-btn" id="closeSuccessBtn" style="margin-top: 18px;" data-i18n="success_close">WRÓĆ DO PRZYMIERZALNI</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="fitter.js"></script>
+</body>
+</html>

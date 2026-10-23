@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="200" cy="280" r="180" fill="url(#halo)" stroke="#444444" stroke-width="1" stroke-dasharray="4 6"/>
+
+  <!-- Roses and Thorns in Hair -->
+  <path d="M80 160 Q120 120 160 140 Q200 110 240 140 Q280 120 320 170 Q280 80 200 90 Q120 90 80 160 Z" fill="#111111" stroke="#888888" stroke-width="2"/>
+  <!-- Rose Left -->
+  <circle cx="110" cy="150" r="25" fill="#181818" stroke="#aaaaaa" stroke-width="2"/>
+  <path d="M100 145 Q110 135 120 145 Q115 160 105 155" stroke="#cccccc" stroke-width="1.5" fill="none"/>
+  <!-- Rose Right -->
+  <circle cx="290" cy="160" r="28" fill="#181818" stroke="#aaaaaa" stroke-width="2"/>
+  <path d="M280 155 Q290 145 300 155 Q295 170 285 165" stroke="#cccccc" stroke-width="1.5" fill="none"/>
+
+  <!-- Hair Flow -->
+  <path d="M80 160 Q60 250 50 380 Q40 450 30 540 Q100 480 110 380 Q100 280 120 220" fill="#0d0d0d" stroke="#777777" stroke-width="2"/>
+  <path d="M320 170 Q340 260 350 380 Q360 460 370 540 Q300 480 290 380 Q300 280 280 220" fill="#0d0d0d" stroke="#777777" stroke-width="2"/>
+
+  <!-- Face Contour -->
+  <path d="M120 220 Q110 300 140 370 Q170 430 200 450 Q230 430 260 370 Q290 300 280 220" fill="#141414" stroke="#cccccc" stroke-width="2.5"/>
+
+  <!-- Eyes & Eye Makeup -->
+  <path d="M145 270 Q165 255 185 270 Q165 285 145 270 Z" fill="#050505" stroke="#ffffff" stroke-width="2"/>
+  <circle cx="165" cy="270" r="5" fill="#ffffff"/>
+  <path d="M140 260 Q165 240 190 258" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+  <!-- Eye Shadow Tattoo -->
+  <path d="M145 285 Q165 315 155 340" stroke="#888888" stroke-width="2" stroke-dasharray="3 3"/>
+
+  <path d="M215 270 Q235 255 255 270 Q235 285 215 270 Z" fill="#050505" stroke="#ffffff" stroke-width="2"/>
+  <circle cx="235" cy="270" r="5" fill="#ffffff"/>
+  <path d="M210 258 Q235 240 260 260" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+  <!-- Tear / tattoo detail -->
+  <path d="M235 285 Q245 320 238 350" stroke="#888888" stroke-width="2" stroke-dasharray="3 3"/>
+
+  <!-- Nose -->
+  <path d="M196 295 L193 330 Q193 345 200 345 Q207 345 207 330 L204 295" stroke="#aaaaaa" stroke-width="2" fill="none"/>
+
+  <!-- Lips with Sugar Skull Stitching -->
+  <path d="M165 385 Q200 370 235 385 Q200 410 165 385 Z" fill="#080808" stroke="#ffffff" stroke-width="2"/>
+  <line x1="160" y1="385" x2="240" y2="385" stroke="#ffffff" stroke-width="2"/>
+  <!-- Stitch lines -->
+  <line x1="175" y1="375" x2="175" y2="395" stroke="#ffffff" stroke-width="2"/>
+  <line x1="190" y1="373" x2="190" y2="397" stroke="#ffffff" stroke-width="2"/>
+  <line x1="200" y1="372" x2="200" y2="398" stroke="#ffffff" stroke-width="2"/>
+  <line x1="210" y1="373" x2="210" y2="397" stroke="#ffffff" stroke-width="2"/>
+  <line x1="225" y1="375" x2="225" y2="395" stroke="#ffffff" stroke-width="2"/>
+
+  <!-- Forehead Tattoo Ornament -->
+  <path d="M200 170 L205 195 L220 200 L205 205 L200 230 L195 205 L180 200 L195 195 Z" fill="#ffffff" opacity="0.9"/>
+  <circle cx="200" cy="200" r="12" stroke="#888888" stroke-width="1" fill="none"/>
+
+  <!-- Neck & Collarbone -->
+  <path d="M170 440 L160 520 M230 440 L240 520" stroke="#666666" stroke-width="2"/>
+  <path d="M120 540 Q200 560 280 540" stroke="#555555" stroke-width="2" fill="none"/>
+</svg>
