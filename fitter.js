@@ -2426,13 +2426,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 11. Undo & Clear
-  document.getElementById('undoBtn').addEventListener('click', () => {
+  document.getElementById('undoBtn')?.addEventListener('click', () => {
     if (tattooLayers.length > 0) {
       deleteLayer(tattooLayers[tattooLayers.length - 1].id);
     }
   });
 
-  document.getElementById('clearAllBtn').addEventListener('click', () => {
+  document.getElementById('clearAllBtn')?.addEventListener('click', () => {
     while (tattooLayers.length > 0) {
       deleteLayer(tattooLayers[0].id);
     }
@@ -2441,7 +2441,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // 12. Snapshot Button
-  document.getElementById('takePhotoBtn').addEventListener('click', () => {
+  document.getElementById('takePhotoBtn')?.addEventListener('click', () => {
     const dataUrl = captureClean3DSnapshot();
     const link = document.createElement('a');
     link.download = `forever-3d-${currentPartId}-${Date.now()}.png`;
