@@ -351,7 +351,7 @@ body {
    ========================================================================== */
 .body-parts-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
 }
 
@@ -1254,6 +1254,47 @@ body {
 .f-group select:focus,
 .f-group textarea:focus {
   border-color: var(--accent-white);
+}
+
+.form-master-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+
+.master-badge-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.master-badge-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.master-badge-label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.master-badge-val {
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .modal-actions-row {
