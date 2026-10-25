@@ -22,22 +22,26 @@ const fitterTranslations = {
     btn_book_this: "ZAPISZ SIĘ Z PROJEKTEM",
     sec_body_part: "CZĘŚĆ CIAŁA",
     sec_body_part_desc: "Wybierz obszar anatomiczny z 2. modelu (Athletic), aby obejrzeć detale ułożenia tatuażu na mięśniach.",
-    part_fullbody: "Sylwetka 3D (Model 2)",
-    part_fullbody_sub: "Cała postać atletyczna",
-    part_forearm: "Przedramię",
-    part_forearm_sub: "Nadgarstek i łokieć",
-    part_arm: "Ramię i bark",
-    part_arm_sub: "Biceps, bark, rękaw",
-    part_chest: "Klatka piersiowa",
-    part_chest_sub: "Mostek i obojczyki",
-    part_back: "Plecy i łopatki",
-    part_back_sub: "Kręgosłup, łopatki",
-    part_thigh: "Udo i biodro",
-    part_thigh_sub: "Przód, bok uda, kolano",
-    part_calf: "Noga (łydka i udo)",
-    part_calf_sub: "Łydka, goleń, kolano",
-    part_neck: "Szyja i obojczyki",
-    part_neck_sub: "Bok szyi, kark, obojczyk",
+    part_fullbody: "Sylwetka 3D",
+    part_fullbody_sub: "Cała sylwetka",
+    part_torso: "Tors (przód i plecy)",
+    part_torso_sub: "Klatka, brzuch i plecy",
+    part_arm: "Cała ręka",
+    part_arm_sub: "Ramię, przedramię, dłoń",
+    part_leg: "Cała noga",
+    part_leg_sub: "Udo, łydka, stopa",
+    part_neck: "Szyja i głowa",
+    part_neck_sub: "Szyja, kark i głowa",
+    part_forearm: "Cała ręka",
+    part_forearm_sub: "Ramię i przedramię",
+    part_chest: "Tors (przód i plecy)",
+    part_chest_sub: "Klatka piersiowa",
+    part_back: "Tors (przód i plecy)",
+    part_back_sub: "Plecy i łopatki",
+    part_thigh: "Cała noga",
+    part_thigh_sub: "Udo i biodro",
+    part_calf: "Cała noga",
+    part_calf_sub: "Noga i łydka",
     label_physique: "Budowa ciała:",
     build_slim: "Smukła",
     build_standard: "Standard",
@@ -56,7 +60,7 @@ const fitterTranslations = {
     label_light_angle: "Światło studyjne:",
     label_anatomy_grid: "Celownik i linie:",
     loading_3d_model: "Generowanie siatki anatomicznej...",
-    canvas_hint_empty: "Wgraj swój szkic po prawej stronie lub kliknij na ciało, aby wyznaczyć miejsce tatuażu.",
+    canvas_hint_empty: "Wgraj zdjęcie lub szkic po lewej stronie, aby przymierzyć tatuaż na ciele.",
     canvas_hint_active: "Kliknij lub przeciągnij tatuaż po skórze, aby zmienić pozycję. Obracaj model 360° myszą.",
     view_front: "PRZÓD",
     view_back: "TYŁ",
@@ -64,8 +68,9 @@ const fitterTranslations = {
     view_right: "PRAWY BOK",
     view_focus_tattoo: "ZBLIŻENIE",
     view_reset: "RESET",
-    step_2_title: "TWÓJ SZKIC TATUAŻU",
-    btn_upload_sketch: "Wgraj własny szkic (PNG / JPG / SVG)",
+    sec_smart_prep: "OBRÓBKA I TŁO",
+    step_2_title: "TWOJE ZDJĘCIE / SZKIC",
+    btn_upload_sketch: "Wgraj zdjęcie lub szkic (PNG / JPG / SVG)",
     upload_hint: "Przeciągnij plik tutaj, kliknij lub wklej ze schowka (Ctrl+V)",
     btn_sample_sketch: "Lub załaduj szkic kalibracyjny do testu",
     sketch_ready_status: "Nałożono na model 3D",
@@ -113,7 +118,7 @@ const fitterTranslations = {
     success_text: "Otrzymaliśmy wizualizację 3D Twojego tatuażu wraz z wymiarami. Nasz menedżer skontaktuje się z Tobą w ciągu 15 minut.",
     success_close: "WRÓĆ DO PRZYMIERZALNI",
     toast_photo_saved: "Zapisano zrzut ekranu 3D (PNG)",
-    toast_upload_prompt: "Celownik ustawiony — wgraj swój szkic po prawej stronie, aby nałożyć tatuaż",
+    toast_upload_prompt: "Celownik ustawiony — wgraj zdjęcie lub szkic po lewej stronie, aby nałożyć tatuaż",
     toast_layer_added: "Dodano nową warstwę tatuażu — kliknij na ciało, aby ją przesunąć",
     toast_cleared: "Wyczyszczono tatuaże z modelu",
     layer_label: "Tatuaż"
@@ -130,22 +135,26 @@ const fitterTranslations = {
     btn_book_this: "BOOK WITH THIS PROJECT",
     sec_body_part: "BODY PART",
     sec_body_part_desc: "Switch anatomical zones from Model 2 (Athletic) to inspect how your tattoo wraps around muscles.",
-    part_fullbody: "Full Body (Model 2)",
+    part_fullbody: "3D Full Body",
     part_fullbody_sub: "Complete athletic figure",
-    part_forearm: "Forearm",
-    part_forearm_sub: "Wrist & elbow",
-    part_arm: "Upper Arm & Shoulder",
-    part_arm_sub: "Bicep, deltoid, sleeve",
-    part_chest: "Chest & Collarbone",
-    part_chest_sub: "Sternum & pectoral",
-    part_back: "Back & Scapula",
-    part_back_sub: "Spine & shoulder blades",
-    part_thigh: "Thigh & Hip",
-    part_thigh_sub: "Front, outer thigh, knee",
-    part_calf: "Leg (Calf & Shin)",
-    part_calf_sub: "Calf muscle, shin & ankle",
-    part_neck: "Neck & Collarbone",
-    part_neck_sub: "Side neck, nape & collarbone",
+    part_torso: "Torso (Front & Back)",
+    part_torso_sub: "Chest, ribs, abs & back",
+    part_arm: "Full Arm",
+    part_arm_sub: "Shoulder, bicep, forearm & hand",
+    part_leg: "Full Leg",
+    part_leg_sub: "Thigh, knee, calf & foot",
+    part_neck: "Neck & Head",
+    part_neck_sub: "Neck, nape & head",
+    part_forearm: "Full Arm",
+    part_forearm_sub: "Arm & forearm",
+    part_chest: "Torso (Front & Back)",
+    part_chest_sub: "Chest & ribs",
+    part_back: "Torso (Front & Back)",
+    part_back_sub: "Back & spine",
+    part_thigh: "Full Leg",
+    part_thigh_sub: "Thigh & hip",
+    part_calf: "Full Leg",
+    part_calf_sub: "Calf & shin",
     label_physique: "Body build:",
     build_slim: "Slim",
     build_standard: "Standard",
@@ -164,7 +173,7 @@ const fitterTranslations = {
     label_light_angle: "Studio light:",
     label_anatomy_grid: "Reticle & guides:",
     loading_3d_model: "Building anatomical mesh...",
-    canvas_hint_empty: "Upload your sketch on the right or click the body to set target placement.",
+    canvas_hint_empty: "Upload your photo or sketch on the left to try the tattoo on the body.",
     canvas_hint_active: "Click or drag the tattoo directly on the skin to reposition. Drag outside to orbit 360°.",
     view_front: "FRONT",
     view_back: "BACK",
@@ -172,8 +181,9 @@ const fitterTranslations = {
     view_right: "RIGHT",
     view_focus_tattoo: "FOCUS",
     view_reset: "RESET",
-    step_2_title: "YOUR TATTOO SKETCH",
-    btn_upload_sketch: "Upload your sketch (PNG / JPG / SVG)",
+    sec_smart_prep: "PREPARATION & BACKGROUND",
+    step_2_title: "YOUR PHOTO / SKETCH",
+    btn_upload_sketch: "Upload your photo or sketch (PNG / JPG / SVG)",
     upload_hint: "Drag & drop file here, click to browse, or paste (Ctrl+V)",
     btn_sample_sketch: "Or load a calibration test sketch",
     sketch_ready_status: "Projected on 3D anatomy",
@@ -221,7 +231,7 @@ const fitterTranslations = {
     success_text: "We received your 3D tattoo visualization and measurements. Our studio manager will contact you within 15 minutes.",
     success_close: "BACK TO 3D STUDIO",
     toast_photo_saved: "Saved 3D snapshot (PNG)",
-    toast_upload_prompt: "Target set — upload your sketch on the right to project it on the skin",
+    toast_upload_prompt: "Target set — upload your photo or sketch on the left to project it on the skin",
     toast_layer_added: "Added new tattoo layer — click on the skin to position it",
     toast_cleared: "Cleared tattoos from model",
     layer_label: "Tattoo"
@@ -238,22 +248,26 @@ const fitterTranslations = {
     btn_book_this: "ЗАПИСАТЬСЯ С ПРОЕКТОМ",
     sec_body_part: "ЧАСТЬ ТЕЛА",
     sec_body_part_desc: "Выберите зону тела со 2-й анатомической модели, чтобы рассмотреть, как тату ложится по рельефу мышц.",
-    part_fullbody: "Вся модель (Тело 2)",
+    part_fullbody: "Вся фигура 3D",
     part_fullbody_sub: "Полная атлетичная фигура",
-    part_forearm: "Предплечье",
-    part_forearm_sub: "Запястье и сгиб локтя",
-    part_arm: "Плечо и рукав",
-    part_arm_sub: "Бицепс, дельта, рукав",
-    part_chest: "Грудь и ключицы",
-    part_chest_sub: "Грудина и ключицы",
-    part_back: "Спина и лопатки",
-    part_back_sub: "Позвоночник, лопатки",
-    part_thigh: "Бедро",
-    part_thigh_sub: "Передняя и боковая часть",
-    part_calf: "Нога (икра и голень)",
-    part_calf_sub: "Икроножная мышца, голень",
-    part_neck: "Шея и ключицы",
-    part_neck_sub: "Бок шеи, затылок, ключицы",
+    part_torso: "Торс (грудь и спина)",
+    part_torso_sub: "Грудь, живот, рёбра и спина",
+    part_arm: "Полная рука",
+    part_arm_sub: "Плечо, бицепс, предплечье и кисть",
+    part_leg: "Полная нога",
+    part_leg_sub: "Бедро, колено, голень и стопа",
+    part_neck: "Шея и голова",
+    part_neck_sub: "Шея, затылок и голова",
+    part_forearm: "Полная рука",
+    part_forearm_sub: "Плечо и предплечье",
+    part_chest: "Торс (грудь и спина)",
+    part_chest_sub: "Грудь и ключицы",
+    part_back: "Торс (грудь и спина)",
+    part_back_sub: "Спина и лопатки",
+    part_thigh: "Полная нога",
+    part_thigh_sub: "Бедро",
+    part_calf: "Полная нога",
+    part_calf_sub: "Нога (икра и голень)",
     label_physique: "Телосложение:",
     build_slim: "Изящное",
     build_standard: "Стандарт",
@@ -272,7 +286,7 @@ const fitterTranslations = {
     label_light_angle: "Студийный свет:",
     label_anatomy_grid: "Прицел и линии:",
     loading_3d_model: "Построение анатомической модели...",
-    canvas_hint_empty: "Загрузите свой эскиз справа или кликните по части тела, чтобы выбрать точку нанесения.",
+    canvas_hint_empty: "Загрузите фото или эскиз слева, чтобы примерить тату на теле.",
     canvas_hint_active: "Кликайте или перетаскивайте тату прямо по коже. Вращайте камеру на 360° за пределами тату.",
     view_front: "СПЕРЕДИ",
     view_back: "СЗАДИ",
@@ -280,8 +294,9 @@ const fitterTranslations = {
     view_right: "СПРАВА",
     view_focus_tattoo: "КРУПНО",
     view_reset: "СБРОС",
-    step_2_title: "ВАШ ЭСКИЗ ТАТУИРОВКИ",
-    btn_upload_sketch: "Загрузить свой эскиз (PNG / JPG / SVG)",
+    sec_smart_prep: "ОБРАБОТКА И ФОН",
+    step_2_title: "ВАШЕ ФОТО / ЭСКИЗ",
+    btn_upload_sketch: "Загрузить фото или эскиз (PNG / JPG / SVG)",
     upload_hint: "Перетащите файл сюда, нажмите для выбора или вставьте (Ctrl+V)",
     btn_sample_sketch: "Или загрузить тестовый контур для проверки",
     sketch_ready_status: "Нанесено на 3D модель",
@@ -329,7 +344,7 @@ const fitterTranslations = {
     success_text: "Мы получили вашу 3D-визуализацию татуировки с размерами. Администратор свяжется с вами в течение 15 минут.",
     success_close: "ВЕРНУТЬСЯ В 3D-СТУДИЮ",
     toast_photo_saved: "3D-снимок сохранён (PNG)",
-    toast_upload_prompt: "Точка выбрана — загрузите свой эскиз справа, чтобы примерить тату",
+    toast_upload_prompt: "Точка выбрана — загрузите фото или эскиз слева, чтобы примерить тату",
     toast_layer_added: "Добавлен новый слой — кликните по коже, чтобы разместить его",
     toast_cleared: "Модель очищена от татуировок",
     layer_label: "Тату"
@@ -354,105 +369,70 @@ const BODY_PARTS_META = {
       ru: 'Модель 2 (Атлет) • Рост 178 см'
     }
   },
-  forearm: {
-    i18nKey: 'part_forearm',
-    realHeightCm: 34,
-    realCircCm: 28,
-    baseDecalSize: 0.36,
-    camPos: [0, 0.04, 1.90],
+  torso: {
+    i18nKey: 'part_torso',
+    realHeightCm: 68,
+    realCircCm: 104,
+    baseDecalSize: 0.44,
+    camPos: [0, 0.05, 1.95],
     camTarget: [0, 0.02, 0],
-    defaultPlacement: { theta: 0, tRatio: 0.56 },
+    defaultPlacement: { theta: 0, tRatio: 0.58 },
     dimsText: {
-      pl: 'Obwód ~28 cm • Dł. 34 cm',
-      en: 'Circ. ~28 cm • Len. 34 cm',
-      ru: 'Обхват ~28 см • Дл. 34 см'
+      pl: 'Tors (klatka i plecy) ~104 cm • Wys. 68 cm',
+      en: 'Torso (Chest & Back) ~104 cm • H. 68 cm',
+      ru: 'Торс (грудь и спина) ~104 см • Рост 68 см'
     }
   },
   arm: {
     i18nKey: 'part_arm',
-    realHeightCm: 54,
-    realCircCm: 38,
+    realHeightCm: 76,
+    realCircCm: 36,
+    baseDecalSize: 0.38,
+    camPos: [0, 0.04, 1.95],
+    camTarget: [0, 0.02, 0],
+    defaultPlacement: { theta: -0.15, tRatio: 0.55 },
+    dimsText: {
+      pl: 'Cała ręka (od barku do dłoni) • Dł. 76 cm',
+      en: 'Full Arm (Shoulder to hand) • Len. 76 cm',
+      ru: 'Полная рука (от плеча до кисти) • Дл. 76 см'
+    }
+  },
+  leg: {
+    i18nKey: 'part_leg',
+    realHeightCm: 90,
+    realCircCm: 58,
     baseDecalSize: 0.40,
-    camPos: [-0.45, 0.08, 2.10],
-    camTarget: [0, 0.04, 0],
-    defaultPlacement: { theta: -Math.PI * 0.25, tRatio: 0.62 },
+    camPos: [0, 0.02, 2.10],
+    camTarget: [0, -0.02, 0],
+    defaultPlacement: { theta: 0, tRatio: 0.58 },
     dimsText: {
-      pl: 'Biceps ~38 cm • Dł. 54 cm',
-      en: 'Bicep ~38 cm • Len. 54 cm',
-      ru: 'Бицепс ~38 см • Дл. 54 см'
-    }
-  },
-  chest: {
-    i18nKey: 'part_chest',
-    realHeightCm: 57,
-    realCircCm: 106,
-    baseDecalSize: 0.44,
-    camPos: [0, 0.08, 2.25],
-    camTarget: [0, 0.04, 0],
-    defaultPlacement: { theta: -0.25, tRatio: 0.62 },
-    dimsText: {
-      pl: 'Szer. ~44 cm • Wys. 57 cm',
-      en: 'Width ~44 cm • H. 57 cm',
-      ru: 'Шир. ~44 см • Выс. 57 см'
-    }
-  },
-  back: {
-    i18nKey: 'part_back',
-    realHeightCm: 57,
-    realCircCm: 106,
-    baseDecalSize: 0.46,
-    camPos: [0, 0.08, 2.25],
-    camTarget: [0, 0.04, 0],
-    defaultPlacement: { theta: 0, tRatio: 0.62 },
-    dimsText: {
-      pl: 'Szer. ~44 cm • Wys. 57 cm',
-      en: 'Width ~44 cm • H. 57 cm',
-      ru: 'Шир. ~44 см • Выс. 57 см'
-    }
-  },
-  thigh: {
-    i18nKey: 'part_thigh',
-    realHeightCm: 48,
-    realCircCm: 60,
-    baseDecalSize: 0.42,
-    camPos: [-0.25, 0.04, 2.05],
-    camTarget: [0, 0.02, 0],
-    defaultPlacement: { theta: -0.15, tRatio: 0.54 },
-    dimsText: {
-      pl: 'Obwód ~60 cm • Dł. 48 cm',
-      en: 'Circ. ~60 cm • Len. 48 cm',
-      ru: 'Обхват ~60 см • Дл. 48 cm'
-    }
-  },
-  calf: {
-    i18nKey: 'part_calf',
-    realHeightCm: 52,
-    realCircCm: 40,
-    baseDecalSize: 0.36,
-    camPos: [0, 0.05, 2.00],
-    camTarget: [0, 0.02, 0],
-    defaultPlacement: { theta: 0, tRatio: 0.62 },
-    dimsText: {
-      pl: 'Obwód ~40 cm • Dł. 52 cm',
-      en: 'Circ. ~40 cm • Len. 52 cm',
-      ru: 'Обхват ~40 см • Дл. 52 cm'
+      pl: 'Cała noga ze stopą • Dł. 90 cm',
+      en: 'Full Leg with Foot • Len. 90 cm',
+      ru: 'Полная нога со стопой • Дл. 90 см'
     }
   },
   neck: {
     i18nKey: 'part_neck',
-    realHeightCm: 44,
+    realHeightCm: 38,
     realCircCm: 41,
-    baseDecalSize: 0.30,
-    camPos: [0.35, 0.04, 1.95],
+    baseDecalSize: 0.36,
+    camPos: [0, 0.05, 1.80],
     camTarget: [0, 0.02, 0],
-    defaultPlacement: { theta: 0.32, tRatio: 0.36 },
+    defaultPlacement: { theta: 0, tRatio: 0.42 },
     dimsText: {
-      pl: 'Obwód ~41 cm • Wys. 44 cm',
-      en: 'Circ. ~41 cm • H. 44 cm',
-      ru: 'Обхват ~41 см • Выс. 44 cm'
+      pl: 'Szyja i głowa • Obwód ~41 cm',
+      en: 'Neck & Head • Circ. ~41 cm',
+      ru: 'Шея и голова • Обхват ~41 см'
     }
   }
 };
+
+// Aliases for compatibility
+BODY_PARTS_META.forearm = BODY_PARTS_META.arm;
+BODY_PARTS_META.chest = BODY_PARTS_META.torso;
+BODY_PARTS_META.back = BODY_PARTS_META.torso;
+BODY_PARTS_META.thigh = BODY_PARTS_META.leg;
+BODY_PARTS_META.calf = BODY_PARTS_META.leg;
 
 // ============================================================================
 // 3. SKETCHFAB MODEL 2 (ATHLETIC MALE) BINARY LOADER & ANATOMICAL PART SLICER
@@ -536,64 +516,64 @@ const MODEL2_PART_SLICES = {
     rotZDeg: 0,
     rotXDeg: 0,
     rotYDeg: 0,
-    targetSpan3D: 1.74
+    targetSpan3D: 1.74,
+    capFilter: null,
+    capNormal: [0, 1, 0]
   },
-  forearm: {
-    filter: (x, y) => x <= -22.0 && y >= 86.0 && y <= 122.0,
-    rotZDeg: 24,
-    rotXDeg: 14,
+  torso: {
+    // Complete Torso (Waist up): Chest, ribs, abs, back, spine, shoulders, arms & neck intact!
+    filter: (x, y) => y >= 88.0,
+    rotZDeg: 0,
+    rotXDeg: 0,
     rotYDeg: 0,
-    targetSpan3D: 1.48
+    targetSpan3D: 1.66,
+    capFilter: (x, y, z) => y < 92.0 && Math.abs(x) < 25.0,
+    capNormal: [0, -1, 0]
   },
   arm: {
-    filter: (x, y) => x <= -15.0 && y >= 92.0 && y <= 150.0 && (y > 118.0 || x < -21.0),
-    rotZDeg: 22,
-    rotXDeg: 6,
+    // Complete Arm from shoulder socket to hand & fingers
+    filter: (x, y) => y >= 70.0 && y <= 153.0 && x <= -14.5 && (y >= 138.0 || x <= -18.5) && (y >= 120.0 || x <= -24.0) && (y >= 95.0 || x <= -30.0),
+    rotZDeg: 12,
+    rotXDeg: 4,
     rotYDeg: 0,
-    targetSpan3D: 1.56
+    targetSpan3D: 1.62,
+    capFilter: (x, y, z) => y > 140.0,
+    capNormal: [1, 0.4, 0]
   },
-  chest: {
-    filter: (x, y) => y >= 98.0 && y <= 155.0 && Math.abs(x) <= 22.0 && !(y < 126.0 && Math.abs(x) > 17.5),
+  leg: {
+    // Complete Leg from hip/glute down to heel, foot and all toes intact!
+    filter: (x, y) => y <= 92.0 && x <= 0.0 && (y < 68.0 ? x >= -31.5 : x >= -23.5),
     rotZDeg: 0,
     rotXDeg: 0,
     rotYDeg: 0,
-    targetSpan3D: 1.52
-  },
-  back: {
-    filter: (x, y) => y >= 98.0 && y <= 155.0 && Math.abs(x) <= 22.0 && !(y < 126.0 && Math.abs(x) > 17.5),
-    rotZDeg: 0,
-    rotXDeg: 0,
-    rotYDeg: 180,
-    targetSpan3D: 1.52
-  },
-  thigh: {
-    filter: (x, y) => x >= -22.0 && x <= 0.5 && y >= 46.0 && y <= 94.0,
-    rotZDeg: -3,
-    rotXDeg: 0,
-    rotYDeg: 0,
-    targetSpan3D: 1.52
-  },
-  calf: {
-    filter: (x, y) => x >= -22.0 && x <= 0.0 && y >= 2.0 && y <= 55.0,
-    rotZDeg: -2,
-    rotXDeg: 0,
-    rotYDeg: 180,
-    targetSpan3D: 1.52
+    targetSpan3D: 1.66,
+    capFilter: (x, y, z) => y > 85.0,
+    capNormal: [0, 1, 0]
   },
   neck: {
-    filter: (x, y) => y >= 135.0 && y <= 180.0 && Math.abs(x) <= 21.0,
+    // Neck & Head with collarbone line
+    filter: (x, y) => y >= 143.0 && Math.abs(x) <= 22.0,
     rotZDeg: 0,
     rotXDeg: 0,
     rotYDeg: 0,
-    targetSpan3D: 1.48
+    targetSpan3D: 1.52,
+    capFilter: (x, y, z) => y < 147.0,
+    capNormal: [0, -1, 0]
   }
 };
+
+MODEL2_PART_SLICES.forearm = MODEL2_PART_SLICES.arm;
+MODEL2_PART_SLICES.chest = MODEL2_PART_SLICES.torso;
+MODEL2_PART_SLICES.back = MODEL2_PART_SLICES.torso;
+MODEL2_PART_SLICES.thigh = MODEL2_PART_SLICES.leg;
+MODEL2_PART_SLICES.calf = MODEL2_PART_SLICES.leg;
 
 function getGirthMultiplier(buildType) {
   if (buildType === 'slim') return 0.91;
   if (buildType === 'athletic') return 1.09;
   return 1.0;
 }
+
 
 /**
  * Extracts and transforms the requested anatomical part from Model 2 (or the full 2nd model)
@@ -645,6 +625,72 @@ function buildAnatomicalBodyPart(partId, buildType, skinMat, showGuides = true) 
   if (partId === 'fullbody') {
     subNumV = numV;
     for (let i = 0; i < numV; i++) oldToNewV[i] = i;
+  }
+
+  // Seamless Anatomical Skin-Capping
+  // Detects open boundary edges at the cut and seals them directly with matching skin geometry!
+  const capTris = [];
+  let capCenter = null;
+  if (sliceCfg.capFilter && selectedTris.length > 0) {
+    const edgeCount = new Map();
+    for (let i = 0; i < selectedTris.length; i += 3) {
+      const u0 = selectedTris[i];
+      const u1 = selectedTris[i + 1];
+      const u2 = selectedTris[i + 2];
+
+      const k0 = (u0 * 100000) + u1;
+      const k1 = (u1 * 100000) + u2;
+      const k2 = (u2 * 100000) + u0;
+      edgeCount.set(k0, (edgeCount.get(k0) || 0) + 1);
+      edgeCount.set(k1, (edgeCount.get(k1) || 0) + 1);
+      edgeCount.set(k2, (edgeCount.get(k2) || 0) + 1);
+    }
+
+    const bEdges = [];
+    const bVerts = new Set();
+    edgeCount.forEach((cnt, k) => {
+      const u = Math.floor(k / 100000);
+      const v = k % 100000;
+      const revKey = (v * 100000) + u;
+      if (!edgeCount.has(revKey)) {
+        const xu = positionsCm[u * 3];
+        const yu = positionsCm[u * 3 + 1];
+        const zu = positionsCm[u * 3 + 2];
+        const xv = positionsCm[v * 3];
+        const yv = positionsCm[v * 3 + 1];
+        const zv = positionsCm[v * 3 + 2];
+        if (sliceCfg.capFilter(xu, yu, zu) && sliceCfg.capFilter(xv, yv, zv)) {
+          bEdges.push([u, v]);
+          bVerts.add(u);
+          bVerts.add(v);
+        }
+      }
+    });
+
+    if (bEdges.length > 0 && bVerts.size > 0) {
+      let sumX = 0, sumY = 0, sumZ = 0;
+      let sumColR = 0, sumColG = 0, sumColB = 0;
+      bVerts.forEach((v) => {
+        sumX += positionsCm[v * 3];
+        sumY += positionsCm[v * 3 + 1];
+        sumZ += positionsCm[v * 3 + 2];
+        sumColR += colors[v * 3];
+        sumColG += colors[v * 3 + 1];
+        sumColB += colors[v * 3 + 2];
+      });
+      const cnt = bVerts.size;
+      const capNorm = sliceCfg.capNormal || [0, 1, 0];
+      capCenter = {
+        pos: [sumX / cnt, sumY / cnt, sumZ / cnt],
+        norm: capNorm,
+        col: [sumColR / cnt, sumColG / cnt, sumColB / cnt],
+        newIdx: subNumV++
+      };
+
+      bEdges.forEach(([u, v]) => {
+        capTris.push(oldToNewV[v], oldToNewV[u], capCenter.newIdx);
+      });
+    }
   }
 
   const cz = Math.cos((sliceCfg.rotZDeg * Math.PI) / 180);
@@ -711,6 +757,31 @@ function buildAnatomicalBodyPart(partId, buildType, skinMat, showGuides = true) 
     if (rz > maxZ) maxZ = rz;
   }
 
+  if (capCenter) {
+    const [rx, ry, rz] = rotateVec(capCenter.pos[0], capCenter.pos[1], capCenter.pos[2]);
+    const [nx, ny, nz] = rotateVec(capCenter.norm[0], capCenter.norm[1], capCenter.norm[2]);
+    const idx = capCenter.newIdx;
+
+    subPos[idx * 3] = rx;
+    subPos[idx * 3 + 1] = ry;
+    subPos[idx * 3 + 2] = rz;
+
+    subNorm[idx * 3] = nx;
+    subNorm[idx * 3 + 1] = ny;
+    subNorm[idx * 3 + 2] = nz;
+
+    subCol[idx * 3] = capCenter.col[0];
+    subCol[idx * 3 + 1] = capCenter.col[1];
+    subCol[idx * 3 + 2] = capCenter.col[2];
+
+    if (rx < minX) minX = rx;
+    if (rx > maxX) maxX = rx;
+    if (ry < minY) minY = ry;
+    if (ry > maxY) maxY = ry;
+    if (rz < minZ) minZ = rz;
+    if (rz > maxZ) maxZ = rz;
+  }
+
   const midX = (minX + maxX) * 0.5;
   const midY = (minY + maxY) * 0.5;
   const midZ = (minZ + maxZ) * 0.5;
@@ -739,9 +810,13 @@ function buildAnatomicalBodyPart(partId, buildType, skinMat, showGuides = true) 
     subUv[i * 2 + 1] = (y / sliceCfg.targetSpan3D) + 0.5;
   }
 
-  const subIndices = new Uint16Array(selectedTris.length);
+  const totalIndices = selectedTris.length + capTris.length;
+  const subIndices = subNumV > 65535 ? new Uint32Array(totalIndices) : new Uint16Array(totalIndices);
   for (let i = 0; i < selectedTris.length; i++) {
     subIndices[i] = oldToNewV[selectedTris[i]];
+  }
+  for (let i = 0; i < capTris.length; i++) {
+    subIndices[selectedTris.length + i] = capTris[i];
   }
 
   const skinGeo = new THREE.BufferGeometry();
@@ -998,7 +1073,8 @@ function initThree() {
     sheenRoughness: 0.58,
     sheenColor: new THREE.Color(0xffbfa3),
     bumpMap: skinBumpTexture,
-    bumpScale: 0.0022
+    bumpScale: 0.0022,
+    side: THREE.DoubleSide
   });
 
   // Load Sketchfab Model 2 (Athletic Male) binary and build initial mesh
@@ -1891,9 +1967,14 @@ function updateHudAndDimensions() {
   if (activeZoneBadge) activeZoneBadge.textContent = partLabel;
 
   const cm = computeCurrentTattooCm();
+  const cmFormatted = `~${cm.w} × ${cm.h} cm`;
   const realCmEl = document.getElementById('realCmDisplay');
   if (realCmEl) {
-    realCmEl.textContent = `~${cm.w} × ${cm.h} cm`;
+    realCmEl.textContent = cmFormatted;
+  }
+  const scaleDisplay = document.getElementById('scaleValueDisplay');
+  if (scaleDisplay) {
+    scaleDisplay.textContent = cmFormatted;
   }
 
   const hintText = document.getElementById('canvasHintText');
@@ -1902,22 +1983,42 @@ function updateHudAndDimensions() {
   }
 }
 
+function updateSliderProgress(slider) {
+  if (!slider) return;
+  const min = parseFloat(slider.min) !== undefined && !isNaN(parseFloat(slider.min)) ? parseFloat(slider.min) : 0;
+  const max = parseFloat(slider.max) !== undefined && !isNaN(parseFloat(slider.max)) ? parseFloat(slider.max) : 100;
+  const val = parseFloat(slider.value) !== undefined && !isNaN(parseFloat(slider.value)) ? parseFloat(slider.value) : 0;
+  const range = max - min || 1;
+  const pct = Math.max(0, Math.min(100, ((val - min) / range) * 100));
+  slider.style.setProperty('--slider-pct', `${pct.toFixed(2)}%`);
+}
+
 function syncSlidersFromState() {
   const scaleSlider = document.getElementById('scaleSlider');
   const scaleDisplay = document.getElementById('scaleValueDisplay');
   const scalePct = Math.round(tattooScale * 100);
-  if (scaleSlider) scaleSlider.value = scalePct;
-  if (scaleDisplay) scaleDisplay.textContent = `${scalePct}%`;
+  if (scaleSlider) {
+    scaleSlider.value = scalePct;
+    updateSliderProgress(scaleSlider);
+  }
+  const cm = computeCurrentTattooCm();
+  if (scaleDisplay) scaleDisplay.textContent = `~${cm.w} × ${cm.h} cm`;
 
   const rotateSlider = document.getElementById('rotateSlider');
   const rotateDisplay = document.getElementById('rotateValueDisplay');
-  if (rotateSlider) rotateSlider.value = tattooRotation;
+  if (rotateSlider) {
+    rotateSlider.value = tattooRotation;
+    updateSliderProgress(rotateSlider);
+  }
   if (rotateDisplay) rotateDisplay.textContent = `${tattooRotation}°`;
 
   const opacitySlider = document.getElementById('opacitySlider');
   const opacityDisplay = document.getElementById('opacityValueDisplay');
   const opPct = Math.round(tattooOpacity * 100);
-  if (opacitySlider) opacitySlider.value = opPct;
+  if (opacitySlider) {
+    opacitySlider.value = opPct;
+    updateSliderProgress(opacitySlider);
+  }
   if (opacityDisplay) opacityDisplay.textContent = `${opPct}%`;
 
   document.querySelectorAll('#inkFinishGroup .tri-seg-btn').forEach((btn) => {
@@ -2181,6 +2282,11 @@ document.addEventListener('DOMContentLoaded', () => {
     changeSketchBtn.addEventListener('click', () => fileInput.click());
   }
 
+  const rightUploadTriggerBtn = document.getElementById('rightUploadTriggerBtn');
+  if (rightUploadTriggerBtn && fileInput) {
+    rightUploadTriggerBtn.addEventListener('click', () => fileInput.click());
+  }
+
   if (fileInput) {
     fileInput.addEventListener('change', (e) => {
       if (e.target.files && e.target.files[0]) {
@@ -2314,7 +2420,8 @@ document.addEventListener('DOMContentLoaded', () => {
     scaleSlider.addEventListener('input', (e) => {
       const val = parseInt(e.target.value, 10);
       tattooScale = val / 100;
-      if (scaleDisplay) scaleDisplay.textContent = `${val}%`;
+      const cm = computeCurrentTattooCm();
+      if (scaleDisplay) scaleDisplay.textContent = `~${cm.w} × ${cm.h} cm`;
 
       document.querySelectorAll('[data-scale]').forEach((p) => {
         p.classList.toggle('active', parseInt(p.dataset.scale, 10) === val);
@@ -2559,6 +2666,12 @@ document.addEventListener('DOMContentLoaded', () => {
       bookingForm.reset();
     });
   }
+
+  // 13.5. Bind and Initialize all Neumorphic Range Sliders
+  document.querySelectorAll('.fitter-range').forEach((slider) => {
+    updateSliderProgress(slider);
+    slider.addEventListener('input', () => updateSliderProgress(slider));
+  });
 
   // 14. Language Switcher
   document.querySelectorAll('.lang-btn').forEach((btn) => {

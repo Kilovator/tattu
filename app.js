@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
       hero_city: "WROCŁAW",
       hero_btn: "ZAPISZ SIĘ",
       hero_fitter_btn: "PRZYMIERZ TATUAŻ",
-      about_badge: "1/ O NAS",
+      about_badge: "O NAS",
       about_p1: "Forever to autorskie studio tatuażu we Wrocławiu, stworzone przez artystę tatuażu Oleksandra. To kameralna, bezpieczna przestrzeń, w której każdy projekt tworzony jest indywidualnie — z pełnym szacunkiem do anatomii ciała i unikalnego stylu klienta.",
       about_p2: "Pracujemy wyłącznie na nowoczesnym, certyfikowanym sprzęcie, używając w 100% sterylnych materiałów jednorazowych oraz hipoalergicznych pigmentów klasy premium. Sesje odbywają się w komfortowej atmosferze 1 na 1 w sercu Wrocławia.",
-      price_badge: "2/ CENNIK",
+      price_badge: "CENNIK",
       price_header_service: "Usługi tatuażu",
       price_header_cost: "Cena w zł",
       price_item_1_name: "Tatuaż artystyczny / autorski",
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
       price_item_6_val: "od 450 zł",
       price_item_7_name: "Laserowe usuwanie tatuażu",
       price_item_7_val: "od 150 zł, 5-10 zł / cm²",
-      works_badge: "3/ NASZE PRACE",
+      works_badge: "NASZE PRACE",
       work_caption_0: "Rękaw w stylu orientalnym",
       work_caption_1: "Duża kompozycja na całe plecy",
       work_caption_2: "Ornament i geometria",
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       work_caption_9: "Geometria i cienka linia",
       work_caption_10: "Mroczny anioł i skrzydła",
       work_caption_11: "Autorska kompozycja Oleksandra",
-      reviews_badge: "4/ OPINIE KLIENTÓW",
+      reviews_badge: "OPINIE KLIENTÓW",
       reviews_rating_score: "5.0 / 5.0",
       reviews_rating_sub: "Google Maps • Wrocław",
       review1_name: "Mateusz K.",
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
       review6_city: "Wrocław",
       review6_text: "„Piękne, czyste studio, świetna playlista i niesamowite umiejętności Oleksandra. Drobny, precyzyjny tatuaż na obojczyku wyszedł perfekcyjnie. Polecam z całego serca każdemu!”",
       review_verified: "Zweryfikowana wizyta",
-      contacts_badge: "5/ KONTAKT",
+      contacts_badge: "KONTAKT",
       contact_city_addr: "Wrocław, Polska",
       contacts_slogan: "CZEKAMY NA CIEBIE<br>Z NIECIERPLIWOŚCIĄ!",
       footer_copy: "2025 Forever Tattoo • Oleksandr • Wrocław, Polska",
@@ -123,10 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
       hero_city: "WROCŁAW",
       hero_btn: "BOOK A SESSION",
       hero_fitter_btn: "TRY ON TATTOO",
-      about_badge: "1/ ABOUT US",
+      about_badge: "ABOUT US",
       about_p1: "Forever is a private custom tattoo studio in Wrocław, created by tattoo artist Oleksandr. It is an intimate, safe sanctuary where every design is crafted individually with full respect to anatomy and your personal style.",
       about_p2: "We work exclusively with certified modern equipment, using 100% sterile single-use disposable materials and premium hypoallergenic pigments. Sessions are held 1-on-1 in a comfortable atmosphere in the heart of Wrocław.",
-      price_badge: "2/ PRICING",
+      price_badge: "PRICING",
       price_header_service: "Tattoo Services",
       price_header_cost: "Price in PLN",
       price_item_1_name: "Custom & Artistic Tattoo",
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
       price_item_6_val: "from 450 PLN",
       price_item_7_name: "Laser Tattoo Removal",
       price_item_7_val: "from 150 PLN, 5-10 PLN / cm²",
-      works_badge: "3/ OUR WORKS",
+      works_badge: "OUR WORKS",
       work_caption_0: "Oriental Japanese Style Sleeve",
       work_caption_1: "Full Back Dragon Composition",
       work_caption_2: "Ornamental & Geometry Blackwork",
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
       work_caption_9: "Geometry & Fine-line",
       work_caption_10: "Dark Angel & Wings",
       work_caption_11: "Custom Piece by Oleksandr",
-      reviews_badge: "4/ CLIENT REVIEWS",
+      reviews_badge: "CLIENT REVIEWS",
       reviews_rating_score: "5.0 / 5.0",
       reviews_rating_sub: "Google Maps • Wrocław",
       review1_name: "Mateusz K.",
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
       review6_city: "Wrocław",
       review6_text: "“Clean and atmospheric studio, great music, and superb skills by Oleksandr. The delicate collarbone piece turned out immaculate. Heartily recommended!”",
       review_verified: "Verified client",
-      contacts_badge: "5/ CONTACT",
+      contacts_badge: "CONTACT",
       contact_city_addr: "Wrocław, Poland",
       contacts_slogan: "WE ARE WAITING<br>FOR YOU!",
       footer_copy: "2025 Forever Tattoo • Oleksandr • Wrocław, Poland",
@@ -226,10 +226,10 @@ document.addEventListener('DOMContentLoaded', () => {
       hero_city: "ВРОЦЛАВ",
       hero_btn: "ЗАПИСАТЬСЯ",
       hero_fitter_btn: "ПРИМЕРИТЬ ТАТУ",
-      about_badge: "1/ О НАС",
+      about_badge: "О НАС",
       about_p1: "Forever — авторская тату-студия во Вроцлаве, основанная тату-мастером Александром (Oleksandr). Это камерное, безопасное пространство, где каждый эскиз создаётся индивидуально — с учётом анатомии вашего тела и неповторимого стиля.",
       about_p2: "Работа ведётся исключительно на современном сертифицированном оборудовании с использованием 100% стерильных одноразовых расходников и гипоаллергенных пигментов премиум-класса. Индивидуальные сеансы 1 на 1 в самом сердце Вроцлава.",
-      price_badge: "2/ ПРАЙС",
+      price_badge: "ПРАЙС",
       price_header_service: "Услуги тату",
       price_header_cost: "Цена в zł (PLN)",
       price_item_1_name: "Художественная татуировка",
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
       price_item_6_val: "от 450 zł",
       price_item_7_name: "Удаление тату лазером",
       price_item_7_val: "от 150 zł, 5-10 zł за кв. см.",
-      works_badge: "3/ НАШИ РАБОТЫ",
+      works_badge: "НАШИ РАБОТЫ",
       work_caption_0: "Рукав в японском стиле",
       work_caption_1: "Масштабная татуировка на всю спину",
       work_caption_2: "Орнаментал и геометрия",
@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
       work_caption_9: "Геометрия и тонкая линия",
       work_caption_10: "Темный ангел и крылья",
       work_caption_11: "Авторская композиция Александра",
-      reviews_badge: "4/ ОТЗЫВЫ КЛИЕНТОВ",
+      reviews_badge: "ОТЗЫВЫ КЛИЕНТОВ",
       reviews_rating_score: "5.0 / 5.0",
       reviews_rating_sub: "Google Maps • Wrocław",
       review1_name: "Матвей К.",
@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
       review6_city: "Вроцлав",
       review6_text: "«Очень стильная и чистая студия, отличная музыка и золотые руки Александра. Тонкая надпись на ключице выполнена ювелирно. Рекомендую от всей души!»",
       review_verified: "Подтвержденный визит",
-      contacts_badge: "5/ КОНТАКТЫ",
+      contacts_badge: "КОНТАКТЫ",
       contact_city_addr: "Вроцлав, Польша",
       contacts_slogan: "МЫ ЖДЕМ ВАС С<br>НЕТЕРПЕНИЕМ!",
       footer_copy: "2025 Forever Tattoo • Oleksandr • Wrocław, Polska",
@@ -549,8 +549,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.getElementById('sliderPrev');
   const nextBtn = document.getElementById('sliderNext');
   const dotsContainer = document.getElementById('sliderDots');
+  const portfolioScrubber = document.getElementById('portfolioScrubber');
+  const sliderCurrentNum = document.getElementById('sliderCurrentNum');
+  const sliderTotalNum = document.getElementById('sliderTotalNum');
 
   let currentIndex = 0;
+  let isScrubbing = false;
 
   function getVisibleCardsCount() {
     if (window.innerWidth <= 768) return 1;
@@ -563,16 +567,27 @@ document.addEventListener('DOMContentLoaded', () => {
     return Math.max(0, cards.length - visible);
   }
 
-  function updateSlider() {
-    const visible = getVisibleCardsCount();
+  function updateScrubberFill(val, max) {
+    if (!portfolioScrubber) return;
+    const pct = max > 0 ? Math.max(0, Math.min(100, (val / max) * 100)) : 0;
+    portfolioScrubber.style.setProperty('--slider-pct', `${pct.toFixed(2)}%`);
+  }
+
+  function updateSlider(animateTrack = true) {
     const maxIdx = getMaxIndex();
     if (currentIndex > maxIdx) currentIndex = maxIdx;
     if (currentIndex < 0) currentIndex = 0;
 
-    const cardWidth = cards[0].getBoundingClientRect().width;
+    const firstCard = cards[0];
+    const cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 340;
     const gap = 22;
     const shift = currentIndex * (cardWidth + gap);
 
+    if (animateTrack) {
+      track.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+    } else {
+      track.style.transition = 'none';
+    }
     track.style.transform = `translateX(-${shift}px)`;
 
     const dots = document.querySelectorAll('.slider-dot');
@@ -580,8 +595,21 @@ document.addEventListener('DOMContentLoaded', () => {
       dot.classList.toggle('active', idx === currentIndex);
     });
 
-    prevBtn.style.opacity = currentIndex === 0 ? '0.3' : '1';
-    nextBtn.style.opacity = currentIndex === maxIdx ? '0.3' : '1';
+    if (prevBtn) prevBtn.style.opacity = currentIndex === 0 ? '0.3' : '1';
+    if (nextBtn) nextBtn.style.opacity = currentIndex === maxIdx ? '0.3' : '1';
+
+    if (portfolioScrubber && !isScrubbing) {
+      portfolioScrubber.max = maxIdx;
+      portfolioScrubber.value = currentIndex;
+      updateScrubberFill(currentIndex, maxIdx);
+    }
+
+    if (sliderCurrentNum) {
+      sliderCurrentNum.textContent = String(currentIndex + 1).padStart(2, '0');
+    }
+    if (sliderTotalNum) {
+      sliderTotalNum.textContent = String(cards.length).padStart(2, '0');
+    }
   }
 
   function createDots() {
@@ -599,6 +627,44 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       dotsContainer.appendChild(dot);
     }
+  }
+
+  if (portfolioScrubber) {
+    portfolioScrubber.addEventListener('input', (e) => {
+      isScrubbing = true;
+      const maxIdx = getMaxIndex();
+      const val = parseFloat(e.target.value);
+      updateScrubberFill(val, maxIdx);
+
+      const firstCard = cards[0];
+      const cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 340;
+      const gap = 22;
+      const shift = val * (cardWidth + gap);
+      track.style.transition = 'none';
+      track.style.transform = `translateX(-${shift}px)`;
+
+      const roundedIdx = Math.round(val);
+      if (sliderCurrentNum) {
+        sliderCurrentNum.textContent = String(roundedIdx + 1).padStart(2, '0');
+      }
+
+      const dots = document.querySelectorAll('.slider-dot');
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === roundedIdx);
+      });
+    });
+
+    const finishScrubbing = () => {
+      if (!isScrubbing) return;
+      isScrubbing = false;
+      const val = parseFloat(portfolioScrubber.value);
+      currentIndex = Math.max(0, Math.min(getMaxIndex(), Math.round(val)));
+      updateSlider(true);
+    };
+
+    portfolioScrubber.addEventListener('change', finishScrubbing);
+    portfolioScrubber.addEventListener('pointerup', finishScrubbing);
+    portfolioScrubber.addEventListener('touchend', finishScrubbing);
   }
 
   if (prevBtn && nextBtn && track) {
