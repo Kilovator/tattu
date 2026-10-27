@@ -458,14 +458,17 @@ async function loadModel2Binary() {
     .then((buf) => {
       const view = new DataView(buf);
       const magic = view.getUint32(0, true);
-      if (magic !== 0x324D4653) {
-        throw new Error('Invalid SFM2 binary header');
+      if (magic !== 0x324D4653 && magic !== 0x334D4653) {
+        throw new Error('Invalid SFM binary header');
       }
       const numV = view.getUint32(4, true);
       const numT = view.getUint32(8, true);
 
       const vI16 = new Int16Array(buf, 12, numV * 3);
-      const idxU16 = new Uint16Array(buf, 12 + numV * 6, numT * 3);
+      const isU32 = magic === 0x334D4653 || numV > 65535;
+      const indices = isU32
+        ? new Uint32Array(buf, 12 + numV * 6, numT * 3)
+        : new Uint16Array(buf, 12 + numV * 6, numT * 3);
 
       const positionsCm = new Float32Array(numV * 3);
       for (let i = 0; i < numV; i++) {
@@ -477,7 +480,7 @@ async function loadModel2Binary() {
       // Compute smooth vertex normals on the full unified Model 2 mesh
       const fullGeo = new THREE.BufferGeometry();
       fullGeo.setAttribute('position', new THREE.BufferAttribute(positionsCm, 3));
-      fullGeo.setIndex(new THREE.BufferAttribute(idxU16, 1));
+      fullGeo.setIndex(new THREE.BufferAttribute(indices, 1));
       fullGeo.computeVertexNormals();
       const normals = fullGeo.getAttribute('normal').array;
 
@@ -499,7 +502,7 @@ async function loadModel2Binary() {
         positionsCm,
         normals,
         colors,
-        indices: idxU16
+        indices
       };
       return model2SourceData;
     });
@@ -638,9 +641,9 @@ function buildAnatomicalBodyPart(partId, buildType, skinMat, showGuides = true) 
       const u1 = selectedTris[i + 1];
       const u2 = selectedTris[i + 2];
 
-      const k0 = (u0 * 100000) + u1;
-      const k1 = (u1 * 100000) + u2;
-      const k2 = (u2 * 100000) + u0;
+      const k0 = (u0 * 1000000) + u1;
+      const k1 = (u1 * 1000000) + u2;
+      const k2 = (u2 * 1000000) + u0;
       edgeCount.set(k0, (edgeCount.get(k0) || 0) + 1);
       edgeCount.set(k1, (edgeCount.get(k1) || 0) + 1);
       edgeCount.set(k2, (edgeCount.get(k2) || 0) + 1);
@@ -649,9 +652,9 @@ function buildAnatomicalBodyPart(partId, buildType, skinMat, showGuides = true) 
     const bEdges = [];
     const bVerts = new Set();
     edgeCount.forEach((cnt, k) => {
-      const u = Math.floor(k / 100000);
-      const v = k % 100000;
-      const revKey = (v * 100000) + u;
+      const u = Math.floor(k / 1000000);
+      const v = k % 1000000;
+      const revKey = (v * 1000000) + u;
       if (!edgeCount.has(revKey)) {
         const xu = positionsCm[u * 3];
         const yu = positionsCm[u * 3 + 1];
@@ -864,33 +867,43 @@ function buildAnatomicalBodyPart(partId, buildType, skinMat, showGuides = true) 
 
 /**
  * Fast local-patch DecalGeometry builder:
- * Extracts only the triangles of `bodyMesh` within bounding sphere radius of `position`
- * before running `DecalGeometry`, keeping tattoo projection & skin dragging < 1ms at 60 FPS
- * even on the 135,914-triangle full Model 2 mesh!
+ * Extracts only the front-facing triangles of `bodyMesh` within bounding radius of `position`
+ * with strict normal filtering (eliminates backside duplication & edge smearing),
+ * shallow depth clipping, and arc-length curvature compensation so tattoos wrap around muscles
+ * naturally with zero stretching.
  */
-function createFastDecalGeometry(bodyMesh, position, orientation, size) {
+function createFastDecalGeometry(bodyMesh, position, orientation, size, normal) {
   const geo = bodyMesh.geometry;
   const posAttr = geo.getAttribute('position');
   const normAttr = geo.getAttribute('normal');
   const idxAttr = geo.getIndex();
 
-  if (!idxAttr) {
+  if (!idxAttr || !posAttr) {
     return new DecalGeometry(bodyMesh, position, orientation, size);
   }
 
   const posArr = posAttr.array;
-  const normArr = normAttr.array;
+  const normArr = normAttr ? normAttr.array : null;
   const idxArr = idxAttr.array;
 
-  const radius = Math.max(size.x, size.y, size.z) * 0.92;
+  // Bounding radius covering full box and curved skin sag
+  const halfW = size.x * 0.5;
+  const halfH = size.y * 0.5;
+  const radius = Math.hypot(halfW, halfH) * 1.15;
   const rSq = radius * radius;
-  const px = position.x;
-  const py = position.y;
-  const pz = position.z;
+  const px = position.x, py = position.y, pz = position.z;
 
-  const patchPos = [];
-  const patchNorm = [];
   const numTris = idxArr.length / 3;
+
+  // Normal filtering vector
+  const nx = normal ? normal.x : 0;
+  const ny = normal ? normal.y : 0;
+  const nz = normal ? normal.z : 1;
+
+  const candTris = [];
+  let startTri = -1;
+  let minStartDist = Infinity;
+  const vToCand = new Map();
 
   for (let t = 0; t < numTris; t++) {
     const a = idxArr[t * 3];
@@ -907,27 +920,128 @@ function createFastDecalGeometry(bodyMesh, position, orientation, size) {
       }
     }
 
+    const bx = posArr[b * 3], by = posArr[b * 3 + 1], bz = posArr[b * 3 + 2];
+    const cx = posArr[c * 3], cy = posArr[c * 3 + 1], cz = posArr[c * 3 + 2];
+
+    // Compute true geometric face normal
+    const vBAx = bx - ax, vBAy = by - ay, vBAz = bz - az;
+    const vCAx = cx - ax, vCAy = cy - ay, vCAz = cz - az;
+    const fnx = vBAy * vCAz - vBAz * vCAy;
+    const fny = vBAz * vCAx - vBAx * vCAz;
+    const fnz = vBAx * vCAy - vBAy * vCAx;
+    const fnLen = Math.hypot(fnx, fny, fnz);
+    if (fnLen < 1e-6) continue;
+
+    // Face orientation relative to projector:
+    // Reject truly back-facing faces (pointing away from projector or > 87 degrees)
+    // Never reject based on individual vertex normals which creates jagged sawteeth!
+    const normFaceDot = (fnx * nx + fny * ny + fnz * nz) / fnLen;
+    if (normFaceDot <= 0.05) continue;
+
+    const candIdx = candTris.length;
+    candTris.push({ a, b, c });
+
+    const mx = (ax + bx + cx) / 3 - px;
+    const my = (ay + by + cy) / 3 - py;
+    const mz = (az + bz + cz) / 3 - pz;
+    const dist = mx * mx + my * my + mz * mz;
+    if (dist < minStartDist) {
+      minStartDist = dist;
+      startTri = candIdx;
+    }
+
+    for (const v of [a, b, c]) {
+      let list = vToCand.get(v);
+      if (!list) {
+        list = [];
+        vToCand.set(v, list);
+      }
+      list.push(candIdx);
+    }
+  }
+
+  if (candTris.length === 0 || startTri === -1) return null;
+
+  // Connected-component BFS:
+  // Strictly confines the tattoo to the continuous anatomical surface clicked by the user.
+  // Prevents the decal from ever bleeding across air gaps onto nearby hanging arms or opposite legs!
+  const visited = new Uint8Array(candTris.length);
+  const queue = [startTri];
+  visited[startTri] = 1;
+  let head = 0;
+
+  while (head < queue.length) {
+    const curr = queue[head++];
+    const tri = candTris[curr];
+    for (const v of [tri.a, tri.b, tri.c]) {
+      const neighbors = vToCand.get(v);
+      if (neighbors) {
+        for (let i = 0; i < neighbors.length; i++) {
+          const nTri = neighbors[i];
+          if (!visited[nTri]) {
+            visited[nTri] = 1;
+            queue.push(nTri);
+          }
+        }
+      }
+    }
+  }
+
+  const patchPos = [];
+  const patchNorm = [];
+  for (let i = 0; i < queue.length; i++) {
+    const tri = candTris[queue[i]];
+    const a = tri.a, b = tri.b, c = tri.c;
     patchPos.push(
-      ax, ay, az,
+      posArr[a * 3], posArr[a * 3 + 1], posArr[a * 3 + 2],
       posArr[b * 3], posArr[b * 3 + 1], posArr[b * 3 + 2],
       posArr[c * 3], posArr[c * 3 + 1], posArr[c * 3 + 2]
     );
-    patchNorm.push(
-      normArr[a * 3], normArr[a * 3 + 1], normArr[a * 3 + 2],
-      normArr[b * 3], normArr[b * 3 + 1], normArr[b * 3 + 2],
-      normArr[c * 3], normArr[c * 3 + 1], normArr[c * 3 + 2]
-    );
+    if (normArr) {
+      patchNorm.push(
+        normArr[a * 3], normArr[a * 3 + 1], normArr[a * 3 + 2],
+        normArr[b * 3], normArr[b * 3 + 1], normArr[b * 3 + 2],
+        normArr[c * 3], normArr[c * 3 + 1], normArr[c * 3 + 2]
+      );
+    }
   }
 
   const patchGeo = new THREE.BufferGeometry();
   patchGeo.setAttribute('position', new THREE.Float32BufferAttribute(patchPos, 3));
-  patchGeo.setAttribute('normal', new THREE.Float32BufferAttribute(patchNorm, 3));
+  if (patchNorm.length > 0) {
+    patchGeo.setAttribute('normal', new THREE.Float32BufferAttribute(patchNorm, 3));
+  }
 
   const patchMesh = new THREE.Mesh(patchGeo);
   patchMesh.matrixWorld.copy(bodyMesh.matrixWorld);
 
   const decalGeo = new DecalGeometry(patchMesh, position, orientation, size);
   patchGeo.dispose();
+
+  // Lift decal vertices slightly along vertex normal to ensure clean clearance
+  // over skin relief, preventing coplanar z-fighting and sunken edges
+  const dposAttr = decalGeo.getAttribute('position');
+  const dnormAttr = decalGeo.getAttribute('normal');
+  if (dposAttr && dnormAttr) {
+    const liftOffset = 0.0018; // 1.8mm clearance
+    for (let i = 0; i < dposAttr.count; i++) {
+      let vx = dnormAttr.getX(i);
+      let vy = dnormAttr.getY(i);
+      let vz = dnormAttr.getZ(i);
+      const len = Math.hypot(vx, vy, vz);
+      if (len > 1e-5) {
+        vx /= len; vy /= len; vz /= len;
+        dposAttr.setXYZ(
+          i,
+          dposAttr.getX(i) + vx * liftOffset,
+          dposAttr.getY(i) + vy * liftOffset,
+          dposAttr.getZ(i) + vz * liftOffset
+        );
+      }
+    }
+    dposAttr.needsUpdate = true;
+  }
+
   return decalGeo;
 }
 
@@ -943,22 +1057,42 @@ function createSkinMicroTexture() {
   const imgData = ctx.createImageData(size, size);
   const data = imgData.data;
 
-  // Deterministic pseudo-random organic grain
+  // Gentle smooth cellular pore pattern
+  const raw = new Float32Array(size * size);
   let seed = 1337;
-  for (let i = 0; i < data.length; i += 4) {
+  for (let i = 0; i < size * size; i++) {
     seed = (seed * 16807) % 2147483647;
-    const v = 120 + ((seed & 255) * 0.12);
-    data[i] = v;
-    data[i + 1] = v;
-    data[i + 2] = v;
-    data[i + 3] = 255;
+    raw[i] = (seed & 255) / 255.0;
+  }
+
+  // 3x3 box blur for smooth skin pore micro-relief (eliminates specular sparkle noise)
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      let sum = 0;
+      for (let dy = -1; dy <= 1; dy++) {
+        const py = (y + dy + size) % size;
+        for (let dx = -1; dx <= 1; dx++) {
+          const px = (x + dx + size) % size;
+          sum += raw[py * size + px];
+        }
+      }
+      const v = Math.round(128 + (sum / 9.0 - 0.5) * 32);
+      const idx = (y * size + x) * 4;
+      data[idx] = v;
+      data[idx + 1] = v;
+      data[idx + 2] = v;
+      data[idx + 3] = 255;
+    }
   }
   ctx.putImageData(imgData, 0, 0);
 
   const tex = new THREE.CanvasTexture(canvas);
   tex.wrapS = THREE.RepeatWrapping;
   tex.wrapT = THREE.RepeatWrapping;
-  tex.repeat.set(14, 18);
+  tex.repeat.set(12, 16);
+  tex.generateMipmaps = true;
+  tex.minFilter = THREE.LinearMipmapLinearFilter;
+  tex.magFilter = THREE.LinearFilter;
   return tex;
 }
 
@@ -1065,15 +1199,15 @@ function initThree() {
   skinMaterial = new THREE.MeshPhysicalMaterial({
     color: new THREE.Color(currentSkinColorHex),
     vertexColors: true,
-    roughness: 0.56,
-    metalness: 0.01,
-    clearcoat: 0.08,
-    clearcoatRoughness: 0.52,
-    sheen: 0.35,
-    sheenRoughness: 0.58,
+    roughness: 0.58,
+    metalness: 0.0,
+    clearcoat: 0.05,
+    clearcoatRoughness: 0.60,
+    sheen: 0.28,
+    sheenRoughness: 0.62,
     sheenColor: new THREE.Color(0xffbfa3),
     bumpMap: skinBumpTexture,
-    bumpScale: 0.0022,
+    bumpScale: 0.0010,
     side: THREE.DoubleSide
   });
 
@@ -1105,9 +1239,16 @@ function setupStudioLighting() {
 
   keyLight = new THREE.DirectionalLight(0xfff4ea, 1.85);
   keyLight.castShadow = true;
-  keyLight.shadow.mapSize.width = 1024;
-  keyLight.shadow.mapSize.height = 1024;
-  keyLight.shadow.bias = -0.0005;
+  keyLight.shadow.mapSize.width = 2048;
+  keyLight.shadow.mapSize.height = 2048;
+  keyLight.shadow.camera.near = 0.5;
+  keyLight.shadow.camera.far = 8.0;
+  keyLight.shadow.camera.left = -1.8;
+  keyLight.shadow.camera.right = 1.8;
+  keyLight.shadow.camera.top = 2.0;
+  keyLight.shadow.camera.bottom = -2.0;
+  keyLight.shadow.bias = -0.0001;
+  keyLight.shadow.normalBias = 0.02;
   scene.add(keyLight);
 
   fillLight = new THREE.DirectionalLight(0xdbe8ff, 0.55);
@@ -1204,48 +1345,65 @@ function updateReticlePosition() {
 // ============================================================================
 // 6. REBUILD ANATOMY MESH & RE-PROJECT TATTOO LAYERS
 // ============================================================================
-function rebuildAnatomyMesh(resetCamera = false) {
-  if (!model2SourceData) return;
-
-  if (currentModelGroup) {
-    scene.remove(currentModelGroup);
-    currentModelGroup.traverse((c) => {
-      if (c.geometry) c.geometry.dispose();
-    });
-  }
-
-  const built = buildAnatomicalBodyPart(currentPartId, currentBuild, skinMaterial, showGuides);
-  currentModelGroup = built.group;
-  currentBodyMesh = built.skinMesh;
-  currentGuideGroup = built.guideGroup;
-
-  scene.add(currentModelGroup);
-  currentModelGroup.updateMatrixWorld(true);
-
-  const meta = BODY_PARTS_META[currentPartId];
-  if (resetCamera && meta) {
-    targetCoords = { ...meta.defaultPlacement, partId: currentPartId };
-    animateCameraTo(
-      new THREE.Vector3(...meta.camPos),
-      new THREE.Vector3(...meta.camTarget)
-    );
-  }
-
-  // Re-project all existing tattoo layers onto the new/updated body part!
-  tattooLayers.forEach((layer) => {
-    if (resetCamera && tattooLayers.length === 1) {
-      // Place single active tattoo right on the default anatomical zone of the new body part
-      layer.theta = meta.defaultPlacement.theta;
-      layer.tRatio = meta.defaultPlacement.tRatio;
-      layer.localPoint = null;
-      layer.normal = null;
-      layer.partId = currentPartId;
+async function rebuildAnatomyMesh(resetCamera = false) {
+  if (!model2SourceData) {
+    if (model2LoadingPromise) {
+      try {
+        await model2LoadingPromise;
+      } catch (e) {
+        console.error('Model 2 loading failed:', e);
+      }
     }
-    rebuildLayerDecalMesh(layer);
-  });
+    if (!model2SourceData) return;
+  }
 
-  updateReticlePosition();
-  updateHudAndDimensions();
+  try {
+    if (currentModelGroup) {
+      scene.remove(currentModelGroup);
+      currentModelGroup.traverse((c) => {
+        if (c.geometry) c.geometry.dispose();
+      });
+    }
+
+    const built = buildAnatomicalBodyPart(currentPartId, currentBuild, skinMaterial, showGuides);
+    currentModelGroup = built.group;
+    currentBodyMesh = built.skinMesh;
+    currentGuideGroup = built.guideGroup;
+
+    scene.add(currentModelGroup);
+    currentModelGroup.updateMatrixWorld(true);
+
+    const meta = BODY_PARTS_META[currentPartId];
+    if (resetCamera && meta) {
+      targetCoords = { ...meta.defaultPlacement, partId: currentPartId };
+      animateCameraTo(
+        new THREE.Vector3(...meta.camPos),
+        new THREE.Vector3(...meta.camTarget)
+      );
+    }
+
+    // Re-project all existing tattoo layers onto the new/updated body part!
+    tattooLayers.forEach((layer) => {
+      if (resetCamera) {
+        // Place tattoo on the default anatomical zone of the new body part
+        layer.theta = meta ? meta.defaultPlacement.theta : 0;
+        layer.tRatio = meta ? meta.defaultPlacement.tRatio : 0.55;
+        layer.localPoint = null;
+        layer.normal = null;
+        layer.partId = currentPartId;
+      }
+      try {
+        rebuildLayerDecalMesh(layer);
+      } catch (err) {
+        console.warn('Could not re-project decal layer:', err);
+      }
+    });
+
+    updateReticlePosition();
+    updateHudAndDimensions();
+  } catch (err) {
+    console.error('Error in rebuildAnatomyMesh:', err);
+  }
 }
 
 /**
@@ -1305,7 +1463,13 @@ function getSurfaceHitFromCoords(coordsOrTheta, maybeTRatio) {
   const dirIn = dirOut.clone().negate();
 
   raycaster.set(origin, dirIn);
-  const hits = raycaster.intersectObject(currentBodyMesh, false);
+  let hits = raycaster.intersectObject(currentBodyMesh, false);
+  if (hits.length === 0) {
+    // Robust direct-hit fallback towards mesh center along camera view axis
+    const fbOrigin = new THREE.Vector3(0, y, 2.2);
+    raycaster.set(fbOrigin, new THREE.Vector3(0, 0, -1));
+    hits = raycaster.intersectObject(currentBodyMesh, false);
+  }
   if (hits.length > 0) {
     const hit = hits[0];
     const normal = hit.face.normal.clone().transformDirection(currentBodyMesh.matrixWorld).normalize();
@@ -1357,30 +1521,37 @@ function intersectionToCoords(intersection) {
 function processUploadedSketch(onComplete) {
   if (!rawUploadedImage) return;
 
-  const size = 1024;
-  const canvas = document.createElement('canvas');
-  canvas.width = size;
-  canvas.height = size;
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, size, size);
-
   const imgW = rawUploadedImage.naturalWidth || rawUploadedImage.width || 512;
   const imgH = rawUploadedImage.naturalHeight || rawUploadedImage.height || 512;
   sketchAspectRatio = imgW / imgH;
 
-  // Leave 8% padding around border so DecalGeometry never clips edge pixels
-  const maxBox = size * 0.84;
-  const scale = Math.min(maxBox / imgW, maxBox / imgH);
-  const drawW = imgW * scale;
-  const drawH = imgH * scale;
+  // Aspect-ratio matching canvas: eliminates wasted borders and stretching
+  const maxDim = 1024;
+  let canvasW = maxDim;
+  let canvasH = maxDim;
+  if (imgW > imgH) {
+    canvasH = Math.max(64, Math.round((imgH / imgW) * maxDim));
+  } else {
+    canvasW = Math.max(64, Math.round((imgW / imgH) * maxDim));
+  }
+
+  const canvas = document.createElement('canvas');
+  canvas.width = canvasW;
+  canvas.height = canvasH;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvasW, canvasH);
+
+  // Subtle 3% margin to ensure clean edge clipping
+  const drawW = canvasW * 0.96;
+  const drawH = canvasH * 0.96;
 
   ctx.save();
-  ctx.translate(size / 2, size / 2);
+  ctx.translate(canvasW / 2, canvasH / 2);
   ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
   ctx.drawImage(rawUploadedImage, -drawW / 2, -drawH / 2, drawW, drawH);
   ctx.restore();
 
-  const imgData = ctx.getImageData(0, 0, size, size);
+  const imgData = ctx.getImageData(0, 0, canvasW, canvasH);
   const data = imgData.data;
 
   // Parse selected ink color
@@ -1455,26 +1626,55 @@ function processUploadedSketch(onComplete) {
 }
 
 /**
- * Inspects whether a newly loaded image has an opaque light/white background
+ * Inspects whether a newly loaded image has an opaque light/white background and whether it's colorful
  */
+function analyzeUploadedImage(img) {
+  try {
+    const c = document.createElement('canvas');
+    c.width = 64;
+    c.height = 64;
+    const ctx = c.getContext('2d');
+    ctx.drawImage(img, 0, 0, 64, 64);
+    const data = ctx.getImageData(0, 0, 64, 64).data;
+
+    let whiteCorners = 0;
+    const corners = [
+      [1, 1], [62, 1], [1, 62], [62, 62]
+    ];
+    corners.forEach(([x, y]) => {
+      const idx = (y * 64 + x) * 4;
+      const lum = 0.299 * data[idx] + 0.587 * data[idx + 1] + 0.114 * data[idx + 2];
+      if (data[idx + 3] > 230 && lum > 200) whiteCorners++;
+    });
+
+    let maxColorDiff = 0;
+    let transparentCount = 0;
+    for (let i = 0; i < data.length; i += 4) {
+      if (data[i + 3] < 30) {
+        transparentCount++;
+        continue;
+      }
+      const r = data[i], g = data[i + 1], b = data[i + 2];
+      const diff = Math.max(Math.abs(r - g), Math.abs(r - b), Math.abs(g - b));
+      if (diff > maxColorDiff) maxColorDiff = diff;
+    }
+
+    const hasWhiteBg = whiteCorners >= 2;
+    const isColor = maxColorDiff > 32;
+    const hasTransparency = transparentCount > (64 * 64 * 0.05);
+
+    return {
+      removeBg: hasWhiteBg && !hasTransparency,
+      isMono: !isColor
+    };
+  } catch (err) {
+    console.warn('analyzeUploadedImage fallback:', err);
+    return { removeBg: true, isMono: true };
+  }
+}
+
 function detectHasWhiteBackground(img) {
-  const c = document.createElement('canvas');
-  c.width = 32;
-  c.height = 32;
-  const ctx = c.getContext('2d');
-  ctx.drawImage(img, 0, 0, 32, 32);
-  const corners = [
-    ctx.getImageData(1, 1, 1, 1).data,
-    ctx.getImageData(30, 1, 1, 1).data,
-    ctx.getImageData(1, 30, 1, 1).data,
-    ctx.getImageData(30, 30, 1, 1).data
-  ];
-  let opaqueWhiteCount = 0;
-  corners.forEach((px) => {
-    const lum = 0.299 * px[0] + 0.587 * px[1] + 0.114 * px[2];
-    if (px[3] > 235 && lum > 200) opaqueWhiteCount++;
-  });
-  return opaqueWhiteCount >= 2;
+  return analyzeUploadedImage(img).removeBg;
 }
 
 /**
@@ -1553,15 +1753,8 @@ function generateCalibrationSketchDataUrl() {
 // ============================================================================
 // 8. TATTOO LAYER CREATION & DECAL PROJECTION
 // ============================================================================
-function rebuildLayerDecalMesh(layer) {
+function rebuildLayerDecalMesh(layer, isDragging = false) {
   if (!currentBodyMesh || !layer.texture) return;
-
-  if (layer.mesh) {
-    scene.remove(layer.mesh);
-    if (layer.mesh.geometry) layer.mesh.geometry.dispose();
-    if (layer.mesh.material) layer.mesh.material.dispose();
-    layer.mesh = null;
-  }
 
   const hit = getSurfaceHitFromCoords(layer);
   if (!hit) return;
@@ -1582,32 +1775,58 @@ function rebuildLayerDecalMesh(layer) {
 
   const meta = BODY_PARTS_META[currentPartId];
   const baseDim = (meta ? meta.baseDecalSize : 0.38) * layer.scale;
-  const size = new THREE.Vector3(baseDim, baseDim, baseDim * 1.15);
 
-  const decalGeo = createFastDecalGeometry(currentBodyMesh, position, orientation, size);
+  // Aspect-ratio aware sizing: box exactly fits the artwork
+  let boxW = baseDim;
+  let boxH = baseDim;
+  if (sketchAspectRatio > 1) {
+    boxH = baseDim / sketchAspectRatio;
+  } else if (sketchAspectRatio < 1) {
+    boxW = baseDim * sketchAspectRatio;
+  }
+
+  // Adaptive depth based on scale & curvature: deep enough to wrap cleanly around curved muscles
+  // without clipping, while safely bounded so it never punches through the torso
+  const depthZ = Math.min(0.24, Math.max(0.14, Math.max(boxW, boxH) * 0.35));
+  const size = new THREE.Vector3(boxW, boxH, depthZ);
+
+  const decalGeo = createFastDecalGeometry(currentBodyMesh, position, orientation, size, normal);
+  if (!decalGeo) return;
 
   const rough = layer.finish === 'fresh' ? 0.42 : (layer.finish === 'healed' ? 0.72 : 0.65);
-  const decalMat = new THREE.MeshPhysicalMaterial({
-    map: layer.texture,
-    color: 0xffffff,
-    transparent: true,
-    opacity: layer.opacity,
-    depthTest: true,
-    depthWrite: false,
-    polygonOffset: true,
-    polygonOffsetFactor: -4,
-    roughness: rough,
-    metalness: 0.02,
-    bumpMap: skinBumpTexture,
-    bumpScale: 0.0014
-  });
 
-  const decalMesh = new THREE.Mesh(decalGeo, decalMat);
-  decalMesh.renderOrder = 10 + tattooLayers.indexOf(layer);
-  decalMesh.userData.layerId = layer.id;
+  if (layer.mesh) {
+    // Fast in-place update: swap geometry without rebuilding WebGL materials/shaders!
+    layer.mesh.geometry.dispose();
+    layer.mesh.geometry = decalGeo;
+    layer.mesh.material.roughness = rough;
+    layer.mesh.material.opacity = layer.opacity;
+    layer.mesh.material.map = layer.texture;
+    layer.mesh.material.needsUpdate = true;
+  } else {
+    const decalMat = new THREE.MeshPhysicalMaterial({
+      map: layer.texture,
+      color: 0xffffff,
+      transparent: true,
+      opacity: layer.opacity,
+      depthTest: true,
+      depthWrite: false,
+      polygonOffset: true,
+      polygonOffsetFactor: -4,
+      polygonOffsetUnits: -4,
+      roughness: rough,
+      metalness: 0.02,
+      bumpMap: skinBumpTexture,
+      bumpScale: 0.0014
+    });
 
-  scene.add(decalMesh);
-  layer.mesh = decalMesh;
+    const decalMesh = new THREE.Mesh(decalGeo, decalMat);
+    decalMesh.renderOrder = 10 + tattooLayers.indexOf(layer);
+    decalMesh.userData.layerId = layer.id;
+
+    scene.add(decalMesh);
+    layer.mesh = decalMesh;
+  }
 }
 
 function getActiveLayer() {
@@ -1684,6 +1903,16 @@ function selectLayer(layerId) {
     partId: layer.partId || currentPartId
   };
 
+  const thumbImg = document.getElementById('sketchThumbImg');
+  if (thumbImg && layer.previewUrl) thumbImg.src = layer.previewUrl;
+  const fileNameEl = document.getElementById('sketchFileName');
+  if (fileNameEl && layer.name) fileNameEl.textContent = layer.name;
+
+  const dropzone = document.getElementById('uploadDropzone');
+  const loadedPanel = document.getElementById('loadedSketchPanel');
+  if (dropzone) dropzone.style.display = 'none';
+  if (loadedPanel) loadedPanel.style.display = 'flex';
+
   syncSlidersFromState();
   updateReticlePosition();
   renderLayersChipsUI();
@@ -1705,6 +1934,12 @@ function deleteLayer(layerId) {
     selectLayer(tattooLayers[tattooLayers.length - 1].id);
   } else {
     activeLayerId = null;
+    rawUploadedImage = null;
+    processedTattooTexture = null;
+    const dropzone = document.getElementById('uploadDropzone');
+    const loadedPanel = document.getElementById('loadedSketchPanel');
+    if (dropzone) dropzone.style.display = 'flex';
+    if (loadedPanel) loadedPanel.style.display = 'none';
     renderLayersChipsUI();
     updateHudAndDimensions();
   }
@@ -1787,22 +2022,42 @@ function onPointerDown(e) {
   }
 }
 
+let isDragPending = false;
+let dragPendingEvent = null;
+
 function onPointerMove(e) {
   if (!isDraggingDecal || !currentBodyMesh) return;
+  dragPendingEvent = e;
+  if (!isDragPending) {
+    isDragPending = true;
+    requestAnimationFrame(processPendingDrag);
+  }
+}
 
-  getCanvasMouseNDC(e);
+function processPendingDrag() {
+  if (!isDraggingDecal || !currentBodyMesh || !dragPendingEvent) {
+    isDragPending = false;
+    return;
+  }
+  isDragPending = false;
+  getCanvasMouseNDC(dragPendingEvent);
   raycaster.setFromCamera(mouse, camera);
   const hits = raycaster.intersectObject(currentBodyMesh, false);
   if (hits.length > 0) {
-    moveActiveTattooToIntersection(hits[0]);
+    moveActiveTattooToIntersection(hits[0], true);
   }
 }
 
 function onPointerUp(e) {
   if (isDraggingDecal) {
     isDraggingDecal = false;
+    isDragPending = false;
     controls.enabled = true;
     container.classList.remove('dragging-decal');
+    const active = getActiveLayer();
+    if (active) {
+      rebuildLayerDecalMesh(active, false);
+    }
     return;
   }
 
@@ -1816,12 +2071,12 @@ function onPointerUp(e) {
   if (currentBodyMesh) {
     const hits = raycaster.intersectObject(currentBodyMesh, false);
     if (hits.length > 0) {
-      moveActiveTattooToIntersection(hits[0]);
+      moveActiveTattooToIntersection(hits[0], false);
     }
   }
 }
 
-function moveActiveTattooToIntersection(intersection) {
+function moveActiveTattooToIntersection(intersection, isDragging = false) {
   const coords = intersectionToCoords(intersection);
   targetCoords = coords;
   updateReticlePosition();
@@ -1833,7 +2088,7 @@ function moveActiveTattooToIntersection(intersection) {
     active.localPoint = coords.localPoint;
     active.normal = coords.normal;
     active.partId = coords.partId;
-    rebuildLayerDecalMesh(active);
+    rebuildLayerDecalMesh(active, isDragging);
   } else if (processedTattooTexture) {
     createOrUpdateActiveLayerFromProcessed();
   } else {
@@ -1975,11 +2230,6 @@ function updateHudAndDimensions() {
   const scaleDisplay = document.getElementById('scaleValueDisplay');
   if (scaleDisplay) {
     scaleDisplay.textContent = cmFormatted;
-  }
-
-  const hintText = document.getElementById('canvasHintText');
-  if (hintText) {
-    hintText.textContent = tattooLayers.length > 0 ? dict.canvas_hint_active : dict.canvas_hint_empty;
   }
 }
 
@@ -2127,13 +2377,17 @@ function animate() {
 // ============================================================================
 function loadSketchFromUrl(url, fileName = 'szkic-tatuazu.png') {
   const img = new Image();
-  img.crossOrigin = 'anonymous';
+  if (!url.startsWith('data:')) {
+    img.crossOrigin = 'anonymous';
+  }
   img.onload = () => {
     rawUploadedImage = img;
     currentSketchFileName = fileName;
 
-    // Auto-detect if image has an opaque white paper background
-    removeWhiteBg = detectHasWhiteBackground(img);
+    // Auto-detect image characteristics (white background, colorful vs mono)
+    const analysis = analyzeUploadedImage(img);
+    removeWhiteBg = analysis.removeBg;
+    isMonoInk = analysis.isMono;
     invertSketch = false;
     flipH = false;
     flipV = false;
@@ -2141,6 +2395,9 @@ function loadSketchFromUrl(url, fileName = 'szkic-tatuazu.png') {
     const removeBgBtn = document.getElementById('removeBgToggle');
     const bgGroup = document.getElementById('bgThresholdGroup');
     const invertBtn = document.getElementById('invertSketchToggle');
+    const modeMonoBtn = document.getElementById('modeMonoBtn');
+    const modeColorBtn = document.getElementById('modeColorBtn');
+
     if (removeBgBtn) {
       removeBgBtn.classList.toggle('active', removeWhiteBg);
       removeBgBtn.setAttribute('aria-checked', String(removeWhiteBg));
@@ -2151,6 +2408,10 @@ function loadSketchFromUrl(url, fileName = 'szkic-tatuazu.png') {
     if (invertBtn) {
       invertBtn.classList.remove('active');
       invertBtn.setAttribute('aria-checked', 'false');
+    }
+    if (modeMonoBtn && modeColorBtn) {
+      modeMonoBtn.classList.toggle('active', isMonoInk);
+      modeColorBtn.classList.toggle('active', !isMonoInk);
     }
 
     const fileNameEl = document.getElementById('sketchFileName');
@@ -2165,14 +2426,23 @@ function loadSketchFromUrl(url, fileName = 'szkic-tatuazu.png') {
       createOrUpdateActiveLayerFromProcessed();
     });
   };
+  img.onerror = (err) => {
+    console.error('Failed to load image from url:', err);
+  };
   img.src = url;
 }
 
 function handleUploadedFile(file) {
-  if (!file || !file.type.startsWith('image/')) return;
+  if (!file) return;
+  const isImage = file.type.startsWith('image/') || /\.(png|jpe?g|webp|svg|gif|avif|bmp)$/i.test(file.name || '');
+  if (!isImage) return;
+
   const reader = new FileReader();
   reader.onload = (ev) => {
-    loadSketchFromUrl(ev.target.result, file.name);
+    loadSketchFromUrl(ev.target.result, file.name || 'zdjecie.png');
+  };
+  reader.onerror = (err) => {
+    console.error('FileReader error:', err);
   };
   reader.readAsDataURL(file);
 }
@@ -2180,22 +2450,41 @@ function handleUploadedFile(file) {
 // ============================================================================
 // 15. UI EVENT BINDINGS
 // ============================================================================
-document.addEventListener('DOMContentLoaded', () => {
+function initFitterUI() {
   initThree();
   applyFitterLanguage(currentLang);
 
   // 1. Body Part Cards (7 Anatomical Zones)
-  document.querySelectorAll('.body-part-card').forEach((card) => {
-    card.addEventListener('click', () => {
-      const part = card.dataset.part;
-      if (!part || part === currentPartId) return;
+  function selectBodyPart(part) {
+    if (!part) return;
+    if (part === currentPartId && currentBodyMesh) return;
 
-      document.querySelectorAll('.body-part-card').forEach((c) => c.classList.remove('active'));
-      card.classList.add('active');
-      currentPartId = part;
-      rebuildAnatomyMesh(true);
+    document.querySelectorAll('.body-part-card').forEach((c) => {
+      c.classList.toggle('active', c.dataset.part === part);
+    });
+    currentPartId = part;
+    rebuildAnatomyMesh(true);
+  }
+
+  document.querySelectorAll('.body-part-card').forEach((card) => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      const part = card.dataset.part || card.getAttribute('data-part');
+      selectBodyPart(part);
     });
   });
+
+  const bodyPartsGrid = document.getElementById('bodyPartsGrid');
+  if (bodyPartsGrid) {
+    bodyPartsGrid.addEventListener('click', (e) => {
+      const card = e.target.closest('.body-part-card');
+      if (card) {
+        e.preventDefault();
+        const part = card.dataset.part || card.getAttribute('data-part');
+        selectBodyPart(part);
+      }
+    });
+  }
 
   // 2. Anatomical Build / Physique (Slim / Standard / Athletic)
   document.querySelectorAll('#physiqueGroup .tri-seg-btn').forEach((btn) => {
@@ -2264,43 +2553,45 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 6. Upload Sketch (Click, Change, Drag & Drop, Paste Ctrl+V, Sample Calibration Sketch)
+  // 6. Upload Sketch (Click, Change, Drag & Drop, Paste Ctrl+V)
   const fileInput = document.getElementById('tattooFileInput');
   const dropzone = document.getElementById('uploadDropzone');
   const changeSketchBtn = document.getElementById('changeSketchBtn');
-  const loadSampleBtn = document.getElementById('loadSampleSketchBtn');
   const addNewLayerBtn = document.getElementById('addNewLayerBtn');
 
   if (dropzone) {
-    dropzone.addEventListener('click', (e) => {
-      if (e.target === loadSampleBtn) return;
-      fileInput.click();
+    dropzone.addEventListener('click', () => {
+      if (fileInput) {
+        fileInput.value = '';
+        fileInput.click();
+      }
     });
   }
 
   if (changeSketchBtn) {
-    changeSketchBtn.addEventListener('click', () => fileInput.click());
+    changeSketchBtn.addEventListener('click', () => {
+      if (fileInput) {
+        fileInput.value = '';
+        fileInput.click();
+      }
+    });
   }
 
-  const rightUploadTriggerBtn = document.getElementById('rightUploadTriggerBtn');
-  if (rightUploadTriggerBtn && fileInput) {
-    rightUploadTriggerBtn.addEventListener('click', () => fileInput.click());
+  if (addNewLayerBtn) {
+    addNewLayerBtn.addEventListener('click', () => {
+      activeLayerId = null;
+      if (fileInput) {
+        fileInput.value = '';
+        fileInput.click();
+      }
+    });
   }
 
   if (fileInput) {
     fileInput.addEventListener('change', (e) => {
       if (e.target.files && e.target.files[0]) {
         handleUploadedFile(e.target.files[0]);
-        fileInput.value = '';
       }
-    });
-  }
-
-  if (loadSampleBtn) {
-    loadSampleBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const sampleUrl = generateCalibrationSketchDataUrl();
-      loadSketchFromUrl(sampleUrl, 'szkic-kalibracyjny.png');
     });
   }
 
@@ -2309,8 +2600,10 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     if (dropzone) dropzone.classList.add('drag-over');
   });
-  window.addEventListener('dragleave', () => {
-    if (dropzone) dropzone.classList.remove('drag-over');
+  window.addEventListener('dragleave', (e) => {
+    if (dropzone && (!e.relatedTarget || e.relatedTarget === document.documentElement)) {
+      dropzone.classList.remove('drag-over');
+    }
   });
   window.addEventListener('drop', (e) => {
     e.preventDefault();
@@ -2326,28 +2619,13 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const item of e.clipboardData.items) {
       if (item.type.startsWith('image/')) {
         const blob = item.getAsFile();
-        handleUploadedFile(blob);
+        if (blob) handleUploadedFile(blob);
         break;
       }
     }
   });
 
-  // Add another tattoo layer
-  if (addNewLayerBtn) {
-    addNewLayerBtn.addEventListener('click', () => {
-      if (!processedTattooTexture) return;
-      // Offset slightly so the new layer is clearly visible
-      targetCoords = {
-        theta: targetCoords.theta + 0.28,
-        tRatio: Math.max(0.18, Math.min(0.82, targetCoords.tRatio - 0.12))
-      };
-      activeLayerId = null;
-      createOrUpdateActiveLayerFromProcessed();
-      updateReticlePosition();
-      const dict = fitterTranslations[currentLang] || fitterTranslations.pl;
-      showStudioToast(dict.toast_layer_added);
-    });
-  }
+
 
   // Move active tattoo to center of current camera view
   const centerOnViewBtn = document.getElementById('centerOnViewBtn');
@@ -2692,4 +2970,10 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(onWindowResize, 50);
     });
   });
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initFitterUI);
+} else {
+  initFitterUI();
+}

@@ -368,6 +368,12 @@ body {
   cursor: pointer;
   position: relative;
   transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.body-part-card * {
+  pointer-events: none;
 }
 
 .body-part-card:hover {
@@ -593,23 +599,6 @@ body {
   color: var(--text-dim);
 }
 
-.canvas-hint {
-  background: rgba(15, 15, 18, 0.86);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--border-hairline);
-  border-radius: var(--radius-md);
-  padding: 6px 13px;
-  font-size: 0.74rem;
-  color: var(--text-secondary);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.canvas-hint svg {
-  color: var(--text-primary);
-  flex-shrink: 0;
-}
 
 /* Floating Studio Toast */
 .studio-toast {
@@ -800,25 +789,6 @@ body {
   line-height: 1.35;
 }
 
-.test-sketch-link {
-  margin-top: 6px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: var(--text-secondary);
-  font-family: var(--font-body);
-  font-size: 0.68rem;
-  font-weight: 600;
-  padding: 5px 10px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.test-sketch-link:hover {
-  color: var(--text-primary);
-  border-color: rgba(255, 255, 255, 0.38);
-  background: rgba(255, 255, 255, 0.1);
-}
 
 /* Loaded Sketch Card */
 .loaded-sketch-panel {
@@ -1503,10 +1473,6 @@ body {
 @media (max-width: 640px) {
   .back-home-btn span,
   .snap-btn span {
-    display: none;
-  }
-
-  .canvas-hint {
     display: none;
   }
 
