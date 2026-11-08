@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="fitter_page_title">Forever — Studio Przymierzalni Tatuażu 3D</title>
+  <title data-i18n="fitter_page_title">SHARP TATTOO — Studio Przymierzalni Tatuażu 3D</title>
   <meta name="description" content="Przymierz swój szkic tatuażu na szczegółowych modelach anatomicznych części ciała w 3D. Sprawdź rzeczywisty rozmiar w centymetrach i dopasowanie do mięśni.">
 
   <!-- Favicon -->
@@ -12,9 +12,13 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@600;700;800&family=Montserrat:wght@400;500;600;700&family=Russo+One&display=swap&subset=latin-ext" rel="stylesheet">
 
   <link rel="stylesheet" href="fitter.css">
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
 </head>
 <body>
   <!-- TOP STUDIO HEADER -->
@@ -27,16 +31,6 @@
         </svg>
         <span data-i18n="back_to_site">POWRÓT DO SALONU</span>
       </a>
-
-      <div class="header-brand-divider"></div>
-
-      <div class="fitter-brand">
-        <img src="assets/illustrations/logo.svg" alt="Forever" class="fitter-logo">
-        <div class="fitter-brand-text">
-          <h1 class="fitter-title" data-i18n="fitter_heading">STUDIO PRZYMIERZALNI 3D</h1>
-          <span class="fitter-subtitle" data-i18n="fitter_subheading">Wizualizacja anatomiczna 1:1</span>
-        </div>
-      </div>
     </div>
 
     <!-- Mobile Tab Switcher (visible on < 1080px) -->
@@ -193,7 +187,6 @@
           <div class="placed-layers-bar" id="placedLayersBar" style="display: none; margin-top: 10px;">
             <div class="slider-header">
               <span class="sub-label" data-i18n="label_active_layers">Warstwy na tej części ciała:</span>
-              <button type="button" class="mini-text-btn" id="centerOnViewBtn" data-i18n="btn_center_here">Przenieś na środek widoku</button>
             </div>
             <div class="layers-chips-row" id="layersChipsRow"></div>
           </div>
@@ -226,16 +219,6 @@
       <div class="fitter-loader" id="fitterLoader" style="display: none;">
         <div class="loader-spinner"></div>
         <p data-i18n="loading_3d_model">Generowanie siatki anatomicznej...</p>
-      </div>
-
-      <!-- Top Viewport HUD Info & Hint -->
-      <div class="viewport-top-hud">
-        <div class="hud-zone-pill">
-          <span class="hud-dot"></span>
-          <strong id="hudPartName" data-i18n="part_forearm">Przedramię</strong>
-          <span class="hud-sep">•</span>
-          <span id="hudPartDims">Ø ~25 cm / dł. 30 cm</span>
-        </div>
       </div>
 
       <!-- Floating Toast Notification -->
@@ -294,13 +277,6 @@
               <input type="range" id="bgThresholdSlider" min="30" max="98" value="85" class="fitter-range">
             </div>
 
-            <div class="toggle-row">
-              <span class="sub-label" data-i18n="label_invert_sketch">Odwróć kolory (biały szkic na czarnym):</span>
-              <button class="switch-pill" id="invertSketchToggle" role="switch" aria-checked="false">
-                <span class="switch-thumb"></span>
-              </button>
-            </div>
-
             <div class="segment-buttons" style="margin-top: 4px;">
               <button class="seg-btn active" id="modeMonoBtn" data-i18n="mode_mono_ink">Tusz jednokolorowy</button>
               <button class="seg-btn" id="modeColorBtn" data-i18n="mode_orig_color">Oryginalne kolory</button>
@@ -345,19 +321,6 @@
               <button type="button" class="quick-pill" id="flipVBtn" title="Odbij lustrzanie w pionie" data-i18n="btn_flip_v">Odbij ↕</button>
             </div>
           </div>
-        </section>
-
-        <!-- SECTION 3: INK REALISM & SKIN BLENDING -->
-        <section class="panel-section">
-          <div class="section-header-row">
-            <h2 class="panel-section-title" data-i18n="sec_ink_realism">REALIZM TUSZU W SKÓRZE</h2>
-          </div>
-
-          <div class="tri-segment-group" id="inkFinishGroup">
-            <button type="button" class="tri-seg-btn active" data-finish="fresh" data-i18n="finish_fresh">Świeży tusz</button>
-            <button type="button" class="tri-seg-btn" data-finish="healed" data-i18n="finish_healed">Wygojony</button>
-            <button type="button" class="tri-seg-btn" data-finish="stencil" data-i18n="finish_stencil">Kalka (Stencil)</button>
-          </div>
 
           <!-- Ink Opacity slider -->
           <div class="slider-group" style="margin-top: 8px;">
@@ -367,22 +330,9 @@
             </div>
             <input type="range" id="opacitySlider" min="25" max="100" value="92" class="fitter-range">
           </div>
-
-          <!-- Ink Tint Color -->
-          <div class="panel-group" id="inkColorGroup" style="margin-top: 6px;">
-            <label class="control-label" data-i18n="label_ink_color">Odcień pigmentu:</label>
-            <div class="ink-colors-row">
-              <button class="ink-color-btn active" data-tint="#141416" title="Klasyczny czarny (Carbon Black)" style="background-color: #141416;"></button>
-              <button class="ink-color-btn" data-tint="#263038" title="Wygojony grafit (Healed Slate)" style="background-color: #263038;"></button>
-              <button class="ink-color-btn" data-tint="#6e1520" title="Krwista czerwień (Crimson Ink)" style="background-color: #6e1520;"></button>
-              <button class="ink-color-btn" data-tint="#163829" title="Zieleń butelkowa (Vintage Green)" style="background-color: #163829;"></button>
-              <button class="ink-color-btn" data-tint="#1a2c4e" title="Głęboki indygo (Navy Ink)" style="background-color: #1a2c4e;"></button>
-              <button class="ink-color-btn" data-tint="#52267a" title="Fiolet kalki (Stencil Violet)" style="background-color: #52267a;"></button>
-            </div>
-          </div>
         </section>
 
-        <!-- SECTION 4: BOTTOM ACTIONS -->
+        <!-- SECTION 3: BOTTOM ACTIONS -->
         <section class="panel-section actions-section">
           <div class="actions-grid">
             <button class="outline-action-btn" id="undoBtn" title="Usuń ostatnio nałożoną warstwę">
@@ -441,37 +391,23 @@
         </div>
 
         <form class="fitter-booking-form" id="fitterBookingForm">
+          <input type="hidden" name="service" id="bookHiddenService" value="3D Przymierzalnia / Projekt">
           <div class="form-row-2col">
             <div class="f-group">
               <label for="bookClientName" data-i18n="form_name">Twoje imię *</label>
-              <input type="text" id="bookClientName" required placeholder="np. Kamil">
+              <input type="text" id="bookClientName" name="name" required placeholder="np. Kamil">
             </div>
             <div class="f-group">
               <label for="bookClientPhone" data-i18n="form_phone">Telefon kontaktowy *</label>
-              <input type="tel" id="bookClientPhone" required placeholder="+48 ___ ___ ___">
+              <input type="tel" id="bookClientPhone" name="phone" required placeholder="+48 ___ ___ ___">
             </div>
           </div>
 
-          <div class="f-group">
-            <label data-i18n="form_master">Artysta tatuażu</label>
-            <div class="form-master-badge">
-              <div class="master-badge-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-              <div class="master-badge-text">
-                <span class="master-badge-label" data-i18n="booking_artist_title">Artysta tatuażu:</span>
-                <strong class="master-badge-val" data-i18n="booking_artist_val">Oleksandr • Forever Wrocław</strong>
-              </div>
-            </div>
-            <input type="hidden" id="bookSelectMaster" value="Oleksandr (Wrocław)">
-          </div>
+          <input type="hidden" id="bookSelectMaster" name="master" value="Oleksandr (Sharp Tattoo Wrocław)">
 
           <div class="f-group">
             <label for="bookClientNotes" data-i18n="form_notes">Dodatkowe uwagi do projektu</label>
-            <textarea id="bookClientNotes" rows="2"></textarea>
+            <textarea id="bookClientNotes" name="comment" rows="2"></textarea>
           </div>
 
           <div class="modal-actions-row">

@@ -1,5 +1,5 @@
 /**
- * FOREVER TATTOO SALON - INTERACTIVE SCRIPT (WITH MULTI-LANGUAGE I18N SUPPORT)
+ * SHARP TATTOO STUDIO - INTERACTIVE SCRIPT (WITH MULTI-LANGUAGE I18N SUPPORT)
  * Supported languages: Polish (pl), English (en), Russian (ru)
  */
 
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
   const translations = {
     pl: {
-      page_title: "Forever — Studio Tatuażu Artystycznego | Wrocław",
+      page_title: "SHARP TATTOO — Studio Tatuażu Artystycznego | Wrocław",
       nav_about: "O NAS",
       nav_price: "CENNIK",
       nav_works: "PORTFOLIO",
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
       hero_btn: "ZAPISZ SIĘ",
       hero_fitter_btn: "PRZYMIERZ TATUAŻ",
       about_badge: "O NAS",
-      about_p1: "Forever to autorskie studio tatuażu we Wrocławiu, stworzone przez artystę tatuażu Oleksandra. To kameralna, bezpieczna przestrzeń, w której każdy projekt tworzony jest indywidualnie — z pełnym szacunkiem do anatomii ciała i unikalnego stylu klienta.",
+      about_p1: "Sharp Tattoo to autorskie studio tatuażu we Wrocławiu, stworzone przez artystę tatuażu Oleksandra. To kameralna, bezpieczna przestrzeń, w której każdy projekt tworzony jest indywidualnie — z pełnym szacunkiem do anatomii ciała i unikalnego stylu klienta.",
       about_p2: "Pracujemy wyłącznie na nowoczesnym, certyfikowanym sprzęcie, używając w 100% sterylnych materiałów jednorazowych oraz hipoalergicznych pigmentów klasy premium. Sesje odbywają się w komfortowej atmosferze 1 na 1 w sercu Wrocławia.",
       price_badge: "CENNIK",
       price_header_service: "Usługi tatuażu",
@@ -77,13 +77,13 @@ document.addEventListener('DOMContentLoaded', () => {
       review_verified: "Zweryfikowana wizyta",
       contacts_badge: "KONTAKT",
       contact_city_addr: "Wrocław, Polska",
-      contacts_slogan: "CZEKAMY NA CIEBIE<br>Z NIECIERPLIWOŚCIĄ!",
-      footer_copy: "2025 Forever Tattoo • Oleksandr • Wrocław, Polska",
+      contacts_slogan: "CZEKAMY NA CIEBIE",
+      footer_copy: "2025 Sharp Tattoo Wrocław, Polska",
       footer_privacy: "Polityka prywatności",
       modal_booking_title: "ZAPISZ SIĘ NA SESJĘ",
       modal_booking_desc: "Zostaw swoje dane kontaktowe. Oddzwonimy w ciągu 15 minut, aby omówić projekt i dobrać dogodny termin.",
       booking_artist_title: "Artysta tatuażu:",
-      booking_artist_val: "Oleksandr • Forever Wrocław",
+      booking_artist_val: "Oleksandr • Sharp Tattoo Wrocław",
       form_label_name: "Twoje imię *",
       form_placeholder_name: "np. Jan",
       form_label_phone: "Numer telefonu *",
@@ -105,14 +105,14 @@ document.addEventListener('DOMContentLoaded', () => {
       success_desc: "Otrzymaliśmy Twoje zgłoszenie. Skontaktujemy się z Tobą w ciągu 15 minut w celu potwierdzenia terminu sesji.",
       success_btn: "WSPANIALE",
       privacy_title: "Polityka Prywatności",
-      privacy_p1: "Niniejsza Polityka Prywatności określa zasady przetwarzania i ochrony danych osobowych przekazywanych przez Użytkowników w związku z korzystaniem z usług studia tatuażu «Forever» (zgodnie z RODO / GDPR).",
+      privacy_p1: "Niniejsza Polityka Prywatności określa zasady przetwarzania i ochrony danych osobowych przekazywanych przez Użytkowników w związku z korzystaniem z usług studia tatuażu «Sharp Tattoo» (zgodnie z RODO / GDPR).",
       privacy_p2: "1. Zbieramy wyłącznie dane (imię, numer telefonu, adres e-mail), które są niezbędne do kontaktu, konsultacji i rezerwacji terminu sesji tatuażu.",
       privacy_p3: "2. Twoje dane osobowe nigdy nie są przekazywane podmiotom trzecim bez Twojej wyraźnej zgody.",
       privacy_p4: "3. Masz prawo wglądu, sprostowania lub żądania usunięcia swoich danych w dowolnym momencie, kontaktując się z nami telefonicznie lub mailowo."
     },
 
     en: {
-      page_title: "Forever — Artistic Tattoo Studio | Wrocław, Poland",
+      page_title: "SHARP TATTOO — Artistic Tattoo Studio | Wrocław, Poland",
       nav_about: "ABOUT US",
       nav_price: "PRICING",
       nav_works: "PORTFOLIO",
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
       hero_btn: "BOOK A SESSION",
       hero_fitter_btn: "TRY ON TATTOO",
       about_badge: "ABOUT US",
-      about_p1: "Forever is a private custom tattoo studio in Wrocław, created by tattoo artist Oleksandr. It is an intimate, safe sanctuary where every design is crafted individually with full respect to anatomy and your personal style.",
+      about_p1: "Sharp Tattoo is a private custom tattoo studio in Wrocław, created by tattoo artist Oleksandr. It is an intimate, safe sanctuary where every design is crafted individually with full respect to anatomy and your personal style.",
       about_p2: "We work exclusively with certified modern equipment, using 100% sterile single-use disposable materials and premium hypoallergenic pigments. Sessions are held 1-on-1 in a comfortable atmosphere in the heart of Wrocław.",
       price_badge: "PRICING",
       price_header_service: "Tattoo Services",
@@ -181,12 +181,12 @@ document.addEventListener('DOMContentLoaded', () => {
       contacts_badge: "CONTACT",
       contact_city_addr: "Wrocław, Poland",
       contacts_slogan: "WE ARE WAITING<br>FOR YOU!",
-      footer_copy: "2025 Forever Tattoo • Oleksandr • Wrocław, Poland",
+      footer_copy: "2025 Sharp Tattoo  Wrocław, Poland",
       footer_privacy: "Privacy Policy",
       modal_booking_title: "BOOK A SESSION",
       modal_booking_desc: "Leave your contact details and we will call you back within 15 minutes to discuss your design and choose a convenient time.",
       booking_artist_title: "Tattoo Artist:",
-      booking_artist_val: "Oleksandr • Forever Wrocław",
+      booking_artist_val: "Oleksandr • Sharp Tattoo Wrocław",
       form_label_name: "Your Name *",
       form_placeholder_name: "e.g. John",
       form_label_phone: "Phone Number *",
@@ -208,14 +208,14 @@ document.addEventListener('DOMContentLoaded', () => {
       success_desc: "We have received your request and will contact you within 15 minutes to confirm your session appointment.",
       success_btn: "EXCELLENT",
       privacy_title: "Privacy Policy",
-      privacy_p1: "This Privacy Policy specifies the principles of processing and protection of personal data provided by Users in connection with using the services of «Forever» Tattoo Studio (in accordance with GDPR).",
+      privacy_p1: "This Privacy Policy specifies the principles of processing and protection of personal data provided by Users in connection with using the services of «Sharp Tattoo» Tattoo Studio (in accordance with GDPR).",
       privacy_p2: "1. We only collect information (name, phone number, email address) that is strictly necessary to contact you, consult, and book a tattoo session.",
       privacy_p3: "2. Your personal data is never disclosed to third parties without your explicit consent.",
       privacy_p4: "3. You have the right to inspect, correct, or request deletion of your personal data at any time by contacting us."
     },
 
     ru: {
-      page_title: "Forever — Авторская студия татуировки | Вроцлав, Польша",
+      page_title: "SHARP TATTOO — Авторская студия татуировки | Вроцлав, Польша",
       nav_about: "О НАС",
       nav_price: "ПРАЙС",
       nav_works: "РАБОТЫ",
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
       hero_btn: "ЗАПИСАТЬСЯ",
       hero_fitter_btn: "ПРИМЕРИТЬ ТАТУ",
       about_badge: "О НАС",
-      about_p1: "Forever — авторская тату-студия во Вроцлаве, основанная тату-мастером Александром (Oleksandr). Это камерное, безопасное пространство, где каждый эскиз создаётся индивидуально — с учётом анатомии вашего тела и неповторимого стиля.",
+      about_p1: "Sharp Tattoo — авторская тату-студия во Вроцлаве, основанная тату-мастером Александром (Oleksandr). Это камерное, безопасное пространство, где каждый эскиз создаётся индивидуально — с учётом анатомии вашего тела и неповторимого стиля.",
       about_p2: "Работа ведётся исключительно на современном сертифицированном оборудовании с использованием 100% стерильных одноразовых расходников и гипоаллергенных пигментов премиум-класса. Индивидуальные сеансы 1 на 1 в самом сердце Вроцлава.",
       price_badge: "ПРАЙС",
       price_header_service: "Услуги тату",
@@ -283,13 +283,13 @@ document.addEventListener('DOMContentLoaded', () => {
       review_verified: "Подтвержденный визит",
       contacts_badge: "КОНТАКТЫ",
       contact_city_addr: "Вроцлав, Польша",
-      contacts_slogan: "МЫ ЖДЕМ ВАС С<br>НЕТЕРПЕНИЕМ!",
-      footer_copy: "2025 Forever Tattoo • Oleksandr • Wrocław, Polska",
+      contacts_slogan: "МЫ ЖДЕМ ВАС<br>",
+      footer_copy: "2025 Sharp Tattoo Wrocław, Polska",
       footer_privacy: "Политика конфиденциальности",
       modal_booking_title: "ЗАПИСАТЬСЯ НА СЕАНС",
       modal_booking_desc: "Оставьте ваши контакты, и мы перезвоним в течение 15 минут для обсуждения эскиза и выбора времени.",
       booking_artist_title: "Тату-мастер:",
-      booking_artist_val: "Александр • Forever Вроцлав",
+      booking_artist_val: "Александр • Sharp Tattoo Вроцлав",
       form_label_name: "Ваше имя *",
       form_placeholder_name: "Например, Денис",
       form_label_phone: "Телефон *",
@@ -311,19 +311,19 @@ document.addEventListener('DOMContentLoaded', () => {
       success_desc: "Мы получили ваш запрос и свяжемся с вами в течение 15 минут для подтверждения даты сеанса.",
       success_btn: "ОТЛИЧНО",
       privacy_title: "Политика конфиденциальности",
-      privacy_p1: "Настоящая Политика конфиденциальности персональных данных действует в отношении всей информации, которую тату салон «Forever» может получить о Пользователе во время использования сайта (в соответствии с RODO / GDPR).",
+      privacy_p1: "Настоящая Политика конфиденциальности персональных данных действует в отношении всей информации, которую тату салон «Sharp Tattoo» может получить о Пользователе во время использования сайта (в соответствии с RODO / GDPR).",
       privacy_p2: "1. Мы собираем только те данные (имя, номер телефона), которые необходимы для связи с вами и согласования деталей записи на тату-сеанс.",
       privacy_p3: "2. Ваши персональные данные никогда не передаются третьим лицам без вашего согласия.",
       privacy_p4: "3. Вы можете в любой момент отозвать свое согласие, связавшись с нами по телефону или email."
     }
   };
 
-  let currentLang = localStorage.getItem('forever_tattoo_lang') || 'pl';
+  let currentLang = localStorage.getItem('sharp_tattoo_lang') || localStorage.getItem('forever_tattoo_lang') || 'pl';
 
   function applyLanguage(lang) {
     if (!translations[lang]) lang = 'pl';
     currentLang = lang;
-    localStorage.setItem('forever_tattoo_lang', lang);
+    localStorage.setItem('sharp_tattoo_lang', lang);
     document.documentElement.lang = lang;
 
     const dict = translations[lang];
@@ -494,17 +494,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Form submission
+  // Form submission via EmailJS
   if (bookingForm) {
-    bookingForm.addEventListener('submit', (e) => {
+    bookingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(bookingForm);
-      const data = Object.fromEntries(formData.entries());
-      console.log(`Nowe zgłoszenie (${currentLang.toUpperCase()}):`, data);
 
-      modalFormContainer.style.display = 'none';
-      modalSuccess.style.display = 'block';
-      bookingForm.reset();
+      const submitBtn = bookingForm.querySelector('.modal-submit-btn');
+      const originalText = submitBtn ? submitBtn.textContent : '';
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = currentLang === 'ru' 
+          ? 'Отправка...' 
+          : (currentLang === 'pl' ? 'Wysyłanie...' : 'Sending...');
+      }
+
+      const SERVICE_ID = 'service_ncl2xzu';
+      const TEMPLATE_ID = 'template_4wq1g6t';
+      const PUBLIC_KEY = 'EM6LXoyhaYCTpsU0b';
+
+      try {
+        if (window.emailjs) {
+          await window.emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, bookingForm, PUBLIC_KEY);
+        } else {
+          console.warn('EmailJS SDK not loaded');
+        }
+
+        modalFormContainer.style.display = 'none';
+        modalSuccess.style.display = 'block';
+        bookingForm.reset();
+      } catch (error) {
+        console.error('EmailJS Error:', error);
+        alert(currentLang === 'ru'
+          ? 'Произошла ошибка при отправке заявки. Пожалуйста, попробуйте еще раз или свяжитесь с нами по телефону.'
+          : (currentLang === 'pl'
+            ? 'Wystąpił błąd podczas wysyłania zgłoszenia. Spróbuj ponownie lub zadzwoń do nas.'
+            : 'An error occurred while sending your request. Please try again or call us directly.'));
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      }
     });
   }
 
@@ -739,7 +770,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const captionKey = card.dataset.captionKey;
       return {
         src: card.querySelector('.work-img').getAttribute('src'),
-        caption: dict[captionKey] || 'Tatuaż Forever'
+        caption: dict[captionKey] || 'Tatuaż Sharp Tattoo'
       };
     });
     if (lightboxModal.classList.contains('active')) {

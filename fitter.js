@@ -11,7 +11,7 @@ import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry.js';
 // ============================================================================
 const fitterTranslations = {
   pl: {
-    fitter_page_title: "Forever — Studio Przymierzalni Tatuażu 3D",
+    fitter_page_title: "SHARP TATTOO — Studio Przymierzalni Tatuażu 3D",
     back_to_site: "POWRÓT DO SALONU",
     fitter_heading: "STUDIO PRZYMIERZALNI 3D",
     fitter_subheading: "Wizualizacja anatomiczna 1:1",
@@ -78,7 +78,6 @@ const fitterTranslations = {
     btn_add_layer: "+ Dodaj kolejny tatuaż",
     label_remove_bg: "Usuń białe tło (ze zdjęcia/kartki):",
     label_bg_threshold: "Czystość wycięcia tła:",
-    label_invert_sketch: "Odwróć kolory (biały szkic na czarnym):",
     mode_mono_ink: "Tusz jednokolorowy",
     mode_orig_color: "Oryginalne kolory",
     label_active_layers: "Warstwy na tej części ciała:",
@@ -109,8 +108,8 @@ const fitterTranslations = {
     form_phone: "Telefon kontaktowy *",
     form_master: "Artysta tatuażu",
     booking_artist_title: "Artysta tatuażu:",
-    booking_artist_val: "Oleksandr • Forever Wrocław",
-    master_any: "Oleksandr (Wrocław)",
+    booking_artist_val: "Oleksandr • Sharp Tattoo Wrocław",
+    master_any: "Oleksandr (Sharp Tattoo Wrocław)",
     form_notes: "Dodatkowe uwagi do projektu",
     btn_download_snap: "Pobierz zrzut 3D",
     btn_submit_booking: "WYŚLIJ ZGŁOSZENIE DO STUDIA",
@@ -124,7 +123,7 @@ const fitterTranslations = {
     layer_label: "Tatuaż"
   },
   en: {
-    fitter_page_title: "Forever — 3D Anatomical Tattoo Studio",
+    fitter_page_title: "SHARP TATTOO — 3D Anatomical Tattoo Studio",
     back_to_site: "BACK TO STUDIO",
     fitter_heading: "3D TATTOO STUDIO",
     fitter_subheading: "1:1 Anatomical Visualization",
@@ -191,7 +190,6 @@ const fitterTranslations = {
     btn_add_layer: "+ Add another tattoo",
     label_remove_bg: "Remove white background (paper/JPG):",
     label_bg_threshold: "Background knockout threshold:",
-    label_invert_sketch: "Invert colors (white on black):",
     mode_mono_ink: "Monochrome Ink",
     mode_orig_color: "Original Colors",
     label_active_layers: "Layers on this body part:",
@@ -222,8 +220,8 @@ const fitterTranslations = {
     form_phone: "Phone number *",
     form_master: "Tattoo Artist",
     booking_artist_title: "Tattoo artist:",
-    booking_artist_val: "Oleksandr • Forever Wrocław",
-    master_any: "Oleksandr (Wrocław)",
+    booking_artist_val: "Oleksandr • Sharp Tattoo Wrocław",
+    master_any: "Oleksandr (Sharp Tattoo Wrocław)",
     form_notes: "Additional project notes",
     btn_download_snap: "Download 3D Image",
     btn_submit_booking: "SEND BOOKING REQUEST",
@@ -237,7 +235,7 @@ const fitterTranslations = {
     layer_label: "Tattoo"
   },
   ru: {
-    fitter_page_title: "Forever — 3D Студия примерки татуировки",
+    fitter_page_title: "SHARP TATTOO — 3D Студия примерки татуировки",
     back_to_site: "НАЗАД В САЛОН",
     fitter_heading: "3D СТУДИЯ ПРИМЕРКИ ТАТУ",
     fitter_subheading: "Анатомическая детализация 1:1",
@@ -304,7 +302,6 @@ const fitterTranslations = {
     btn_add_layer: "+ Добавить ещё тату",
     label_remove_bg: "Удалить белый фон (с бумаги/JPG):",
     label_bg_threshold: "Чистота удаления фона:",
-    label_invert_sketch: "Инвертировать (белый рисунок на чёрном):",
     mode_mono_ink: "Монохромный пигмент",
     mode_orig_color: "Исходные цвета",
     label_active_layers: "Слои на этой части тела:",
@@ -335,8 +332,8 @@ const fitterTranslations = {
     form_phone: "Телефон для связи *",
     form_master: "Мастер татуировки",
     booking_artist_title: "Мастер татуировки:",
-    booking_artist_val: "Олександр • Forever Вроцлав",
-    master_any: "Олександр (Вроцлав)",
+    booking_artist_val: "Александр • Sharp Tattoo Вроцлав",
+    master_any: "Александр (Sharp Tattoo Вроцлав)",
     form_notes: "Пожелания к проекту",
     btn_download_snap: "Скачать 3D-снимок",
     btn_submit_booking: "ОТПРАВИТЬ ЗАЯВКУ В СТУДИЮ",
@@ -399,16 +396,16 @@ const BODY_PARTS_META = {
   },
   leg: {
     i18nKey: 'part_leg',
-    realHeightCm: 90,
-    realCircCm: 58,
+    realHeightCm: 80,
+    realCircCm: 62,
     baseDecalSize: 0.40,
-    camPos: [0, 0.02, 2.10],
+    camPos: [0, 0.02, 2.05],
     camTarget: [0, -0.02, 0],
     defaultPlacement: { theta: 0, tRatio: 0.58 },
     dimsText: {
-      pl: 'Cała noga ze stopą • Dł. 90 cm',
-      en: 'Full Leg with Foot • Len. 90 cm',
-      ru: 'Полная нога со стопой • Дл. 90 см'
+      pl: 'Cała noga ze stopą • Dł. 80 cm',
+      en: 'Full Leg with Foot • Len. 80 cm',
+      ru: 'Полная нога со стопой • Дл. 80 см'
     }
   },
   neck: {
@@ -544,13 +541,13 @@ const MODEL2_PART_SLICES = {
     capNormal: [1, 0.4, 0]
   },
   leg: {
-    // Complete Leg from hip/glute down to heel, foot and all toes intact!
-    filter: (x, y) => y <= 92.0 && x <= 0.0 && (y < 68.0 ? x >= -31.5 : x >= -23.5),
+    // Complete Leg from upper thigh down to heel, foot and all toes intact (clean cut below waistband)!
+    filter: (x, y) => y <= 81.5 && x <= 0.0 && (y < 68.0 ? x >= -31.5 : x >= -23.5),
     rotZDeg: 0,
     rotXDeg: 0,
     rotYDeg: 0,
     targetSpan3D: 1.66,
-    capFilter: (x, y, z) => y > 85.0,
+    capFilter: (x, y, z) => y > 76.0,
     capNormal: [0, 1, 0]
   },
   neck: {
@@ -634,6 +631,7 @@ function buildAnatomicalBodyPart(partId, buildType, skinMat, showGuides = true) 
   // Detects open boundary edges at the cut and seals them directly with matching skin geometry!
   const capTris = [];
   let capCenter = null;
+  let capBVerts = null;
   if (sliceCfg.capFilter && selectedTris.length > 0) {
     const edgeCount = new Map();
     for (let i = 0; i < selectedTris.length; i += 3) {
@@ -671,6 +669,7 @@ function buildAnatomicalBodyPart(partId, buildType, skinMat, showGuides = true) 
     });
 
     if (bEdges.length > 0 && bVerts.size > 0) {
+      capBVerts = bVerts;
       let sumX = 0, sumY = 0, sumZ = 0;
       let sumColR = 0, sumColG = 0, sumColB = 0;
       bVerts.forEach((v) => {
@@ -729,9 +728,14 @@ function buildAnatomicalBodyPart(partId, buildType, skinMat, showGuides = true) 
     const newIdx = oldToNewV[oldIdx];
     if (newIdx === -1) continue;
 
+    let origY = positionsCm[oldIdx * 3 + 1];
+    if (capCenter && sliceCfg.capNormal && Math.abs(sliceCfg.capNormal[1]) > 0.9 && capBVerts && capBVerts.has(oldIdx)) {
+      origY = capCenter.pos[1];
+    }
+
     const [rx, ry, rz] = rotateVec(
       positionsCm[oldIdx * 3],
-      positionsCm[oldIdx * 3 + 1],
+      origY,
       positionsCm[oldIdx * 3 + 2]
     );
     const [nx, ny, nz] = rotateVec(
@@ -1099,7 +1103,7 @@ function createSkinMicroTexture() {
 // ============================================================================
 // 4. APPLICATION STATE & THREE.JS SCENE
 // ============================================================================
-let currentLang = localStorage.getItem('forever_tattoo_lang') || 'pl';
+let currentLang = localStorage.getItem('sharp_tattoo_lang') || localStorage.getItem('forever_tattoo_lang') || 'pl';
 let currentPartId = 'fullbody';
 let currentBuild = 'standard';
 let currentSkinColorHex = '#ead0be';
@@ -1115,7 +1119,6 @@ let currentSketchFileName = 'szkic-kalibracyjny.png';
 let sketchAspectRatio = 1.0;
 let removeWhiteBg = true;
 let bgThreshold = 85; // 30..98
-let invertSketch = false;
 let isMonoInk = true;
 let flipH = false;
 let flipV = false;
@@ -1575,12 +1578,6 @@ function processUploadedSketch(onComplete) {
     let r = data[i];
     let g = data[i + 1];
     let b = data[i + 2];
-
-    if (invertSketch) {
-      r = 255 - r;
-      g = 255 - g;
-      b = 255 - b;
-    }
 
     const lum = 0.299 * r + 0.587 * g + 0.114 * b;
 
@@ -2270,14 +2267,6 @@ function syncSlidersFromState() {
     updateSliderProgress(opacitySlider);
   }
   if (opacityDisplay) opacityDisplay.textContent = `${opPct}%`;
-
-  document.querySelectorAll('#inkFinishGroup .tri-seg-btn').forEach((btn) => {
-    btn.classList.toggle('active', btn.dataset.finish === tattooFinish);
-  });
-
-  document.querySelectorAll('.ink-color-btn').forEach((btn) => {
-    btn.classList.toggle('active', btn.dataset.tint === tattooTintHex);
-  });
 }
 
 // ============================================================================
@@ -2286,7 +2275,7 @@ function syncSlidersFromState() {
 function applyFitterLanguage(lang) {
   if (!fitterTranslations[lang]) lang = 'pl';
   currentLang = lang;
-  localStorage.setItem('forever_tattoo_lang', lang);
+  localStorage.setItem('sharp_tattoo_lang', lang);
   document.documentElement.lang = lang;
 
   const dict = fitterTranslations[lang];
@@ -2388,13 +2377,11 @@ function loadSketchFromUrl(url, fileName = 'szkic-tatuazu.png') {
     const analysis = analyzeUploadedImage(img);
     removeWhiteBg = analysis.removeBg;
     isMonoInk = analysis.isMono;
-    invertSketch = false;
     flipH = false;
     flipV = false;
 
     const removeBgBtn = document.getElementById('removeBgToggle');
     const bgGroup = document.getElementById('bgThresholdGroup');
-    const invertBtn = document.getElementById('invertSketchToggle');
     const modeMonoBtn = document.getElementById('modeMonoBtn');
     const modeColorBtn = document.getElementById('modeColorBtn');
 
@@ -2404,10 +2391,6 @@ function loadSketchFromUrl(url, fileName = 'szkic-tatuazu.png') {
     }
     if (bgGroup) {
       bgGroup.style.display = removeWhiteBg ? 'flex' : 'none';
-    }
-    if (invertBtn) {
-      invertBtn.classList.remove('active');
-      invertBtn.setAttribute('aria-checked', 'false');
     }
     if (modeMonoBtn && modeColorBtn) {
       modeMonoBtn.classList.toggle('active', isMonoInk);
@@ -2627,25 +2610,11 @@ function initFitterUI() {
 
 
 
-  // Move active tattoo to center of current camera view
-  const centerOnViewBtn = document.getElementById('centerOnViewBtn');
-  if (centerOnViewBtn) {
-    centerOnViewBtn.addEventListener('click', () => {
-      if (!currentBodyMesh) return;
-      raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
-      const hits = raycaster.intersectObject(currentBodyMesh, false);
-      if (hits.length > 0) {
-        moveActiveTattooToIntersection(hits[0]);
-      }
-    });
-  }
-
-  // 7. Smart Sketch Filters (Background removal, Threshold, Invert, Mono vs Color)
+  // 7. Smart Sketch Filters (Background removal, Threshold, Mono vs Color)
   const removeBgToggle = document.getElementById('removeBgToggle');
   const bgThresholdGroup = document.getElementById('bgThresholdGroup');
   const bgThresholdSlider = document.getElementById('bgThresholdSlider');
   const bgThresholdValue = document.getElementById('bgThresholdValue');
-  const invertSketchToggle = document.getElementById('invertSketchToggle');
   const modeMonoBtn = document.getElementById('modeMonoBtn');
   const modeColorBtn = document.getElementById('modeColorBtn');
 
@@ -2663,15 +2632,6 @@ function initFitterUI() {
     bgThresholdSlider.addEventListener('input', (e) => {
       bgThreshold = parseInt(e.target.value, 10);
       if (bgThresholdValue) bgThresholdValue.textContent = `${bgThreshold}%`;
-      processUploadedSketch(() => createOrUpdateActiveLayerFromProcessed());
-    });
-  }
-
-  if (invertSketchToggle) {
-    invertSketchToggle.addEventListener('click', () => {
-      invertSketch = !invertSketch;
-      invertSketchToggle.classList.toggle('active', invertSketch);
-      invertSketchToggle.setAttribute('aria-checked', String(invertSketch));
       processUploadedSketch(() => createOrUpdateActiveLayerFromProcessed());
     });
   }
@@ -2767,25 +2727,7 @@ function initFitterUI() {
     });
   }
 
-  // 9. Ink Realism (Fresh / Healed / Stencil, Opacity, Pigment Shade)
-  document.querySelectorAll('#inkFinishGroup .tri-seg-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#inkFinishGroup .tri-seg-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      tattooFinish = btn.dataset.finish;
-
-      if (tattooFinish === 'fresh') {
-        tattooOpacity = 0.94;
-      } else if (tattooFinish === 'healed') {
-        tattooOpacity = 0.78;
-      } else if (tattooFinish === 'stencil') {
-        tattooOpacity = 0.85;
-      }
-      syncSlidersFromState();
-      processUploadedSketch(() => createOrUpdateActiveLayerFromProcessed());
-    });
-  });
-
+  // 9. Tattoo Opacity Slider
   const opacitySlider = document.getElementById('opacitySlider');
   const opacityDisplay = document.getElementById('opacityValueDisplay');
   if (opacitySlider) {
@@ -2800,20 +2742,6 @@ function initFitterUI() {
       }
     });
   }
-
-  document.querySelectorAll('.ink-color-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.ink-color-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      tattooTintHex = btn.dataset.tint;
-      isMonoInk = true;
-      if (modeMonoBtn && modeColorBtn) {
-        modeMonoBtn.classList.add('active');
-        modeColorBtn.classList.remove('active');
-      }
-      processUploadedSketch(() => createOrUpdateActiveLayerFromProcessed());
-    });
-  });
 
   // 10. Camera Quick Bar & Zoom
   document.querySelectorAll('.cam-btn[data-view]').forEach((btn) => {
@@ -2865,7 +2793,7 @@ function initFitterUI() {
   document.getElementById('takePhotoBtn')?.addEventListener('click', () => {
     const dataUrl = captureClean3DSnapshot();
     const link = document.createElement('a');
-    link.download = `forever-3d-${currentPartId}-${Date.now()}.png`;
+    link.download = `sharp-tattoo-3d-${currentPartId}-${Date.now()}.png`;
     link.href = dataUrl;
     link.click();
     const dict = fitterTranslations[currentLang] || fitterTranslations.pl;
@@ -2937,11 +2865,58 @@ function initFitterUI() {
   }
 
   if (bookingForm) {
-    bookingForm.addEventListener('submit', (e) => {
+    bookingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (bookingFormView) bookingFormView.style.display = 'none';
-      if (bookingSuccessView) bookingSuccessView.style.display = 'block';
-      bookingForm.reset();
+
+      const submitBtn = bookingForm.querySelector('.primary-modal-btn');
+      const originalText = submitBtn ? submitBtn.textContent : '';
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = currentLang === 'ru' 
+          ? 'Отправка...' 
+          : (currentLang === 'pl' ? 'Wysyłanie...' : 'Sending...');
+      }
+
+      const partEl = document.getElementById('modalSpecPart');
+      const sizeEl = document.getElementById('modalSpecSize');
+      const priceEl = document.getElementById('modalSpecPrice');
+      const notesEl = document.getElementById('bookClientNotes');
+      const hiddenServiceEl = document.getElementById('bookHiddenService');
+
+      if (hiddenServiceEl && partEl) {
+        hiddenServiceEl.value = `3D Przymierzalnia (${partEl.textContent || 'Model 3D'})`;
+      }
+
+      const SERVICE_ID = 'service_ncl2xzu';
+      const TEMPLATE_ID = 'template_4wq1g6t';
+      const PUBLIC_KEY = 'EM6LXoyhaYCTpsU0b';
+
+      try {
+        if (window.emailjs) {
+          const originalNotes = notesEl ? notesEl.value : '';
+          const specsInfo = `\n[3D Проект: ${partEl ? partEl.textContent : ''}, Размер: ${sizeEl ? sizeEl.textContent : ''}, Оценка: ${priceEl ? priceEl.textContent : ''}]`;
+          if (notesEl) notesEl.value = originalNotes ? `${originalNotes} ${specsInfo}` : specsInfo;
+
+          await window.emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, bookingForm, PUBLIC_KEY);
+
+          if (notesEl) notesEl.value = originalNotes;
+        }
+
+        if (bookingFormView) bookingFormView.style.display = 'none';
+        if (bookingSuccessView) bookingSuccessView.style.display = 'block';
+        bookingForm.reset();
+      } catch (error) {
+        console.error('EmailJS Fitter Error:', error);
+        alert(currentLang === 'ru'
+          ? 'Произошла ошибка при отправке заявки. Пожалуйста, попробуйте еще раз или позвоните нам.'
+          : 'Wystąpił błąd podczas wysyłania zgłoszenia. Spróbuj ponownie lub zadzwoń do nas.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      }
     });
   }
 
